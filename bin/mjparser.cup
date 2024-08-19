@@ -1,0 +1,151 @@
+
+
+package rs.ac.bg.etf.pp1;
+
+import java_cup.runtime.*;
+import org.apache.log4j.*;
+import rs.ac.bg.etf.pp1.ast.*;
+
+parser code {:
+
+	Logger log = Logger.getLogger(getClass());
+   
+   
+    // slede redefinisani metodi za prijavu gresaka radi izmene teksta poruke
+     
+    public void report_fatal_error(String message, Object info) throws java.lang.Exception {
+      done_parsing();
+      report_error(message, info);
+    }
+  
+    public void syntax_error(Symbol cur_token) {
+        report_error("\nSintaksna greska", cur_token);
+    }
+  
+    public void unrecovered_syntax_error(Symbol cur_token) throws java.lang.Exception {
+        report_fatal_error("Fatalna greska, parsiranje se ne moze nastaviti", cur_token);
+    }
+
+    public void report_error(String message, Object info) {
+    	StringBuilder msg = new StringBuilder(message); 
+    	if (info instanceof Symbol)
+            msg.append (" na liniji ").append(((Symbol)info).left);
+        log.error(msg.toString());
+    }
+
+
+:}
+
+
+scan with {:
+	Symbol s = this.getScanner().next_token();
+	if (s != null && s.value != null) 
+		log.info(s.toString() + " " + s.value.toString());
+	return s;
+:}
+
+terminal PROG, BREAK, CLASS, ELSE, CONST, IF, NEW, PRINT, READ, RETURN, VOID, EXTENDS, CONTINUE, FOR, STATIC;
+terminal PLUS, MINUS, MUL, DIV, MOD, EQUALEQUAL, NOTEQUAL, GREATER, GREATEROREQUAL, LESS, LESSOREQUAL, AND, OR;
+terminal EQUAL, INCREMENT, DECREMENT, SEMI, COLON, COMMA, DOT, LPAREN, RPAREN, LBRACKET, RBRACKET, LBRACE, RBRACE, LAMBDA;
+terminal String IDENT, BOOL;
+terminal Character CHAR;
+terminal Integer NUM;
+
+/* Program and Declarations */
+
+nonterminal Program, ProgName, DeclList, Decl, ConstDecl, ConstType, ConstDeclList, ConstDeclListNN;
+nonterminal VarDecl, VarType, VarDeclList, VarDeclListNN, StaticInitializer;
+nonterminal MethodDecl, MethodList, MethodName, Formals, FormalParams, FormalList, FormalListNN;
+
+/* Expressions & Statements */
+
+nonterminal Expr, Statement, StatementList;
+
+/* Misc */
+
+nonterminal Brackets, TypeList, Type, Constant;
+
+/* ========= BEGIN =========*/
+
+Program ::= PROG ProgName:progName DeclList LBRACE MethodList RBRACE;
+ProgName ::= IDENT:progName;
+
+/* ========= Declarations =========*/
+
+	DeclList ::= DeclList Decl
+				|
+				(NoDeclList) /* NULL */
+				;
+	Decl ::= ConstDecl:constant
+				|
+				VarDecl:var
+				|
+				(ErrorSemi) error SEMI:l
+				{:parser.report_error("Izvrsen oporavak do ; ",null); :}
+				;
+	
+	ConstDecl ::= CONST ConstType:type IDENT:name EQUAL Constant:val ConstDeclList:list SEMI;
+	ConstType ::= Type:type;
+	ConstDeclList ::= ConstDeclList ConstDeclListNN
+					|
+					(ErrorComma) error:l
+					{:parser.report_error("Izvrsen oporavak do , ",null); :}
+					|
+					(NoConstDeclList) /* null */
+					;
+	ConstDeclListNN ::= COMMA IDENT:constName EQUAL Constant:value;
+	
+	VarDecl ::= VarType:varType IDENT:varName Brackets:brackets VarDeclList:varList;
+	VarType ::= Type:type;
+	VarDeclList ::= VarDeclList VarDeclListNN
+					|
+					(NoVarDeclList) /* null */
+					;
+	VarDeclListNN ::= COMMA IDENT:varName Brackets;
+	
+	MethodList ::= MethodList MethodDecl
+				|
+				(NoMethodList) /* null */
+				;
+	MethodDecl ::= MethodName:name_type LPAREN FormalList RPAREN VarDeclList LBRACE StatementList RBRACE;
+	MethodName ::= TypeList IDENT;
+	
+/* ========= STATEMENTS & EXPR =========*/
+	StaticInitializer ::= STATIC LBRACE StatementList RBRACE;
+	StatementList ::= StatementList Statement
+					|
+					(NoStatementList) /* null */
+					;
+	Formals ::= FormalParams
+				 | 
+				 (ErrorForms) error:l
+				 {:parser.report_error("Izvrsen oporavak do ) ",null); :}
+				 |
+				 (NoFormalList) /* null */
+				 ;				
+	FormalParams ::= Type IDENT Brackets FormalList;
+	FormalList ::= FormalList FormalListNN
+				 |
+				 (ErrorFormsComma) error:l
+				 {:parser.report_error("Izvrsen oporavak do , ",null); :}
+				 |
+				 (NoFormL) /*null*/
+				 ;
+				 
+	FormalListNN ::= COMMA Type:type IDENT:name Brackets;
+/* ========= MISC =========*/				
+	
+	Brackets ::= LBRACKET RBRACKET
+				|
+				LBRACKET Expr RBRACKET LBRACKET Expr RBRACKET
+				|
+				LBRACKET Expr RBRACKET
+				|
+				(NoBrackets) /* NULL */
+				;
+	Constant ::= NUM
+				|
+				CHAR
+				|
+				BOOL
+				;

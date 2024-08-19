@@ -1,0 +1,173 @@
+
+
+package rs.ac.bg.etf.pp1;
+
+import java_cup.runtime.*;
+import org.apache.log4j.*;
+import rs.ac.bg.etf.pp1.ast.*;
+
+parser code {:
+
+	Logger log = Logger.getLogger(getClass());
+   
+   
+    // slede redefinisani metodi za prijavu gresaka radi izmene teksta poruke
+     
+    public void report_fatal_error(String message, Object info) throws java.lang.Exception {
+      done_parsing();
+      report_error(message, info);
+    }
+  
+    public void syntax_error(Symbol cur_token) {
+        report_error("\nSintaksna greska", cur_token);
+    }
+  
+    public void unrecovered_syntax_error(Symbol cur_token) throws java.lang.Exception {
+        report_fatal_error("Fatalna greska, parsiranje se ne moze nastaviti", cur_token);
+    }
+
+    public void report_error(String message, Object info) {
+    	StringBuilder msg = new StringBuilder(message); 
+    	if (info instanceof Symbol)
+            msg.append (" na liniji ").append(((Symbol)info).left);
+        log.error(msg.toString());
+    }
+
+
+:}
+
+
+scan with {:
+	Symbol s = this.getScanner().next_token();
+	if (s != null && s.value != null) 
+		log.info(s.toString() + " " + s.value.toString());
+	return s;
+:}
+
+terminal PROG, BREAK, CLASS, ELSE, CONST, IF, NEW, PRINT, READ, RETURN, VOID, EXTENDS, CONTINUE, FOR, STATIC;
+terminal PLUS, MINUS, MUL, DIV, MOD, EQUALEQUAL, NOTEQUAL, GREATER, GREATEROREQUAL, LESS, LESSOREQUAL, AND, OR;
+terminal EQUAL, INCREMENT, DECREMENT, SEMI, COLON, COMMA, DOT, LPAREN, RPAREN, LBRACKET, RBRACKET, LBRACE, RBRACE, LAMBDA;
+terminal String IDENT, BOOL;
+terminal Character CHAR;
+terminal Integer NUM;
+
+/* Program and Declarations */
+
+nonterminal Program Program;
+nonterminal ProgName ProgName;
+nonterminal DeclList DeclList;
+nonterminal Decl Decl;
+nonterminal ConstDecl ConstDecl;
+nonterminal ConstType ConstType;
+nonterminal ConstDeclList ConstDeclList;
+nonterminal ConstDeclListNN ConstDeclListNN;
+nonterminal VarDecl VarDecl;
+nonterminal VarType VarType;
+nonterminal VarDeclList VarDeclList;
+nonterminal VarDeclListNN VarDeclListNN;
+nonterminal StaticInitializer StaticInitializer;
+nonterminal MethodDecl MethodDecl;
+nonterminal MethodList MethodList;
+nonterminal MethodName MethodName;
+nonterminal Formals Formals;
+nonterminal FormalParams FormalParams;
+nonterminal FormalList FormalList;
+nonterminal FormalListNN FormalListNN;
+
+/* Expressions & Statements */
+
+nonterminal Expr Expr;
+nonterminal Statement Statement;
+nonterminal StatementList StatementList;
+
+/* Misc */
+
+nonterminal Brackets Brackets;
+nonterminal TypeList TypeList;
+nonterminal Type Type;
+nonterminal Constant Constant;
+
+/* ========= BEGIN =========*/
+
+Program ::= PROG ProgName:progName DeclList:D1 LBRACE MethodList:M2 RBRACE {: RESULT=new ProgramDerived1(progName, D1, M2); RESULT.setLine(progNameleft); :};
+ProgName ::= IDENT:progName {: RESULT=new ProgNameDerived1(progName); RESULT.setLine(progNameleft); :};
+
+/* ========= Declarations =========*/
+
+	DeclList ::= DeclList:D1 Decl:D2 {: RESULT=new DeclListDerived1(D1, D2); RESULT.setLine(D1left); :}
+				|
+				(NoDeclList) {: RESULT=new NoDeclList(); :} /* NULL */
+				;
+	Decl ::= ConstDecl:constant {: RESULT=new DeclDerived1(constant); RESULT.setLine(constantleft); :}
+				|
+				VarDecl:var {: RESULT=new DeclDerived2(var); RESULT.setLine(varleft); :}
+				|
+				(ErrorSemi) error SEMI:l
+				{:parser.report_error("Izvrsen oporavak do ; ",null); :} {: RESULT=new ErrorSemi(); :}
+				;
+	
+	ConstDecl ::= CONST ConstType:type IDENT:name EQUAL Constant:val ConstDeclList:list SEMI {: RESULT=new ConstDeclDerived1(type, name, val, list); RESULT.setLine(typeleft); :};
+	ConstType ::= Type:type {: RESULT=new ConstTypeDerived1(type); RESULT.setLine(typeleft); :};
+	ConstDeclList ::= ConstDeclList:C1 ConstDeclListNN:C2 {: RESULT=new ConstDeclListDerived1(C1, C2); RESULT.setLine(C1left); :}
+					|
+					(ErrorComma) error:l
+					{:parser.report_error("Izvrsen oporavak do , ",null); :} {: RESULT=new ErrorComma(); :}
+					|
+					(NoConstDeclList) {: RESULT=new NoConstDeclList(); :} /* null */
+					;
+	ConstDeclListNN ::= COMMA IDENT:constName EQUAL Constant:value {: RESULT=new ConstDeclListNNDerived1(constName, value); RESULT.setLine(constNameleft); :};
+	
+	VarDecl ::= VarType:varType IDENT:varName Brackets:brackets VarDeclList:varList {: RESULT=new VarDeclDerived1(varType, varName, brackets, varList); RESULT.setLine(varTypeleft); :};
+	VarType ::= Type:type {: RESULT=new VarTypeDerived1(type); RESULT.setLine(typeleft); :};
+	VarDeclList ::= VarDeclList:V1 VarDeclListNN:V2 {: RESULT=new VarDeclListDerived1(V1, V2); RESULT.setLine(V1left); :}
+					|
+					(NoVarDeclList) {: RESULT=new NoVarDeclList(); :} /* null */
+					;
+	VarDeclListNN ::= COMMA IDENT:varName Brackets:B1 {: RESULT=new VarDeclListNNDerived1(varName, B1); RESULT.setLine(varNameleft); :};
+	
+	MethodList ::= MethodList:M1 MethodDecl:M2 {: RESULT=new MethodListDerived1(M1, M2); RESULT.setLine(M1left); :}
+				|
+				(NoMethodList) {: RESULT=new NoMethodList(); :} /* null */
+				;
+	MethodDecl ::= MethodName:name_type LPAREN FormalList:F1 RPAREN VarDeclList:V2 LBRACE StatementList:S3 RBRACE {: RESULT=new MethodDeclDerived1(name_type, F1, V2, S3); RESULT.setLine(name_typeleft); :};
+	MethodName ::= TypeList:T1 IDENT:I2 {: RESULT=new MethodNameDerived1(T1, I2); RESULT.setLine(T1left); :};
+	
+/* ========= STATEMENTS & EXPR =========*/
+	StaticInitializer ::= STATIC LBRACE StatementList:S1 RBRACE {: RESULT=new StaticInitializerDerived1(S1); RESULT.setLine(S1left); :};
+	StatementList ::= StatementList:S1 Statement:S2 {: RESULT=new StatementListDerived1(S1, S2); RESULT.setLine(S1left); :}
+					|
+					(NoStatementList) {: RESULT=new NoStatementList(); :} /* null */
+					;
+	Formals ::= FormalParams:F1 {: RESULT=new FormalsDerived1(F1); RESULT.setLine(F1left); :}
+				 | 
+				 (ErrorForms) error:l
+				 {:parser.report_error("Izvrsen oporavak do ) ",null); :} {: RESULT=new ErrorForms(); :}
+				 |
+				 (NoFormalList) {: RESULT=new NoFormalList(); :} /* null */
+				 ;				
+	FormalParams ::= Type:T1 IDENT:I2 Brackets:B3 FormalList:F4 {: RESULT=new FormalParamsDerived1(T1, I2, B3, F4); RESULT.setLine(T1left); :};
+	FormalList ::= FormalList:F1 FormalListNN:F2 {: RESULT=new FormalListDerived1(F1, F2); RESULT.setLine(F1left); :}
+				 |
+				 (ErrorFormsComma) error:l
+				 {:parser.report_error("Izvrsen oporavak do , ",null); :} {: RESULT=new ErrorFormsComma(); :}
+				 |
+				 (NoFormL) {: RESULT=new NoFormL(); :} /*null*/
+				 ;
+				 
+	FormalListNN ::= COMMA Type:type IDENT:name Brackets:B1 {: RESULT=new FormalListNNDerived1(type, name, B1); RESULT.setLine(typeleft); :};
+/* ========= MISC =========*/				
+	
+	Brackets ::= LBRACKET RBRACKET {: RESULT=new BracketsDerived1(); :}
+				|
+				LBRACKET Expr:E1 RBRACKET LBRACKET Expr:E2 RBRACKET {: RESULT=new BracketsDerived2(E1, E2); RESULT.setLine(E1left); :}
+				|
+				LBRACKET Expr:E1 RBRACKET {: RESULT=new BracketsDerived3(E1); RESULT.setLine(E1left); :}
+				|
+				(NoBrackets) {: RESULT=new NoBrackets(); :} /* NULL */
+				;
+	Constant ::= NUM:N1 {: RESULT=new ConstantDerived1(N1); RESULT.setLine(N1left); :}
+				|
+				CHAR:C1 {: RESULT=new ConstantDerived2(C1); RESULT.setLine(C1left); :}
+				|
+				BOOL:B1 {: RESULT=new ConstantDerived3(B1); RESULT.setLine(B1left); :}
+				;
