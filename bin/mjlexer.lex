@@ -56,7 +56,7 @@ import java_cup.runtime.Symbol;
 "--"		{ return new_symbol(sym.DECREMENT, yytext());}
 "+" 		{ return new_symbol(sym.PLUS, yytext()); }
 "-"			{ return new_symbol(sym.MINUS, yytext()); }
-"*"			{ return new_symbol(sym.MULL, yytext()); }
+"*"			{ return new_symbol(sym.MUL, yytext()); }
 "/"			{ return new_symbol(sym.DIV, yytext()); }
 "%"			{ return new_symbol(sym.MOD, yytext()); }
 "=="		{ return new_symbol(sym.EQUALEQUAL, yytext());}
@@ -74,8 +74,8 @@ import java_cup.runtime.Symbol;
 "."			{ return new_symbol(sym.DOT, yytext());}
 "("			{ return new_symbol(sym.LPAREN, yytext());}
 ")"			{ return new_symbol(sym.RPAREN, yytext());}
-"["			{ return new_symbol(sym.LBRACKET, yytext());}
-"]"			{ return new_symbol(sym.RBRACKET, yytext());}
+"["			{ return new_symbol(sym.LBRACKET, yytext()); }
+"]"			{ return new_symbol(sym.RBRACKET, yytext()); }
 "{"			{ return new_symbol(sym.LBRACE, yytext());}
 "}"			{ return new_symbol(sym.RBRACE, yytext());}
 "=>"		{ return new_symbol(sym.LAMBDA, yytext());}

@@ -59,11 +59,16 @@ nonterminal MethodDecl, MethodList, MethodName, Formals, FormalParams, FormalLis
 
 /* Expressions & Statements */
 
-nonterminal Expr, Statement, StatementList;
+nonterminal Expr, Statement, StatementList, Designator;
+nonterminal ExprList, ElseList, NumConst, ForEnter, ForDesignator, ConditionOptions;
+nonterminal DesignatorSOptions, DesignatorStatement, DesignatorStatementOps, ActualParamsMaybe;
+nonterminal ActualParams, ExprComma;
 
 /* Misc */
 
-nonterminal Brackets, TypeList, Type, Constant;
+nonterminal Brackets, TypeList, Type, Constant, IdentList, AssignOp, OrCondition, AndCondition, AndFactor;
+nonterminal ConditionFactor, Condition, RelOp, MinOpOptions, AddOpOptions, Term, MulOpFactorOptions;
+nonterminal Factor, MulOp, AddOp, ListOrMatrix, FuncCall, DesignatorRepetition, Label, FuncCallMaybe;
 
 /* ========= BEGIN =========*/
 
@@ -133,19 +138,123 @@ ProgName ::= IDENT:progName;
 				 ;
 				 
 	FormalListNN ::= COMMA Type:type IDENT:name Brackets;
+	
+	Statement ::= DesignatorStatement SEMI
+				|
+				IF LPAREN Condition RPAREN Statement ElseList
+				|
+				BREAK SEMI
+				|
+				CONTINUE SEMI
+				|
+				RETURN ExprList SEMI
+				|
+				READ LPAREN Designator RPAREN SEMI
+				|
+				PRINT LPAREN Expr NumConst RPAREN SEMI
+				|
+				ForEnter SEMI ForDesignator RPAREN Statement
+				|
+				LBRACE StatementList RBRACE
+				;
+	
+	ForEnter ::= FOR LPAREN ForDesignator SEMI ConditionOptions;
+	ForDesignator ::= DesignatorStatement DesignatorSOptions;
+	DesignatorStatement ::= Designator DesignatorStatementOps;
+	DesignatorStatementOps ::= AssignOp Expr
+							|
+							LPAREN ActualParamsMaybe RPAREN
+							|
+							INCREMENT
+							|
+							DECREMENT
+							;
+	ActualParamsMaybe ::= ActualParams | /* null */;
+	ActualParams ::= ExprComma;
+	ExprComma ::= ExprComma COMMA Expr
+				|
+				Expr
+				;
+	
 /* ========= MISC =========*/				
 	
+	
+	Condition ::= AndCondition OrCondition
+				|
+				error:l
+				{:parser.report_error("Izvrsen oporavak if naredbe ; ",null); :}
+				;
+	OrCondition ::= OrCondition OR AndCondition
+				|
+				/* null */
+				;
+	AndCondition ::= ConditionFactor AndFactor;
+	AndFactor ::= AndFactor AND ConditionFactor
+				|
+				/* null */
+				; 
+	ConditionFactor ::= Expr:exprA RelOp Expr:exprB
+				|
+				Expr
+				;
+				
+	IdentList ::= COLON COLON IDENT
+				|
+				/* null */
+				;
+				
 	Brackets ::= LBRACKET RBRACKET
 				|
 				LBRACKET Expr RBRACKET LBRACKET Expr RBRACKET
 				|
 				LBRACKET Expr RBRACKET
 				|
-				(NoBrackets) /* NULL */
+				/* NULL */
 				;
+				
+	Expr ::= MinOpOptions AddOpOptions;
+	MinOpOptions ::= MINUS | (NoMinOpt) /* null */;
+	AddOpOptions ::= AddOpOptions AddOp Term;
+	Term ::= MulOpFactorOptions;
+	MulOpFactorOptions ::= MulOpFactorOptions MulOp Factor
+						|
+						Factor;
+	Factor ::= FuncCall | NUM | CHAR | BOOL | NEW Type ListOrMatrix | LPAREN Expr RPAREN;
+	ListOrMatrix ::= LBRACKET Expr RBRACKET 
+					|
+					LBRACKET Expr RBRACKET LBRACKET Expr RBRACKET
+					;
+	FuncCall ::=  Designator LPAREN ActualParamsMaybe RPAREN | FuncCallMaybe;
+	
+	Designator ::= IDENT LBRACKET IdentList DesignatorRepetition RBRACKET;
+	DesignatorRepetition ::= DesignatorRepetition DOT IDENT
+							|
+							DesignatorRepetition LBRACKET Expr RBRACKET
+							|
+							/* null */
+							;
+
+	Label ::= IDENT;
+	
 	Constant ::= NUM
 				|
 				CHAR
 				|
 				BOOL
 				;
+	RelOp ::= EQUALEQUAL
+		|
+		NOTEQUAL
+		|
+		GREATER
+		|
+		GREATEROREQUAL
+		|
+		LESS
+		|
+		LESSOREQUAL
+		;
+	MulOp ::= MUL | DIV | MOD;
+	AddOp ::= PLUS | MINUS;
+	Type ::= IDENT IdentList;
+	AssignOp ::= EQUAL;
