@@ -1,6 +1,6 @@
 // generated with ast extension for cup
 // version 0.8
-// 19/7/2024 23:37:24
+// 20/7/2024 16:25:58
 
 
 package rs.ac.bg.etf.pp1.ast;
@@ -8,16 +8,16 @@ package rs.ac.bg.etf.pp1.ast;
 public class ProgramDerived1 extends Program {
 
     private ProgName ProgName;
-    private DeclList DeclList;
-    private MethodList MethodList;
+    private Declarations Declarations;
+    private MethodDeclList MethodDeclList;
 
-    public ProgramDerived1 (ProgName ProgName, DeclList DeclList, MethodList MethodList) {
+    public ProgramDerived1 (ProgName ProgName, Declarations Declarations, MethodDeclList MethodDeclList) {
         this.ProgName=ProgName;
         if(ProgName!=null) ProgName.setParent(this);
-        this.DeclList=DeclList;
-        if(DeclList!=null) DeclList.setParent(this);
-        this.MethodList=MethodList;
-        if(MethodList!=null) MethodList.setParent(this);
+        this.Declarations=Declarations;
+        if(Declarations!=null) Declarations.setParent(this);
+        this.MethodDeclList=MethodDeclList;
+        if(MethodDeclList!=null) MethodDeclList.setParent(this);
     }
 
     public ProgName getProgName() {
@@ -28,20 +28,20 @@ public class ProgramDerived1 extends Program {
         this.ProgName=ProgName;
     }
 
-    public DeclList getDeclList() {
-        return DeclList;
+    public Declarations getDeclarations() {
+        return Declarations;
     }
 
-    public void setDeclList(DeclList DeclList) {
-        this.DeclList=DeclList;
+    public void setDeclarations(Declarations Declarations) {
+        this.Declarations=Declarations;
     }
 
-    public MethodList getMethodList() {
-        return MethodList;
+    public MethodDeclList getMethodDeclList() {
+        return MethodDeclList;
     }
 
-    public void setMethodList(MethodList MethodList) {
-        this.MethodList=MethodList;
+    public void setMethodDeclList(MethodDeclList MethodDeclList) {
+        this.MethodDeclList=MethodDeclList;
     }
 
     public void accept(Visitor visitor) {
@@ -50,21 +50,21 @@ public class ProgramDerived1 extends Program {
 
     public void childrenAccept(Visitor visitor) {
         if(ProgName!=null) ProgName.accept(visitor);
-        if(DeclList!=null) DeclList.accept(visitor);
-        if(MethodList!=null) MethodList.accept(visitor);
+        if(Declarations!=null) Declarations.accept(visitor);
+        if(MethodDeclList!=null) MethodDeclList.accept(visitor);
     }
 
     public void traverseTopDown(Visitor visitor) {
         accept(visitor);
         if(ProgName!=null) ProgName.traverseTopDown(visitor);
-        if(DeclList!=null) DeclList.traverseTopDown(visitor);
-        if(MethodList!=null) MethodList.traverseTopDown(visitor);
+        if(Declarations!=null) Declarations.traverseTopDown(visitor);
+        if(MethodDeclList!=null) MethodDeclList.traverseTopDown(visitor);
     }
 
     public void traverseBottomUp(Visitor visitor) {
         if(ProgName!=null) ProgName.traverseBottomUp(visitor);
-        if(DeclList!=null) DeclList.traverseBottomUp(visitor);
-        if(MethodList!=null) MethodList.traverseBottomUp(visitor);
+        if(Declarations!=null) Declarations.traverseBottomUp(visitor);
+        if(MethodDeclList!=null) MethodDeclList.traverseBottomUp(visitor);
         accept(visitor);
     }
 
@@ -79,14 +79,14 @@ public class ProgramDerived1 extends Program {
             buffer.append(tab+"  null");
         buffer.append("\n");
 
-        if(DeclList!=null)
-            buffer.append(DeclList.toString("  "+tab));
+        if(Declarations!=null)
+            buffer.append(Declarations.toString("  "+tab));
         else
             buffer.append(tab+"  null");
         buffer.append("\n");
 
-        if(MethodList!=null)
-            buffer.append(MethodList.toString("  "+tab));
+        if(MethodDeclList!=null)
+            buffer.append(MethodDeclList.toString("  "+tab));
         else
             buffer.append(tab+"  null");
         buffer.append("\n");

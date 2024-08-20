@@ -1,0 +1,257 @@
+INFO  16:11:51,792 - Compiling source file: D:\Eclipse Work\MJCompiler\test\program.mj
+INFO  16:11:51,956 - #2 program
+INFO  16:11:51,956 - #44 MJProgram
+INFO  16:11:51,956 - #44 int
+INFO  16:11:51,957 - #44 x
+INFO  16:11:51,957 - #33 ;
+INFO  16:11:51,961 - #44 int
+INFO  16:11:51,961 - #44 y
+INFO  16:11:51,961 - #33 ;
+INFO  16:11:51,962 - #44 int
+INFO  16:11:51,962 - #44 z
+INFO  16:11:51,962 - #39 [
+INFO  16:11:51,962 - #40 ]
+INFO  16:11:51,962 - #39 [
+INFO  16:11:51,962 - #40 ]
+INFO  16:11:51,962 - #33 ;
+INFO  16:11:51,971 - #44 int
+INFO  16:11:51,971 - #44 p
+INFO  16:11:51,971 - #39 [
+INFO  16:11:51,971 - #40 ]
+INFO  16:11:51,971 - #33 ;
+INFO  16:11:51,972 - #41 {
+INFO  16:11:51,972 - #44 int
+INFO  16:11:51,977 - #44 k
+INFO  16:11:51,978 - #37 (
+INFO  16:11:51,978 - #38 )
+INFO  16:11:51,978 - #41 {
+INFO  16:11:51,979 - #44 int
+INFO  16:11:51,980 - #44 c
+ERROR 16:11:51,980 - 
+Sintaksna greska na liniji 7
+INFO  16:11:51,980 - #33 ;
+INFO  16:11:51,980 - #44 c
+INFO  16:11:51,980 - #30 =
+INFO  16:11:51,980 - #47 2
+ERROR 16:11:51,981 - Izvrsen oporavak do ; u liniji 7
+INFO  16:11:51,985 - #33 ;
+INFO  16:11:51,986 - #11 return
+ERROR 16:11:51,986 - 
+Sintaksna greska na liniji 9
+INFO  16:11:51,986 - #44 c
+INFO  16:11:51,986 - #17 +
+INFO  16:11:51,986 - #47 2
+INFO  16:11:51,986 - #33 ;
+INFO  16:11:51,986 - #42 }
+INFO  16:11:51,986 - #44 int
+INFO  16:11:51,986 - #44 main
+ERROR 16:11:51,986 - Izvrsen oporavak do ; u liniji 8
+INFO  16:11:51,986 - #37 (
+INFO  16:11:51,986 - #38 )
+INFO  16:11:51,986 - #41 {
+INFO  16:11:51,986 - #9 print
+INFO  16:11:51,986 - #37 (
+INFO  16:11:51,986 - #47 1
+INFO  16:11:51,987 - #38 )
+INFO  16:11:51,987 - #33 ;
+INFO  16:11:51,987 - #44 x
+INFO  16:11:51,987 - #30 =
+INFO  16:11:51,988 - #44 y
+INFO  16:11:51,988 - #17 +
+INFO  16:11:51,988 - #47 5
+INFO  16:11:51,996 - #17 +
+INFO  16:11:51,997 - #47 3
+INFO  16:11:51,997 - #33 ;
+INFO  16:11:51,997 - #44 x
+INFO  16:11:51,997 - #31 ++
+INFO  16:11:51,997 - #33 ;
+INFO  16:11:51,997 - #9 print
+INFO  16:11:51,997 - #37 (
+INFO  16:11:51,997 - #47 2
+INFO  16:11:51,997 - #38 )
+INFO  16:11:51,997 - #33 ;
+INFO  16:11:51,997 - #44 k
+INFO  16:11:51,997 - #37 (
+ERROR 16:11:51,997 - 
+Sintaksna greska na liniji 20
+INFO  16:11:51,998 - #38 )
+INFO  16:11:51,998 - #33 ;
+INFO  16:11:51,998 - #11 return
+INFO  16:11:51,998 - #47 1
+INFO  16:11:51,998 - #33 ;
+INFO  16:11:51,998 - #42 }
+INFO  16:11:51,998 - #42 }
+ERROR 16:11:51,998 - Izvrsen oporavak do ; u liniji 20
+INFO  16:11:52,000 - ProgramDerived1(
+  ProgNameDerived1(
+   MJProgram
+  ) [ProgNameDerived1]
+  DeclarationsDerived2(
+    DeclarationsDerived2(
+      DeclarationsDerived2(
+        DeclarationsDerived2(
+          NoDeclarations(
+          ) [NoDeclarations]
+          VarDeclrDerived1(
+            TypeDerived1(
+             int
+            ) [TypeDerived1]
+           x
+            NoMoreVarDecls(
+            ) [NoMoreVarDecls]
+          ) [VarDeclrDerived1]
+        ) [DeclarationsDerived2]
+        VarDeclrDerived1(
+          TypeDerived1(
+           int
+          ) [TypeDerived1]
+         y
+          NoMoreVarDecls(
+          ) [NoMoreVarDecls]
+        ) [VarDeclrDerived1]
+      ) [DeclarationsDerived2]
+      VarDecl(
+        TypeDerived1(
+         int
+        ) [TypeDerived1]
+       z
+        BracketsDerived1(
+        ) [BracketsDerived1]
+        NoMoreVarDecls(
+        ) [NoMoreVarDecls]
+      ) [VarDecl]
+    ) [DeclarationsDerived2]
+    VarDecl(
+      TypeDerived1(
+       int
+      ) [TypeDerived1]
+     p
+      NoBrackets(
+      ) [NoBrackets]
+      NoMoreVarDecls(
+      ) [NoMoreVarDecls]
+    ) [VarDecl]
+  ) [DeclarationsDerived2]
+  MethodDeclListDerived1(
+    MethodDeclListDerived1(
+      MethodDeclListDerived2(
+      ) [MethodDeclListDerived2]
+      MethodDeclDerived1(
+        MethodDeclNameDerived2(
+          TypeDerived1(
+           int
+          ) [TypeDerived1]
+         k
+        ) [MethodDeclNameDerived2]
+        NoFormPars(
+        ) [NoFormPars]
+        NoVarDeclInFunction(
+        ) [NoVarDeclInFunction]
+        StatementListDerived1(
+          StatementListDerived1(
+            NoStmtList(
+            ) [NoStmtList]
+            ErrorStmt(
+            ) [ErrorStmt]
+          ) [StatementListDerived1]
+          ErrorStmt(
+          ) [ErrorStmt]
+        ) [StatementListDerived1]
+      ) [MethodDeclDerived1]
+    ) [MethodDeclListDerived1]
+    MethodDeclDerived1(
+      MethodDeclNameDerived2(
+        TypeDerived1(
+         int
+        ) [TypeDerived1]
+       main
+      ) [MethodDeclNameDerived2]
+      NoFormPars(
+      ) [NoFormPars]
+      NoVarDeclInFunction(
+      ) [NoVarDeclInFunction]
+      StatementListDerived1(
+        StatementListDerived1(
+          StatementListDerived1(
+            StatementListDerived1(
+              StatementListDerived1(
+                NoStmtList(
+                ) [NoStmtList]
+                PrintStmt(
+                  ExprDerived2(
+                    FactorNoTerm(
+                      FactorDerived1(
+                       1
+                      ) [FactorDerived1]
+                    ) [FactorNoTerm]
+                  ) [ExprDerived2]
+                  NoAndConstPrint(
+                  ) [NoAndConstPrint]
+                ) [PrintStmt]
+              ) [StatementListDerived1]
+              StatementDerived1(
+                DesignatorStatementDerived1(
+                  DesignatorDerived1(
+                   x
+                  ) [DesignatorDerived1]
+                  ExprDerived3(
+                    ExprDerived3(
+                      ExprDerived2(
+                        FactorNoTerm(
+                          FactorDerived5(
+                            DesignatorDerived1(
+                             y
+                            ) [DesignatorDerived1]
+                          ) [FactorDerived5]
+                        ) [FactorNoTerm]
+                      ) [ExprDerived2]
+                      AddOpDerived2(
+                      ) [AddOpDerived2]
+                      FactorNoTerm(
+                        FactorDerived1(
+                         5
+                        ) [FactorDerived1]
+                      ) [FactorNoTerm]
+                    ) [ExprDerived3]
+                    AddOpDerived2(
+                    ) [AddOpDerived2]
+                    FactorNoTerm(
+                      FactorDerived1(
+                       3
+                      ) [FactorDerived1]
+                    ) [FactorNoTerm]
+                  ) [ExprDerived3]
+                ) [DesignatorStatementDerived1]
+              ) [StatementDerived1]
+            ) [StatementListDerived1]
+            StatementDerived1(
+              DesignatorStatementDerived2(
+                DesignatorDerived1(
+                 x
+                ) [DesignatorDerived1]
+              ) [DesignatorStatementDerived2]
+            ) [StatementDerived1]
+          ) [StatementListDerived1]
+          PrintStmt(
+            ExprDerived2(
+              FactorNoTerm(
+                FactorDerived1(
+                 2
+                ) [FactorDerived1]
+              ) [FactorNoTerm]
+            ) [ExprDerived2]
+            NoAndConstPrint(
+            ) [NoAndConstPrint]
+          ) [PrintStmt]
+        ) [StatementListDerived1]
+        ErrorStmt(
+        ) [ErrorStmt]
+      ) [StatementListDerived1]
+    ) [MethodDeclDerived1]
+  ) [MethodDeclListDerived1]
+) [ProgramDerived1]
+INFO  16:11:52,000 - ===================================
+INFO  16:11:52,006 -  Print count calls = 0
+INFO  16:11:52,007 -  Deklarisanih promenljivih ima = 0
+INFO  16:11:52,007 - ===================================
+INFO  16:11:52,007 - Parsiranje uspesno zavrseno!

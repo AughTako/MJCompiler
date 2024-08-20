@@ -1,25 +1,24 @@
 // generated with ast extension for cup
 // version 0.8
-// 19/7/2024 23:37:24
+// 20/7/2024 16:25:58
 
 
 package rs.ac.bg.etf.pp1.ast;
 
 public class FactorDerived1 extends Factor {
 
-    private FuncCall FuncCall;
+    private Integer num;
 
-    public FactorDerived1 (FuncCall FuncCall) {
-        this.FuncCall=FuncCall;
-        if(FuncCall!=null) FuncCall.setParent(this);
+    public FactorDerived1 (Integer num) {
+        this.num=num;
     }
 
-    public FuncCall getFuncCall() {
-        return FuncCall;
+    public Integer getNum() {
+        return num;
     }
 
-    public void setFuncCall(FuncCall FuncCall) {
-        this.FuncCall=FuncCall;
+    public void setNum(Integer num) {
+        this.num=num;
     }
 
     public void accept(Visitor visitor) {
@@ -27,16 +26,13 @@ public class FactorDerived1 extends Factor {
     }
 
     public void childrenAccept(Visitor visitor) {
-        if(FuncCall!=null) FuncCall.accept(visitor);
     }
 
     public void traverseTopDown(Visitor visitor) {
         accept(visitor);
-        if(FuncCall!=null) FuncCall.traverseTopDown(visitor);
     }
 
     public void traverseBottomUp(Visitor visitor) {
-        if(FuncCall!=null) FuncCall.traverseBottomUp(visitor);
         accept(visitor);
     }
 
@@ -45,10 +41,7 @@ public class FactorDerived1 extends Factor {
         buffer.append(tab);
         buffer.append("FactorDerived1(\n");
 
-        if(FuncCall!=null)
-            buffer.append(FuncCall.toString("  "+tab));
-        else
-            buffer.append(tab+"  null");
+        buffer.append(" "+tab+num);
         buffer.append("\n");
 
         buffer.append(tab);

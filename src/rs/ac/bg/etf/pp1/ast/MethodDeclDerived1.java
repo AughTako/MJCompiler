@@ -1,50 +1,50 @@
 // generated with ast extension for cup
 // version 0.8
-// 19/7/2024 23:37:24
+// 20/7/2024 16:25:58
 
 
 package rs.ac.bg.etf.pp1.ast;
 
 public class MethodDeclDerived1 extends MethodDecl {
 
-    private MethodName MethodName;
-    private FormalList FormalList;
-    private VarDeclList VarDeclList;
+    private MethodDeclName MethodDeclName;
+    private FormPars FormPars;
+    private VarDeclInFunction VarDeclInFunction;
     private StatementList StatementList;
 
-    public MethodDeclDerived1 (MethodName MethodName, FormalList FormalList, VarDeclList VarDeclList, StatementList StatementList) {
-        this.MethodName=MethodName;
-        if(MethodName!=null) MethodName.setParent(this);
-        this.FormalList=FormalList;
-        if(FormalList!=null) FormalList.setParent(this);
-        this.VarDeclList=VarDeclList;
-        if(VarDeclList!=null) VarDeclList.setParent(this);
+    public MethodDeclDerived1 (MethodDeclName MethodDeclName, FormPars FormPars, VarDeclInFunction VarDeclInFunction, StatementList StatementList) {
+        this.MethodDeclName=MethodDeclName;
+        if(MethodDeclName!=null) MethodDeclName.setParent(this);
+        this.FormPars=FormPars;
+        if(FormPars!=null) FormPars.setParent(this);
+        this.VarDeclInFunction=VarDeclInFunction;
+        if(VarDeclInFunction!=null) VarDeclInFunction.setParent(this);
         this.StatementList=StatementList;
         if(StatementList!=null) StatementList.setParent(this);
     }
 
-    public MethodName getMethodName() {
-        return MethodName;
+    public MethodDeclName getMethodDeclName() {
+        return MethodDeclName;
     }
 
-    public void setMethodName(MethodName MethodName) {
-        this.MethodName=MethodName;
+    public void setMethodDeclName(MethodDeclName MethodDeclName) {
+        this.MethodDeclName=MethodDeclName;
     }
 
-    public FormalList getFormalList() {
-        return FormalList;
+    public FormPars getFormPars() {
+        return FormPars;
     }
 
-    public void setFormalList(FormalList FormalList) {
-        this.FormalList=FormalList;
+    public void setFormPars(FormPars FormPars) {
+        this.FormPars=FormPars;
     }
 
-    public VarDeclList getVarDeclList() {
-        return VarDeclList;
+    public VarDeclInFunction getVarDeclInFunction() {
+        return VarDeclInFunction;
     }
 
-    public void setVarDeclList(VarDeclList VarDeclList) {
-        this.VarDeclList=VarDeclList;
+    public void setVarDeclInFunction(VarDeclInFunction VarDeclInFunction) {
+        this.VarDeclInFunction=VarDeclInFunction;
     }
 
     public StatementList getStatementList() {
@@ -60,24 +60,24 @@ public class MethodDeclDerived1 extends MethodDecl {
     }
 
     public void childrenAccept(Visitor visitor) {
-        if(MethodName!=null) MethodName.accept(visitor);
-        if(FormalList!=null) FormalList.accept(visitor);
-        if(VarDeclList!=null) VarDeclList.accept(visitor);
+        if(MethodDeclName!=null) MethodDeclName.accept(visitor);
+        if(FormPars!=null) FormPars.accept(visitor);
+        if(VarDeclInFunction!=null) VarDeclInFunction.accept(visitor);
         if(StatementList!=null) StatementList.accept(visitor);
     }
 
     public void traverseTopDown(Visitor visitor) {
         accept(visitor);
-        if(MethodName!=null) MethodName.traverseTopDown(visitor);
-        if(FormalList!=null) FormalList.traverseTopDown(visitor);
-        if(VarDeclList!=null) VarDeclList.traverseTopDown(visitor);
+        if(MethodDeclName!=null) MethodDeclName.traverseTopDown(visitor);
+        if(FormPars!=null) FormPars.traverseTopDown(visitor);
+        if(VarDeclInFunction!=null) VarDeclInFunction.traverseTopDown(visitor);
         if(StatementList!=null) StatementList.traverseTopDown(visitor);
     }
 
     public void traverseBottomUp(Visitor visitor) {
-        if(MethodName!=null) MethodName.traverseBottomUp(visitor);
-        if(FormalList!=null) FormalList.traverseBottomUp(visitor);
-        if(VarDeclList!=null) VarDeclList.traverseBottomUp(visitor);
+        if(MethodDeclName!=null) MethodDeclName.traverseBottomUp(visitor);
+        if(FormPars!=null) FormPars.traverseBottomUp(visitor);
+        if(VarDeclInFunction!=null) VarDeclInFunction.traverseBottomUp(visitor);
         if(StatementList!=null) StatementList.traverseBottomUp(visitor);
         accept(visitor);
     }
@@ -87,20 +87,20 @@ public class MethodDeclDerived1 extends MethodDecl {
         buffer.append(tab);
         buffer.append("MethodDeclDerived1(\n");
 
-        if(MethodName!=null)
-            buffer.append(MethodName.toString("  "+tab));
+        if(MethodDeclName!=null)
+            buffer.append(MethodDeclName.toString("  "+tab));
         else
             buffer.append(tab+"  null");
         buffer.append("\n");
 
-        if(FormalList!=null)
-            buffer.append(FormalList.toString("  "+tab));
+        if(FormPars!=null)
+            buffer.append(FormPars.toString("  "+tab));
         else
             buffer.append(tab+"  null");
         buffer.append("\n");
 
-        if(VarDeclList!=null)
-            buffer.append(VarDeclList.toString("  "+tab));
+        if(VarDeclInFunction!=null)
+            buffer.append(VarDeclInFunction.toString("  "+tab));
         else
             buffer.append(tab+"  null");
         buffer.append("\n");

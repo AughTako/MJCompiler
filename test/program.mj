@@ -1,10 +1,11 @@
 program MJProgram
 	int x; int y; int z[][];
+	int p[];
 {
 
-	int k () int c; {
+	int k() int c;{
 		c = 2;
-		return c+2;
+		return c + 2;
 	}
 
 	int main() {
@@ -14,9 +15,7 @@ program MJProgram
 		x = y + 5 + 3 ;
 		x++;
 		print(2);
-		
-		k();
-		
+
 		return 1;
 	}
 }

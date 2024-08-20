@@ -51,210 +51,139 @@ terminal String IDENT, BOOL;
 terminal Character CHAR;
 terminal Integer NUM;
 
-/* Program and Declarations */
+/* PROGRAM & DECLARATIONS*/
 
-nonterminal Program, ProgName, DeclList, Decl, ConstDecl, ConstType, ConstDeclList, ConstDeclListNN;
-nonterminal VarDecl, VarType, VarDeclList, VarDeclListNN, StaticInitializer;
-nonterminal MethodDecl, MethodList, MethodName, Formals, FormalParams, FormalList, FormalListNN;
+nonterminal Program, ProgName, Declarations, MethodDeclList;
+nonterminal ConstDeclr, ConstVals, MoreConstVals;
+nonterminal VarDeclr, MoreVarDecls;
+nonterminal MethodDecl, MethodDeclName, FormPars, FormParam, FormalParamsExist, OtherFormParamsList, VarDeclInFunction, StatementList;
+nonterminal Statement, PrintConst, DesignatorStatement, Designator, Expr, Term, Factor;
 
-/* Expressions & Statements */
+nonterminal AddOp, MulOp, RelOp;
+nonterminal Type, Brackets, ExprMaybe;
 
-nonterminal Expr, Statement, StatementList, Designator;
-nonterminal ExprList, ElseList, NumConst, ForEnter, ForDesignator, ConditionOptions;
-nonterminal DesignatorSOptions, DesignatorStatement, DesignatorStatementOps, ActualParamsMaybe;
-nonterminal ActualParams, ExprComma;
-
-/* Misc */
-
-nonterminal Brackets, TypeList, Type, Constant, IdentList, AssignOp, OrCondition, AndCondition, AndFactor;
-nonterminal ConditionFactor, Condition, RelOp, MinOpOptions, AddOpOptions, Term, MulOpFactorOptions;
-nonterminal Factor, MulOp, AddOp, ListOrMatrix, FuncCall, DesignatorRepetition, Label, FuncCallMaybe;
-
-/* ========= BEGIN =========*/
-
-Program ::= PROG ProgName:progName DeclList LBRACE MethodList RBRACE;
+Program ::= PROG ProgName:p Declarations LBRACE MethodDeclList RBRACE;
 ProgName ::= IDENT:progName;
 
-/* ========= Declarations =========*/
-
-	DeclList ::= DeclList Decl
-				|
-				(NoDeclList) /* NULL */
-				;
-	Decl ::= ConstDecl:constant
-				|
-				VarDecl:var
-				|
-				(ErrorSemi) error SEMI:l
-				{:parser.report_error("Izvrsen oporavak do ; ",null); :}
-				;
-	
-	ConstDecl ::= CONST ConstType:type IDENT:name EQUAL Constant:val ConstDeclList:list SEMI;
-	ConstType ::= Type:type;
-	ConstDeclList ::= ConstDeclList ConstDeclListNN
-					|
-					(ErrorComma) error:l
-					{:parser.report_error("Izvrsen oporavak do , ",null); :}
-					|
-					(NoConstDeclList) /* null */
-					;
-	ConstDeclListNN ::= COMMA IDENT:constName EQUAL Constant:value;
-	
-	VarDecl ::= VarType:varType IDENT:varName Brackets:brackets VarDeclList:varList;
-	VarType ::= Type:type;
-	VarDeclList ::= VarDeclList VarDeclListNN
-					|
-					(NoVarDeclList) /* null */
-					;
-	VarDeclListNN ::= COMMA IDENT:varName Brackets;
-	
-	MethodList ::= MethodList MethodDecl
-				|
-				(NoMethodList) /* null */
-				;
-	MethodDecl ::= MethodName:name_type LPAREN FormalList RPAREN VarDeclList LBRACE StatementList RBRACE;
-	MethodName ::= TypeList IDENT;
-	
-/* ========= STATEMENTS & EXPR =========*/
-	StaticInitializer ::= STATIC LBRACE StatementList RBRACE;
-	StatementList ::= StatementList Statement
-					|
-					(NoStatementList) /* null */
-					;
-	Formals ::= FormalParams
-				 | 
-				 (ErrorForms) error:l
-				 {:parser.report_error("Izvrsen oporavak do ) ",null); :}
-				 |
-				 (NoFormalList) /* null */
-				 ;				
-	FormalParams ::= Type IDENT Brackets FormalList;
-	FormalList ::= FormalList FormalListNN
-				 |
-				 (ErrorFormsComma) error:l
-				 {:parser.report_error("Izvrsen oporavak do , ",null); :}
-				 |
-				 (NoFormL) /*null*/
+Declarations ::= Declarations ConstDeclr
+				 | Declarations VarDeclr
+				 | (NoDeclarations) /* null */
 				 ;
-				 
-	FormalListNN ::= COMMA Type:type IDENT:name Brackets;
-	
-	Statement ::= DesignatorStatement SEMI
+ConstDeclr ::= CONST Type:constType IDENT:constName EQUAL ConstVals MoreConstVals SEMI;
+ConstVals ::= NUM:numVal | CHAR:charVal | BOOL:boolVal;
+MoreConstVals ::= MoreConstVals COMMA IDENT:constName EQUAL ConstVals
 				|
-				IF LPAREN Condition RPAREN Statement ElseList
-				|
-				BREAK SEMI
-				|
-				CONTINUE SEMI
-				|
-				RETURN ExprList SEMI
-				|
-				READ LPAREN Designator RPAREN SEMI
-				|
-				PRINT LPAREN Expr NumConst RPAREN SEMI
-				|
-				ForEnter SEMI ForDesignator RPAREN Statement
-				|
-				LBRACE StatementList RBRACE
-				;
-	
-	ForEnter ::= FOR LPAREN ForDesignator SEMI ConditionOptions;
-	ForDesignator ::= DesignatorStatement DesignatorSOptions;
-	DesignatorStatement ::= Designator DesignatorStatementOps;
-	DesignatorStatementOps ::= AssignOp Expr
-							|
-							LPAREN ActualParamsMaybe RPAREN
-							|
-							INCREMENT
-							|
-							DECREMENT
-							;
-	ActualParamsMaybe ::= ActualParams | /* null */;
-	ActualParams ::= ExprComma;
-	ExprComma ::= ExprComma COMMA Expr
-				|
-				Expr
-				;
-	
-/* ========= MISC =========*/				
-	
-	
-	Condition ::= AndCondition OrCondition
-				|
-				error:l
-				{:parser.report_error("Izvrsen oporavak if naredbe ; ",null); :}
-				;
-	OrCondition ::= OrCondition OR AndCondition
-				|
-				/* null */
-				;
-	AndCondition ::= ConditionFactor AndFactor;
-	AndFactor ::= AndFactor AND ConditionFactor
-				|
-				/* null */
-				; 
-	ConditionFactor ::= Expr:exprA RelOp Expr:exprB
-				|
-				Expr
+				(NoMoreConstVals) /* null */
 				;
 				
-	IdentList ::= COLON COLON IDENT
-				|
-				/* null */
-				;
-				
-	Brackets ::= LBRACKET RBRACKET
-				|
-				LBRACKET Expr RBRACKET LBRACKET Expr RBRACKET
-				|
-				LBRACKET Expr RBRACKET
-				|
-				/* NULL */
-				;
-				
-	Expr ::= MinOpOptions AddOpOptions;
-	MinOpOptions ::= MINUS | (NoMinOpt) /* null */;
-	AddOpOptions ::= AddOpOptions AddOp Term;
-	Term ::= MulOpFactorOptions;
-	MulOpFactorOptions ::= MulOpFactorOptions MulOp Factor
-						|
-						Factor;
-	Factor ::= FuncCall | NUM | CHAR | BOOL | NEW Type ListOrMatrix | LPAREN Expr RPAREN;
-	ListOrMatrix ::= LBRACKET Expr RBRACKET 
-					|
-					LBRACKET Expr RBRACKET LBRACKET Expr RBRACKET
-					;
-	FuncCall ::=  Designator LPAREN ActualParamsMaybe RPAREN | FuncCallMaybe;
-	
-	Designator ::= IDENT LBRACKET IdentList DesignatorRepetition RBRACKET;
-	DesignatorRepetition ::= DesignatorRepetition DOT IDENT
-							|
-							DesignatorRepetition LBRACKET Expr RBRACKET
-							|
-							/* null */
-							;
 
-	Label ::= IDENT;
-	
-	Constant ::= NUM
-				|
-				CHAR
-				|
-				BOOL
+VarDeclr ::= (VarDeclArray) Type:arrayType IDENT:arrayName LBRACKET RBRACKET Brackets MoreVarDecls SEMI
+			|
+			(VarDeclVar) Type:varType IDENT:varName MoreVarDecls SEMI
+			|
+			(ErrorStmtVar) error SEMI:l
+		   	{: parser.report_error("Izvrsen oporavak do ; u liniji " + lleft, null);  :}
+			;
+MoreVarDecls ::= MoreVarDecls COMMA IDENT:arrayName LBRACKET RBRACKET Brackets
+			|
+			MoreVarDecls COMMA IDENT:varName
+			|
+			(NoMoreVarDecls) /* null */
+			;		
+			
+MethodDeclList ::= MethodDeclList MethodDecl 
+				| /* null */
 				;
-	RelOp ::= EQUALEQUAL
+MethodDecl ::= MethodDeclName LPAREN FormPars RPAREN VarDeclInFunction LBRACE StatementList RBRACE;
+MethodDeclName ::= VOID IDENT:methodName
+				|
+				Type:methodType IDENT:methodName
+				;
+FormPars ::= FormParam
+			|
+			(ErrorForms) error:l
+				{:parser.report_error("Izvrsen oporavak do ) ",null); :}
+			|
+			(NoFormPars) /* null */
+			;
+FormParam ::= Type:type IDENT:name Brackets OtherFormParamsList;
+OtherFormParamsList ::= OtherFormParamsList FormalParamsExist
+					|
+					(ErrorFormsPList) error:l
+					{:parser.report_error("Izvrsen oporavak do ) ",null); :}
+					|
+					/* null */
+					;
+FormalParamsExist ::= COMMA Type IDENT Brackets;
+VarDeclInFunction ::= VarDeclInFunction Type:arrayType IDENT:arrName LBRACKET RBRACKET SEMI
+					|
+					VarDeclInFunction Type:varType IDENT:varName SEMI
+					|
+					(NoVarDeclInFunction) /* null */
+					;
+StatementList ::= StatementList Statement
+				|
+				(NoStmtList)/*epsilon smena*/
+				;
+
+Statement ::= DesignatorStatement SEMI 
+			|
+			READ LPAREN Designator RPAREN SEMI 
+			|
+			RETURN ExprMaybe SEMI
+			|
+			(PrintStmt) PRINT LPAREN Expr PrintConst RPAREN SEMI
+			|
+			(ErrorStmt) error SEMI:l
+		   	{: parser.report_error("Izvrsen oporavak do ; u liniji " + lleft, null);  :}
+			;		
+PrintConst ::= COMMA NUM:num
+			|
+			(NoAndConstPrint) /*epsilon smena*/
+			;
+			
+Expr ::= MINUS Term:t
 		|
-		NOTEQUAL
+		Term:t
 		|
-		GREATER
-		|
-		GREATEROREQUAL
-		|
-		LESS
-		|
-		LESSOREQUAL
+		Expr:ex AddOp Term:t
 		;
-	MulOp ::= MUL | DIV | MOD;
-	AddOp ::= PLUS | MINUS;
-	Type ::= IDENT IdentList;
-	AssignOp ::= EQUAL;
+ExprMaybe ::= Expr | /* null */;
+		
+Term ::= Term:t MulOp Factor:fact 
+		|
+		(FactorNoTerm)Factor:fact
+		;
+		
+Factor ::= NUM:num
+			|
+			CHAR:ch
+			|
+			LPAREN Expr RPAREN
+			|
+			 BOOL:bl
+			|
+			Designator
+			|
+			NEW Type LBRACKET Expr RBRACKET
+			;
+DesignatorStatement ::= Designator EQUAL Expr
+						|
+						Designator INCREMENT
+						|
+						Designator DECREMENT
+						;
+
+Designator ::=  IDENT:name
+				|
+				Designator LBRACKET Expr RBRACKET
+				|
+				IDENT:nmspName COLON COLON IDENT:name
+				;
+/* MISC */
+
+Type ::= IDENT:typeName;
+Brackets ::= LBRACKET RBRACKET | (NoBrackets) /*null*/;
+AddOp ::= MINUS | PLUS;
+MulOp ::= MUL | DIV | MOD;
+RelOp ::= GREATER | LESS | GREATEROREQUAL | LESSOREQUAL | EQUAL | NOTEQUAL;

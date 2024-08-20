@@ -1,11 +1,11 @@
 // generated with ast extension for cup
 // version 0.8
-// 19/7/2024 23:37:24
+// 20/7/2024 16:25:58
 
 
 package rs.ac.bg.etf.pp1.ast;
 
-public class ErrorForms extends Formals {
+public class ErrorForms extends FormPars {
 
     public ErrorForms () {
     }
