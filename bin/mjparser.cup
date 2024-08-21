@@ -55,11 +55,10 @@ terminal Integer NUM;
 
 nonterminal Program, Declarations, MethodDeclList;
 nonterminal ConstVals;
-nonterminal VarDeclr, MoreVarDecls;
 nonterminal FormPars, FormParam, FormalParamsExist, OtherFormParamsList, VarDeclInFunction, StatementList;
 nonterminal Statement, PrintConst, DesignatorStatement, MatrixSize;
 
-nonterminal rs.etf.pp1.symboltable.concepts.Obj ProgName, MethodDeclName, MethodDecl, Designator, ConstDeclr, MoreConstVals;
+nonterminal rs.etf.pp1.symboltable.concepts.Obj ProgName, MethodDeclName, MethodDecl, Designator, ConstDeclr, MoreConstVals, VarDeclr, MoreVarDecls;
 nonterminal rs.etf.pp1.symboltable.concepts.Struct Type, Expr, Term, Factor;
 
 nonterminal AddOp, MulOp, RelOp;
@@ -88,7 +87,7 @@ MoreConstVals ::= (MoreConstValsExist) MoreConstVals COMMA IDENT:constName EQUAL
 				;
 				
 
-VarDeclr ::= (VarDeclArray) Type:arrayType IDENT:arrayName LBRACKET RBRACKET Brackets MoreVarDecls SEMI
+VarDeclr ::= (VarDeclArray) Type:arrayType IDENT:arrayName LBRACKET RBRACKET Brackets:matrixBrackets MoreVarDecls SEMI
 			|
 			(VarDeclVar) Type:varType IDENT:varName MoreVarDecls SEMI
 			|
@@ -181,7 +180,7 @@ Factor ::= (FactorNum) NUM:num
 			|
 			(FactorDesignator) Designator
 			|
-			(FactorNew) NEW Type LBRACKET Expr RBRACKET MatrixSize
+			(FactorNew) NEW Type:arrType LBRACKET Expr RBRACKET MatrixSize
 			;
 DesignatorStatement ::= (DesignatorStatementAssign) Designator EQUAL Expr
 						|

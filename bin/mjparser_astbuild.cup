@@ -57,8 +57,6 @@ nonterminal Program Program;
 nonterminal Declarations Declarations;
 nonterminal MethodDeclList MethodDeclList;
 nonterminal ConstVals ConstVals;
-nonterminal VarDeclr VarDeclr;
-nonterminal MoreVarDecls MoreVarDecls;
 nonterminal FormPars FormPars;
 nonterminal FormParam FormParam;
 nonterminal FormalParamsExist FormalParamsExist;
@@ -70,7 +68,7 @@ nonterminal PrintConst PrintConst;
 nonterminal DesignatorStatement DesignatorStatement;
 nonterminal MatrixSize MatrixSize;
 
-nonterminal rs.etf.pp1.symboltable.concepts.Obj ProgName, MethodDeclName, MethodDecl, Designator, ConstDeclr, MoreConstVals;
+nonterminal rs.etf.pp1.symboltable.concepts.Obj ProgName, MethodDeclName, MethodDecl, Designator, ConstDeclr, MoreConstVals, VarDeclr, MoreVarDecls;
 nonterminal rs.etf.pp1.symboltable.concepts.Struct Type, Expr, Term, Factor;
 
 nonterminal AddOp AddOp;
@@ -102,7 +100,7 @@ MoreConstVals ::= (MoreConstValsExist) MoreConstVals:M1 COMMA IDENT:constName EQ
 				;
 				
 
-VarDeclr ::= (VarDeclArray) Type:arrayType IDENT:arrayName LBRACKET RBRACKET Brackets:B1 MoreVarDecls:M2 SEMI {: RESULT=new VarDeclArray(arrayType, arrayName, B1, M2); RESULT.setLine(arrayTypeleft); :}
+VarDeclr ::= (VarDeclArray) Type:arrayType IDENT:arrayName LBRACKET RBRACKET Brackets:matrixBrackets MoreVarDecls:M1 SEMI {: RESULT=new VarDeclArray(arrayType, arrayName, matrixBrackets, M1); RESULT.setLine(arrayTypeleft); :}
 			|
 			(VarDeclVar) Type:varType IDENT:varName MoreVarDecls:M1 SEMI {: RESULT=new VarDeclVar(varType, varName, M1); RESULT.setLine(varTypeleft); :}
 			|
@@ -195,7 +193,7 @@ Factor ::= (FactorNum) NUM:num {: RESULT=new FactorNum(num); RESULT.setLine(numl
 			|
 			(FactorDesignator) Designator:D1 {: RESULT=new FactorDesignator(D1); RESULT.setLine(D1left); :}
 			|
-			(FactorNew) NEW Type:T1 LBRACKET Expr:E2 RBRACKET MatrixSize:M3 {: RESULT=new FactorNew(T1, E2, M3); RESULT.setLine(T1left); :}
+			(FactorNew) NEW Type:arrType LBRACKET Expr:E1 RBRACKET MatrixSize:M2 {: RESULT=new FactorNew(arrType, E1, M2); RESULT.setLine(arrTypeleft); :}
 			;
 DesignatorStatement ::= (DesignatorStatementAssign) Designator:D1 EQUAL Expr:E2 {: RESULT=new DesignatorStatementAssign(D1, E2); RESULT.setLine(D1left); :}
 						|
