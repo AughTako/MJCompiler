@@ -79,7 +79,7 @@ public class SemanticPass extends VisitorAdaptor {
     	else {
     		if(varDeclArray.getBrackets() instanceof BracketsMatrix) {
     			report_info("Deklarisana matrica " + varDeclArray.getArrayName() + " na liniji " + varDeclArray.getLine(), null);
-    			Struct innerArr = new Struct(Struct.Array, varDeclArray.getType().struct);
+    			Struct innerArr = new Struct(Struct.Array, new Struct(Struct.Array, varDeclArray.getType().struct));
     			varDeclArray.obj = Tab.insert(Obj.Var, varDeclArray.getArrayName(), innerArr);
     		}else {
     			report_info("Deklarisan niz " + varDeclArray.getArrayName() + " na liniji " + varDeclArray.getLine(), null);
