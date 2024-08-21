@@ -2,6 +2,8 @@ program MJProgram
 	int x; int y; int z[][];
 	int p[];
 {
+	int foo(int a, int b) int l; {
+	}
 
 	int k() int c;{
 		c = 2;
@@ -15,7 +17,7 @@ program MJProgram
 		x = y + 5 + 3 ;
 		x++;
 		print(2);
-
+		z = new int[3+1][2+2];
 		return 1;
 	}
 }

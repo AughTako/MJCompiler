@@ -1,0 +1,351 @@
+INFO  13:16:42,698 - Compiling source file: D:\Eclipse Work\MJCompiler\test\program.mj
+INFO  13:16:42,716 - #2 program
+INFO  13:16:42,716 - #44 MJProgram
+INFO  13:16:42,716 - #44 int
+INFO  13:16:42,716 - #44 x
+INFO  13:16:42,716 - #33 ;
+INFO  13:16:42,717 - #44 int
+INFO  13:16:42,717 - #44 y
+INFO  13:16:42,717 - #33 ;
+INFO  13:16:42,717 - #44 int
+INFO  13:16:42,717 - #44 z
+INFO  13:16:42,717 - #39 [
+INFO  13:16:42,717 - #40 ]
+INFO  13:16:42,717 - #39 [
+INFO  13:16:42,717 - #40 ]
+INFO  13:16:42,717 - #33 ;
+INFO  13:16:42,718 - #44 int
+INFO  13:16:42,718 - #44 p
+INFO  13:16:42,718 - #39 [
+INFO  13:16:42,718 - #40 ]
+INFO  13:16:42,718 - #33 ;
+INFO  13:16:42,719 - #41 {
+INFO  13:16:42,719 - #44 int
+INFO  13:16:42,719 - #44 foo
+INFO  13:16:42,720 - #37 (
+INFO  13:16:42,720 - #44 int
+INFO  13:16:42,720 - #44 a
+INFO  13:16:42,720 - #35 ,
+INFO  13:16:42,720 - #44 int
+INFO  13:16:42,720 - #44 b
+INFO  13:16:42,720 - #38 )
+INFO  13:16:42,720 - #44 int
+INFO  13:16:42,720 - #44 l
+INFO  13:16:42,721 - #33 ;
+INFO  13:16:42,721 - #41 {
+INFO  13:16:42,721 - #42 }
+INFO  13:16:42,721 - #44 int
+INFO  13:16:42,721 - #44 k
+INFO  13:16:42,721 - #37 (
+INFO  13:16:42,721 - #38 )
+INFO  13:16:42,721 - #44 int
+INFO  13:16:42,721 - #44 c
+INFO  13:16:42,721 - #33 ;
+INFO  13:16:42,722 - #41 {
+INFO  13:16:42,722 - #44 c
+INFO  13:16:42,722 - #30 =
+INFO  13:16:42,722 - #47 2
+INFO  13:16:42,722 - #33 ;
+INFO  13:16:42,722 - #11 return
+INFO  13:16:42,722 - #44 c
+INFO  13:16:42,722 - #17 +
+INFO  13:16:42,722 - #47 2
+INFO  13:16:42,723 - #33 ;
+INFO  13:16:42,723 - #42 }
+INFO  13:16:42,723 - #44 int
+INFO  13:16:42,723 - #44 main
+INFO  13:16:42,723 - #37 (
+INFO  13:16:42,723 - #38 )
+INFO  13:16:42,723 - #41 {
+INFO  13:16:42,723 - #9 print
+INFO  13:16:42,723 - #37 (
+INFO  13:16:42,723 - #47 1
+INFO  13:16:42,723 - #38 )
+INFO  13:16:42,723 - #33 ;
+INFO  13:16:42,723 - #44 x
+INFO  13:16:42,724 - #30 =
+INFO  13:16:42,724 - #44 y
+INFO  13:16:42,724 - #17 +
+INFO  13:16:42,724 - #47 5
+INFO  13:16:42,724 - #17 +
+INFO  13:16:42,724 - #47 3
+INFO  13:16:42,724 - #33 ;
+INFO  13:16:42,724 - #44 x
+INFO  13:16:42,724 - #31 ++
+INFO  13:16:42,724 - #33 ;
+INFO  13:16:42,724 - #9 print
+INFO  13:16:42,724 - #37 (
+INFO  13:16:42,724 - #47 2
+INFO  13:16:42,724 - #38 )
+INFO  13:16:42,724 - #33 ;
+INFO  13:16:42,724 - #11 return
+INFO  13:16:42,724 - #47 1
+INFO  13:16:42,724 - #33 ;
+INFO  13:16:42,724 - #42 }
+INFO  13:16:42,724 - #42 }
+INFO  13:16:42,727 - ProgramDerived1(
+  ProgNameDerived1(
+   MJProgram
+  ) [ProgNameDerived1]
+  DeclarationsDerived2(
+    DeclarationsDerived2(
+      DeclarationsDerived2(
+        DeclarationsDerived2(
+          NoDeclarations(
+          ) [NoDeclarations]
+          VarDeclVar(
+            TypeDerived1(
+             int
+            ) [TypeDerived1]
+           x
+            NoMoreVarDecls(
+            ) [NoMoreVarDecls]
+          ) [VarDeclVar]
+        ) [DeclarationsDerived2]
+        VarDeclVar(
+          TypeDerived1(
+           int
+          ) [TypeDerived1]
+         y
+          NoMoreVarDecls(
+          ) [NoMoreVarDecls]
+        ) [VarDeclVar]
+      ) [DeclarationsDerived2]
+      VarDeclArray(
+        TypeDerived1(
+         int
+        ) [TypeDerived1]
+       z
+        BracketsDerived1(
+        ) [BracketsDerived1]
+        NoMoreVarDecls(
+        ) [NoMoreVarDecls]
+      ) [VarDeclArray]
+    ) [DeclarationsDerived2]
+    VarDeclArray(
+      TypeDerived1(
+       int
+      ) [TypeDerived1]
+     p
+      NoBrackets(
+      ) [NoBrackets]
+      NoMoreVarDecls(
+      ) [NoMoreVarDecls]
+    ) [VarDeclArray]
+  ) [DeclarationsDerived2]
+  MethodDeclListDerived1(
+    MethodDeclListDerived1(
+      MethodDeclListDerived1(
+        MethodDeclListDerived2(
+        ) [MethodDeclListDerived2]
+        MethodDeclDerived1(
+          MethodDeclNameDerived2(
+            TypeDerived1(
+             int
+            ) [TypeDerived1]
+           foo
+          ) [MethodDeclNameDerived2]
+          FormParsDerived1(
+            FormParamDerived1(
+              TypeDerived1(
+               int
+              ) [TypeDerived1]
+             a
+              NoBrackets(
+              ) [NoBrackets]
+              OtherFormParamsListDerived1(
+                OtherFormParamsListDerived2(
+                ) [OtherFormParamsListDerived2]
+                FormalParamsExistDerived1(
+                  TypeDerived1(
+                   int
+                  ) [TypeDerived1]
+                 b
+                  NoBrackets(
+                  ) [NoBrackets]
+                ) [FormalParamsExistDerived1]
+              ) [OtherFormParamsListDerived1]
+            ) [FormParamDerived1]
+          ) [FormParsDerived1]
+          VarDeclInFunctionDerived2(
+            NoVarDeclInFunction(
+            ) [NoVarDeclInFunction]
+            TypeDerived1(
+             int
+            ) [TypeDerived1]
+           l
+          ) [VarDeclInFunctionDerived2]
+          NoStmtList(
+          ) [NoStmtList]
+        ) [MethodDeclDerived1]
+      ) [MethodDeclListDerived1]
+      MethodDeclDerived1(
+        MethodDeclNameDerived2(
+          TypeDerived1(
+           int
+          ) [TypeDerived1]
+         k
+        ) [MethodDeclNameDerived2]
+        NoFormPars(
+        ) [NoFormPars]
+        VarDeclInFunctionDerived2(
+          NoVarDeclInFunction(
+          ) [NoVarDeclInFunction]
+          TypeDerived1(
+           int
+          ) [TypeDerived1]
+         c
+        ) [VarDeclInFunctionDerived2]
+        StatementListDerived1(
+          StatementListDerived1(
+            NoStmtList(
+            ) [NoStmtList]
+            StatementDerived1(
+              DesignatorStatementDerived1(
+                DesignatorDerived1(
+                 c
+                ) [DesignatorDerived1]
+                ExprDerived2(
+                  FactorNoTerm(
+                    FactorDerived1(
+                     2
+                    ) [FactorDerived1]
+                  ) [FactorNoTerm]
+                ) [ExprDerived2]
+              ) [DesignatorStatementDerived1]
+            ) [StatementDerived1]
+          ) [StatementListDerived1]
+          StatementDerived3(
+            ExprMaybeDerived1(
+              ExprDerived3(
+                ExprDerived2(
+                  FactorNoTerm(
+                    FactorDerived5(
+                      DesignatorDerived1(
+                       c
+                      ) [DesignatorDerived1]
+                    ) [FactorDerived5]
+                  ) [FactorNoTerm]
+                ) [ExprDerived2]
+                AddOpDerived2(
+                ) [AddOpDerived2]
+                FactorNoTerm(
+                  FactorDerived1(
+                   2
+                  ) [FactorDerived1]
+                ) [FactorNoTerm]
+              ) [ExprDerived3]
+            ) [ExprMaybeDerived1]
+          ) [StatementDerived3]
+        ) [StatementListDerived1]
+      ) [MethodDeclDerived1]
+    ) [MethodDeclListDerived1]
+    MethodDeclDerived1(
+      MethodDeclNameDerived2(
+        TypeDerived1(
+         int
+        ) [TypeDerived1]
+       main
+      ) [MethodDeclNameDerived2]
+      NoFormPars(
+      ) [NoFormPars]
+      NoVarDeclInFunction(
+      ) [NoVarDeclInFunction]
+      StatementListDerived1(
+        StatementListDerived1(
+          StatementListDerived1(
+            StatementListDerived1(
+              StatementListDerived1(
+                NoStmtList(
+                ) [NoStmtList]
+                PrintStmt(
+                  ExprDerived2(
+                    FactorNoTerm(
+                      FactorDerived1(
+                       1
+                      ) [FactorDerived1]
+                    ) [FactorNoTerm]
+                  ) [ExprDerived2]
+                  NoAndConstPrint(
+                  ) [NoAndConstPrint]
+                ) [PrintStmt]
+              ) [StatementListDerived1]
+              StatementDerived1(
+                DesignatorStatementDerived1(
+                  DesignatorDerived1(
+                   x
+                  ) [DesignatorDerived1]
+                  ExprDerived3(
+                    ExprDerived3(
+                      ExprDerived2(
+                        FactorNoTerm(
+                          FactorDerived5(
+                            DesignatorDerived1(
+                             y
+                            ) [DesignatorDerived1]
+                          ) [FactorDerived5]
+                        ) [FactorNoTerm]
+                      ) [ExprDerived2]
+                      AddOpDerived2(
+                      ) [AddOpDerived2]
+                      FactorNoTerm(
+                        FactorDerived1(
+                         5
+                        ) [FactorDerived1]
+                      ) [FactorNoTerm]
+                    ) [ExprDerived3]
+                    AddOpDerived2(
+                    ) [AddOpDerived2]
+                    FactorNoTerm(
+                      FactorDerived1(
+                       3
+                      ) [FactorDerived1]
+                    ) [FactorNoTerm]
+                  ) [ExprDerived3]
+                ) [DesignatorStatementDerived1]
+              ) [StatementDerived1]
+            ) [StatementListDerived1]
+            StatementDerived1(
+              DesignatorStatementDerived2(
+                DesignatorDerived1(
+                 x
+                ) [DesignatorDerived1]
+              ) [DesignatorStatementDerived2]
+            ) [StatementDerived1]
+          ) [StatementListDerived1]
+          PrintStmt(
+            ExprDerived2(
+              FactorNoTerm(
+                FactorDerived1(
+                 2
+                ) [FactorDerived1]
+              ) [FactorNoTerm]
+            ) [ExprDerived2]
+            NoAndConstPrint(
+            ) [NoAndConstPrint]
+          ) [PrintStmt]
+        ) [StatementListDerived1]
+        StatementDerived3(
+          ExprMaybeDerived1(
+            ExprDerived2(
+              FactorNoTerm(
+                FactorDerived1(
+                 1
+                ) [FactorDerived1]
+              ) [FactorNoTerm]
+            ) [ExprDerived2]
+          ) [ExprMaybeDerived1]
+        ) [StatementDerived3]
+      ) [StatementListDerived1]
+    ) [MethodDeclDerived1]
+  ) [MethodDeclListDerived1]
+) [ProgramDerived1]
+INFO  13:16:42,727 - ===================================
+INFO  13:16:42,728 - Deklarisana promenljiva x na liniji 2
+INFO  13:16:42,728 - Deklarisana promenljiva y na liniji 2
+INFO  13:16:42,728 - Deklarisan niz z na liniji 2
+INFO  13:16:42,728 - Deklarisan niz p na liniji 3
+INFO  13:16:42,728 -  Print count calls = 2
+INFO  13:16:42,728 -  Deklarisanih promenljivih ima = 4
+INFO  13:16:42,728 - ===================================
+INFO  13:16:42,729 - Parsiranje uspesno zavrseno!

@@ -7,16 +7,23 @@ import rs.etf.pp1.symboltable.*;
 import rs.etf.pp1.symboltable.concepts.*;
 
 public class SemanticPass extends VisitorAdaptor {
-
 	int printCallCount = 0;
 	int varDeclCount = 0;
+	int constDeclCount = 0;
+	Struct currentTypeForVarOrConstDecl = null;
 	Obj currentMethod = null;
-	boolean returnFound = false;
-	boolean errorDetected = false;
+	Obj currentNamespace = null;
 	int nVars;
 	
+	boolean returnFound = false;
+	boolean errorDetected = false;
+	
 	Logger log = Logger.getLogger(getClass());
-
+	
+    public boolean passed(){
+    	return !errorDetected;
+    }
+	
 	public void report_error(String message, SyntaxNode info) {
 		errorDetected = true;
 		StringBuilder msg = new StringBuilder(message);
@@ -34,24 +41,15 @@ public class SemanticPass extends VisitorAdaptor {
 		log.info(msg.toString());
 	}
 	
-    public void visit(PrintStmt print) {
-		printCallCount++;
-	}
+    public void visit(Program program) { 
+    	nVars = Tab.currentScope.getnVars();
+    	Tab.chainLocalSymbols(program.getProgName().obj);
+    	Tab.closeScope();
+    }
     
-	public void visit(VarDeclVar varDecl){
-		varDeclCount++;
-		report_info("Deklarisana promenljiva "+ varDecl.getVarName(), varDecl);
-		
-	}
-	
-	public void visit(VarDeclArray varDecl){
-		varDeclCount++;
-		report_info("Deklarisan niz "+ varDecl.getArrayName(), varDecl);
-		
-	}
-    
-    public boolean passed(){
-    	return !errorDetected;
+    public void visit(ProgName progName) {
+    	progName.obj = Tab.insert(Obj.Prog, progName.getProgName(), Tab.noType);
+    	Tab.openScope();
     }
     
 }

@@ -53,25 +53,36 @@ terminal Integer NUM;
 
 /* PROGRAM & DECLARATIONS*/
 
-nonterminal Program, ProgName, Declarations, MethodDeclList;
-nonterminal ConstDeclr, ConstVals, MoreConstVals;
+nonterminal Program, Declarations, MethodDeclList;
+nonterminal ConstVals;
 nonterminal VarDeclr, MoreVarDecls;
-nonterminal MethodDecl, MethodDeclName, FormPars, FormParam, FormalParamsExist, OtherFormParamsList, VarDeclInFunction, StatementList;
-nonterminal Statement, PrintConst, DesignatorStatement, Designator, Expr, Term, Factor;
+nonterminal FormPars, FormParam, FormalParamsExist, OtherFormParamsList, VarDeclInFunction, StatementList;
+nonterminal Statement, PrintConst, DesignatorStatement, MatrixSize;
+
+nonterminal rs.etf.pp1.symboltable.concepts.Obj ProgName, MethodDeclName, MethodDecl, Designator, ConstDeclr, MoreConstVals;
+nonterminal rs.etf.pp1.symboltable.concepts.Struct Type, Expr, Term, Factor;
 
 nonterminal AddOp, MulOp, RelOp;
-nonterminal Type, Brackets, ExprMaybe;
+nonterminal Brackets, ExprMaybe;
 
-Program ::= PROG ProgName:p Declarations LBRACE MethodDeclList RBRACE;
-ProgName ::= IDENT:progName;
+Program ::= (Program) PROG ProgName:p Declarations LBRACE MethodDeclList RBRACE;
+ProgName ::= (ProgName) IDENT:progName;
 
-Declarations ::= Declarations ConstDeclr
-				 | Declarations VarDeclr
-				 | (NoDeclarations) /* null */
+Declarations ::= (ConstDeclarations) Declarations ConstDeclr
+				 | 
+				 (VarDeclarations) Declarations VarDeclr
+				 | 
+				 (NoDeclarations) /* null */
 				 ;
-ConstDeclr ::= CONST Type:constType IDENT:constName EQUAL ConstVals MoreConstVals SEMI;
-ConstVals ::= NUM:numVal | CHAR:charVal | BOOL:boolVal;
-MoreConstVals ::= MoreConstVals COMMA IDENT:constName EQUAL ConstVals
+ConstDeclr ::= (ConstDeclr) CONST Type:constType IDENT:constName EQUAL ConstVals MoreConstVals SEMI;
+
+ConstVals ::= (ConstNum) NUM:numVal 
+			| 
+			(ConstChar) CHAR:charVal 
+			| 
+			(ConstBool) BOOL:boolVal;
+
+MoreConstVals ::= (MoreConstValsExist) MoreConstVals COMMA IDENT:constName EQUAL ConstVals
 				|
 				(NoMoreConstVals) /* null */
 				;
@@ -84,106 +95,112 @@ VarDeclr ::= (VarDeclArray) Type:arrayType IDENT:arrayName LBRACKET RBRACKET Bra
 			(ErrorStmtVar) error SEMI:l
 		   	{: parser.report_error("Izvrsen oporavak do ; u liniji " + lleft, null);  :}
 			;
-MoreVarDecls ::= MoreVarDecls COMMA IDENT:arrayName LBRACKET RBRACKET Brackets
+MoreVarDecls ::= (MoreVarDeclsArray) MoreVarDecls COMMA IDENT:arrayName LBRACKET RBRACKET Brackets
 			|
-			MoreVarDecls COMMA IDENT:varName
+			(MoreVarDeclsVars) MoreVarDecls COMMA IDENT:varName
 			|
 			(NoMoreVarDecls) /* null */
 			;		
 			
-MethodDeclList ::= MethodDeclList MethodDecl 
-				| /* null */
+MethodDeclList ::= (MethodDeclListExist) MethodDeclList MethodDecl 
+				| 
+				(NoMethodDeclList) /* null */
 				;
-MethodDecl ::= MethodDeclName LPAREN FormPars RPAREN VarDeclInFunction LBRACE StatementList RBRACE;
-MethodDeclName ::= VOID IDENT:methodName
+MethodDecl ::= (MethodDecl) MethodDeclName LPAREN FormPars RPAREN VarDeclInFunction LBRACE StatementList RBRACE;
+MethodDeclName ::= (MethodDeclNameVOID) VOID IDENT:methodName
 				|
-				Type:methodType IDENT:methodName
+				(MethodDeclNameType) Type:methodType IDENT:methodName
 				;
-FormPars ::= FormParam
+FormPars ::= (FormParsExist) FormParam
 			|
 			(ErrorForms) error:l
 				{:parser.report_error("Izvrsen oporavak do ) ",null); :}
 			|
 			(NoFormPars) /* null */
 			;
-FormParam ::= Type:type IDENT:name Brackets OtherFormParamsList;
-OtherFormParamsList ::= OtherFormParamsList FormalParamsExist
+FormParam ::= (FormParam) Type:type IDENT:name Brackets OtherFormParamsList;
+OtherFormParamsList ::= (OtherFormParamsListExist) OtherFormParamsList FormalParamsExist
 					|
 					(ErrorFormsPList) error:l
 					{:parser.report_error("Izvrsen oporavak do ) ",null); :}
 					|
-					/* null */
+					(NoOtherFormParamsList) /* null */
 					;
-FormalParamsExist ::= COMMA Type IDENT Brackets;
-VarDeclInFunction ::= VarDeclInFunction Type:arrayType IDENT:arrName LBRACKET RBRACKET SEMI
+FormalParamsExist ::= (FormalParamsExist) COMMA Type IDENT Brackets;
+VarDeclInFunction ::= (VarDeclInFunctionArray) VarDeclInFunction Type:arrayType IDENT:arrName LBRACKET RBRACKET SEMI
 					|
-					VarDeclInFunction Type:varType IDENT:varName SEMI
+					(VarDeclInFunctionVars) VarDeclInFunction Type:varType IDENT:varName SEMI
 					|
 					(NoVarDeclInFunction) /* null */
 					;
-StatementList ::= StatementList Statement
+StatementList ::= (StatementListExists) StatementList Statement
 				|
-				(NoStmtList)/*epsilon smena*/
+				(NoStmtList) /* null */
 				;
 
-Statement ::= DesignatorStatement SEMI 
+Statement ::= (StatementDesignatorStatement) DesignatorStatement SEMI 
 			|
-			READ LPAREN Designator RPAREN SEMI 
+			(StatementBreak) BREAK SEMI
 			|
-			RETURN ExprMaybe SEMI
+			(StatementContinue) CONTINUE SEMI
 			|
-			(PrintStmt) PRINT LPAREN Expr PrintConst RPAREN SEMI
+			(StatementRead) READ LPAREN Designator RPAREN SEMI 
+			|
+			(StatementReturn) RETURN ExprMaybe SEMI
+			|
+			(StatementPrint) PRINT LPAREN Expr PrintConst RPAREN SEMI
 			|
 			(ErrorStmt) error SEMI:l
 		   	{: parser.report_error("Izvrsen oporavak do ; u liniji " + lleft, null);  :}
 			;		
-PrintConst ::= COMMA NUM:num
+PrintConst ::= (PrintConstExists) COMMA NUM:num
 			|
 			(NoAndConstPrint) /*epsilon smena*/
 			;
 			
-Expr ::= MINUS Term:t
+Expr ::= (ExprMinus) MINUS Term:t
 		|
-		Term:t
+		(ExprTerm) Term:t
 		|
-		Expr:ex AddOp Term:t
+		(ExprAddopTerm) Expr:ex AddOp Term:t
 		;
-ExprMaybe ::= Expr | /* null */;
+ExprMaybe ::= (ExprMaybeYes) Expr | (ExprMaybeNo) /* null */;
 		
-Term ::= Term:t MulOp Factor:fact 
+Term ::=(TermMulOpFactor) Term:t MulOp Factor:fact 
 		|
 		(FactorNoTerm)Factor:fact
 		;
 		
-Factor ::= NUM:num
+Factor ::= (FactorNum) NUM:num
 			|
-			CHAR:ch
+			(FactorChar) CHAR:ch
 			|
-			LPAREN Expr RPAREN
+			(FactorExpr) LPAREN Expr RPAREN
 			|
-			 BOOL:bl
+			(FactorBool) BOOL:bl
 			|
-			Designator
+			(FactorDesignator) Designator
 			|
-			NEW Type LBRACKET Expr RBRACKET
+			(FactorNew) NEW Type LBRACKET Expr RBRACKET MatrixSize
 			;
-DesignatorStatement ::= Designator EQUAL Expr
+DesignatorStatement ::= (DesignatorStatementAssign) Designator EQUAL Expr
 						|
-						Designator INCREMENT
+						(DesignatorStatementInc) Designator INCREMENT
 						|
-						Designator DECREMENT
+						(DesignatorStatementDec) Designator DECREMENT
 						;
 
-Designator ::=  IDENT:name
+Designator ::=  (DesignatorIdent) IDENT:name
 				|
-				Designator LBRACKET Expr RBRACKET
+				(DesignatorArray) Designator LBRACKET Expr RBRACKET
 				|
-				IDENT:nmspName COLON COLON IDENT:name
+				(DesignatorNmsp) IDENT:nmspName COLON COLON IDENT:name
 				;
 /* MISC */
 
-Type ::= IDENT:typeName;
-Brackets ::= LBRACKET RBRACKET | (NoBrackets) /*null*/;
-AddOp ::= MINUS | PLUS;
-MulOp ::= MUL | DIV | MOD;
-RelOp ::= GREATER | LESS | GREATEROREQUAL | LESSOREQUAL | EQUAL | NOTEQUAL;
+Type ::= (Type) IDENT:typeName;
+Brackets ::= (BracketsMatrix) LBRACKET RBRACKET | (NoBrackets) /*null*/;
+MatrixSize ::= (MatrixSizeYes) LBRACKET Expr RBRACKET | (MatrixSizeNo) /* null */;
+AddOp ::= (AddOpMinus) MINUS:minus | (AddOpPlus) PLUS:plus;
+MulOp ::= (MulOpMul) MUL:mul | (MulOpDiv) DIV:div | (MulOpMod) MOD:mod;
+RelOp ::= (RelOpG) GREATER | (RelOpL) LESS | (RelOpGE)GREATEROREQUAL | (RelOpLE) LESSOREQUAL | (RelOpE) EQUAL | (RelOpNE) NOTEQUAL;

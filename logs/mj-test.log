@@ -1,295 +1,418 @@
-INFO  16:28:29,131 - Compiling source file: D:\Eclipse Work\MJCompiler\test\program.mj
-INFO  16:28:29,144 - #2 program
-INFO  16:28:29,144 - #44 MJProgram
-INFO  16:28:29,144 - #44 int
-INFO  16:28:29,144 - #44 x
-INFO  16:28:29,144 - #33 ;
-INFO  16:28:29,145 - #44 int
-INFO  16:28:29,145 - #44 y
-INFO  16:28:29,145 - #33 ;
-INFO  16:28:29,145 - #44 int
-INFO  16:28:29,145 - #44 z
-INFO  16:28:29,145 - #39 [
-INFO  16:28:29,145 - #40 ]
-INFO  16:28:29,145 - #39 [
-INFO  16:28:29,145 - #40 ]
-INFO  16:28:29,145 - #33 ;
-INFO  16:28:29,146 - #44 int
-INFO  16:28:29,146 - #44 p
-INFO  16:28:29,146 - #39 [
-INFO  16:28:29,146 - #40 ]
-INFO  16:28:29,146 - #33 ;
-INFO  16:28:29,146 - #41 {
-INFO  16:28:29,146 - #44 int
-INFO  16:28:29,146 - #44 k
-INFO  16:28:29,147 - #37 (
-INFO  16:28:29,147 - #38 )
-INFO  16:28:29,147 - #44 int
-INFO  16:28:29,147 - #44 c
-INFO  16:28:29,147 - #33 ;
-INFO  16:28:29,147 - #41 {
-INFO  16:28:29,147 - #44 c
-INFO  16:28:29,148 - #30 =
-INFO  16:28:29,148 - #47 2
-INFO  16:28:29,148 - #33 ;
-INFO  16:28:29,148 - #11 return
-INFO  16:28:29,148 - #44 c
-INFO  16:28:29,148 - #17 +
-INFO  16:28:29,148 - #47 2
-INFO  16:28:29,149 - #33 ;
-INFO  16:28:29,149 - #42 }
-INFO  16:28:29,149 - #44 int
-INFO  16:28:29,149 - #44 main
-INFO  16:28:29,149 - #37 (
-INFO  16:28:29,149 - #38 )
-INFO  16:28:29,149 - #41 {
-INFO  16:28:29,149 - #9 print
-INFO  16:28:29,149 - #37 (
-INFO  16:28:29,149 - #47 1
-INFO  16:28:29,149 - #38 )
-INFO  16:28:29,150 - #33 ;
-INFO  16:28:29,150 - #44 x
-INFO  16:28:29,150 - #30 =
-INFO  16:28:29,150 - #44 y
-INFO  16:28:29,150 - #17 +
-INFO  16:28:29,150 - #47 5
-INFO  16:28:29,150 - #17 +
-INFO  16:28:29,150 - #47 3
-INFO  16:28:29,150 - #33 ;
-INFO  16:28:29,150 - #44 x
-INFO  16:28:29,150 - #31 ++
-INFO  16:28:29,150 - #33 ;
-INFO  16:28:29,150 - #9 print
-INFO  16:28:29,150 - #37 (
-INFO  16:28:29,150 - #47 2
-INFO  16:28:29,150 - #38 )
-INFO  16:28:29,150 - #33 ;
-INFO  16:28:29,150 - #11 return
-INFO  16:28:29,150 - #47 1
-INFO  16:28:29,151 - #33 ;
-INFO  16:28:29,151 - #42 }
-INFO  16:28:29,151 - #42 }
-INFO  16:28:29,153 - ProgramDerived1(
-  ProgNameDerived1(
+INFO  16:30:53,086 - Compiling source file: D:\Eclipse Work\MJCompiler\test\program.mj
+INFO  16:30:53,400 - #2 program
+INFO  16:30:53,400 - #44 MJProgram
+INFO  16:30:53,400 - #44 int
+INFO  16:30:53,410 - #44 x
+INFO  16:30:53,415 - #33 ;
+INFO  16:30:53,419 - #44 int
+INFO  16:30:53,419 - #44 y
+INFO  16:30:53,419 - #33 ;
+INFO  16:30:53,419 - #44 int
+INFO  16:30:53,419 - #44 z
+INFO  16:30:53,419 - #39 [
+INFO  16:30:53,420 - #40 ]
+INFO  16:30:53,420 - #39 [
+INFO  16:30:53,420 - #40 ]
+INFO  16:30:53,420 - #33 ;
+INFO  16:30:53,429 - #44 int
+INFO  16:30:53,429 - #44 p
+INFO  16:30:53,429 - #39 [
+INFO  16:30:53,429 - #40 ]
+INFO  16:30:53,429 - #33 ;
+INFO  16:30:53,434 - #41 {
+INFO  16:30:53,434 - #44 int
+INFO  16:30:53,439 - #44 foo
+INFO  16:30:53,439 - #37 (
+INFO  16:30:53,439 - #44 int
+INFO  16:30:53,439 - #44 a
+INFO  16:30:53,440 - #35 ,
+INFO  16:30:53,444 - #44 int
+INFO  16:30:53,444 - #44 b
+INFO  16:30:53,444 - #38 )
+INFO  16:30:53,456 - #44 int
+INFO  16:30:53,461 - #44 l
+INFO  16:30:53,462 - #33 ;
+INFO  16:30:53,462 - #41 {
+INFO  16:30:53,462 - #42 }
+INFO  16:30:53,466 - #44 int
+INFO  16:30:53,473 - #44 k
+INFO  16:30:53,473 - #37 (
+INFO  16:30:53,473 - #38 )
+INFO  16:30:53,478 - #44 int
+INFO  16:30:53,478 - #44 c
+INFO  16:30:53,478 - #33 ;
+INFO  16:30:53,478 - #41 {
+INFO  16:30:53,478 - #44 c
+INFO  16:30:53,478 - #30 =
+INFO  16:30:53,478 - #47 2
+INFO  16:30:53,478 - #33 ;
+INFO  16:30:53,479 - #11 return
+INFO  16:30:53,479 - #44 c
+INFO  16:30:53,479 - #17 +
+INFO  16:30:53,479 - #47 2
+INFO  16:30:53,489 - #33 ;
+INFO  16:30:53,489 - #42 }
+INFO  16:30:53,489 - #44 int
+INFO  16:30:53,489 - #44 main
+INFO  16:30:53,489 - #37 (
+INFO  16:30:53,489 - #38 )
+INFO  16:30:53,489 - #41 {
+INFO  16:30:53,489 - #9 print
+INFO  16:30:53,489 - #37 (
+INFO  16:30:53,489 - #47 1
+INFO  16:30:53,489 - #38 )
+INFO  16:30:53,493 - #33 ;
+INFO  16:30:53,493 - #44 x
+INFO  16:30:53,494 - #30 =
+INFO  16:30:53,494 - #44 y
+INFO  16:30:53,494 - #17 +
+INFO  16:30:53,494 - #47 5
+INFO  16:30:53,494 - #17 +
+INFO  16:30:53,494 - #47 3
+INFO  16:30:53,494 - #33 ;
+INFO  16:30:53,494 - #44 x
+INFO  16:30:53,494 - #31 ++
+INFO  16:30:53,494 - #33 ;
+INFO  16:30:53,494 - #9 print
+INFO  16:30:53,494 - #37 (
+INFO  16:30:53,494 - #47 2
+INFO  16:30:53,494 - #38 )
+INFO  16:30:53,494 - #33 ;
+INFO  16:30:53,494 - #44 z
+INFO  16:30:53,494 - #30 =
+INFO  16:30:53,494 - #8 new
+INFO  16:30:53,494 - #44 int
+INFO  16:30:53,494 - #39 [
+INFO  16:30:53,495 - #47 3
+INFO  16:30:53,495 - #17 +
+INFO  16:30:53,495 - #47 1
+INFO  16:30:53,495 - #40 ]
+INFO  16:30:53,495 - #39 [
+INFO  16:30:53,495 - #47 2
+INFO  16:30:53,495 - #17 +
+INFO  16:30:53,495 - #47 2
+INFO  16:30:53,495 - #40 ]
+INFO  16:30:53,495 - #33 ;
+INFO  16:30:53,495 - #11 return
+INFO  16:30:53,495 - #47 1
+INFO  16:30:53,495 - #33 ;
+INFO  16:30:53,495 - #42 }
+INFO  16:30:53,495 - #42 }
+INFO  16:30:53,504 - Program(
+  ProgName(
    MJProgram
-  ) [ProgNameDerived1]
-  DeclarationsDerived2(
-    DeclarationsDerived2(
-      DeclarationsDerived2(
-        DeclarationsDerived2(
+  ) [ProgName]
+  VarDeclarations(
+    VarDeclarations(
+      VarDeclarations(
+        VarDeclarations(
           NoDeclarations(
           ) [NoDeclarations]
           VarDeclVar(
-            TypeDerived1(
+            Type(
              int
-            ) [TypeDerived1]
+            ) [Type]
            x
             NoMoreVarDecls(
             ) [NoMoreVarDecls]
           ) [VarDeclVar]
-        ) [DeclarationsDerived2]
+        ) [VarDeclarations]
         VarDeclVar(
-          TypeDerived1(
+          Type(
            int
-          ) [TypeDerived1]
+          ) [Type]
          y
           NoMoreVarDecls(
           ) [NoMoreVarDecls]
         ) [VarDeclVar]
-      ) [DeclarationsDerived2]
+      ) [VarDeclarations]
       VarDeclArray(
-        TypeDerived1(
+        Type(
          int
-        ) [TypeDerived1]
+        ) [Type]
        z
-        BracketsDerived1(
-        ) [BracketsDerived1]
+        BracketsMatrix(
+        ) [BracketsMatrix]
         NoMoreVarDecls(
         ) [NoMoreVarDecls]
       ) [VarDeclArray]
-    ) [DeclarationsDerived2]
+    ) [VarDeclarations]
     VarDeclArray(
-      TypeDerived1(
+      Type(
        int
-      ) [TypeDerived1]
+      ) [Type]
      p
       NoBrackets(
       ) [NoBrackets]
       NoMoreVarDecls(
       ) [NoMoreVarDecls]
     ) [VarDeclArray]
-  ) [DeclarationsDerived2]
-  MethodDeclListDerived1(
-    MethodDeclListDerived1(
-      MethodDeclListDerived2(
-      ) [MethodDeclListDerived2]
-      MethodDeclDerived1(
-        MethodDeclNameDerived2(
-          TypeDerived1(
+  ) [VarDeclarations]
+  MethodDeclListExist(
+    MethodDeclListExist(
+      MethodDeclListExist(
+        NoMethodDeclList(
+        ) [NoMethodDeclList]
+        MethodDecl(
+          MethodDeclNameType(
+            Type(
+             int
+            ) [Type]
+           foo
+          ) [MethodDeclNameType]
+          FormParsExist(
+            FormParam(
+              Type(
+               int
+              ) [Type]
+             a
+              NoBrackets(
+              ) [NoBrackets]
+              OtherFormParamsListExist(
+                NoOtherFormParamsList(
+                ) [NoOtherFormParamsList]
+                FormalParamsExist(
+                  Type(
+                   int
+                  ) [Type]
+                 b
+                  NoBrackets(
+                  ) [NoBrackets]
+                ) [FormalParamsExist]
+              ) [OtherFormParamsListExist]
+            ) [FormParam]
+          ) [FormParsExist]
+          VarDeclInFunctionVars(
+            NoVarDeclInFunction(
+            ) [NoVarDeclInFunction]
+            Type(
+             int
+            ) [Type]
+           l
+          ) [VarDeclInFunctionVars]
+          NoStmtList(
+          ) [NoStmtList]
+        ) [MethodDecl]
+      ) [MethodDeclListExist]
+      MethodDecl(
+        MethodDeclNameType(
+          Type(
            int
-          ) [TypeDerived1]
+          ) [Type]
          k
-        ) [MethodDeclNameDerived2]
+        ) [MethodDeclNameType]
         NoFormPars(
         ) [NoFormPars]
-        VarDeclInFunctionDerived2(
+        VarDeclInFunctionVars(
           NoVarDeclInFunction(
           ) [NoVarDeclInFunction]
-          TypeDerived1(
+          Type(
            int
-          ) [TypeDerived1]
+          ) [Type]
          c
-        ) [VarDeclInFunctionDerived2]
-        StatementListDerived1(
-          StatementListDerived1(
+        ) [VarDeclInFunctionVars]
+        StatementListExists(
+          StatementListExists(
             NoStmtList(
             ) [NoStmtList]
-            StatementDerived1(
-              DesignatorStatementDerived1(
-                DesignatorDerived1(
+            StatementDesignatorStatement(
+              DesignatorStatementAssign(
+                DesignatorIdent(
                  c
-                ) [DesignatorDerived1]
-                ExprDerived2(
+                ) [DesignatorIdent]
+                ExprTerm(
                   FactorNoTerm(
-                    FactorDerived1(
+                    FactorNum(
                      2
-                    ) [FactorDerived1]
+                    ) [FactorNum]
                   ) [FactorNoTerm]
-                ) [ExprDerived2]
-              ) [DesignatorStatementDerived1]
-            ) [StatementDerived1]
-          ) [StatementListDerived1]
-          StatementDerived3(
-            ExprMaybeDerived1(
-              ExprDerived3(
-                ExprDerived2(
+                ) [ExprTerm]
+              ) [DesignatorStatementAssign]
+            ) [StatementDesignatorStatement]
+          ) [StatementListExists]
+          StatementReturn(
+            ExprMaybeYes(
+              ExprAddopTerm(
+                ExprTerm(
                   FactorNoTerm(
-                    FactorDerived5(
-                      DesignatorDerived1(
+                    FactorDesignator(
+                      DesignatorIdent(
                        c
-                      ) [DesignatorDerived1]
-                    ) [FactorDerived5]
+                      ) [DesignatorIdent]
+                    ) [FactorDesignator]
                   ) [FactorNoTerm]
-                ) [ExprDerived2]
-                AddOpDerived2(
-                ) [AddOpDerived2]
+                ) [ExprTerm]
+                AddOpPlus(
+                ) [AddOpPlus]
                 FactorNoTerm(
-                  FactorDerived1(
+                  FactorNum(
                    2
-                  ) [FactorDerived1]
+                  ) [FactorNum]
                 ) [FactorNoTerm]
-              ) [ExprDerived3]
-            ) [ExprMaybeDerived1]
-          ) [StatementDerived3]
-        ) [StatementListDerived1]
-      ) [MethodDeclDerived1]
-    ) [MethodDeclListDerived1]
-    MethodDeclDerived1(
-      MethodDeclNameDerived2(
-        TypeDerived1(
+              ) [ExprAddopTerm]
+            ) [ExprMaybeYes]
+          ) [StatementReturn]
+        ) [StatementListExists]
+      ) [MethodDecl]
+    ) [MethodDeclListExist]
+    MethodDecl(
+      MethodDeclNameType(
+        Type(
          int
-        ) [TypeDerived1]
+        ) [Type]
        main
-      ) [MethodDeclNameDerived2]
+      ) [MethodDeclNameType]
       NoFormPars(
       ) [NoFormPars]
       NoVarDeclInFunction(
       ) [NoVarDeclInFunction]
-      StatementListDerived1(
-        StatementListDerived1(
-          StatementListDerived1(
-            StatementListDerived1(
-              StatementListDerived1(
-                NoStmtList(
-                ) [NoStmtList]
-                PrintStmt(
-                  ExprDerived2(
-                    FactorNoTerm(
-                      FactorDerived1(
-                       1
-                      ) [FactorDerived1]
-                    ) [FactorNoTerm]
-                  ) [ExprDerived2]
-                  NoAndConstPrint(
-                  ) [NoAndConstPrint]
-                ) [PrintStmt]
-              ) [StatementListDerived1]
-              StatementDerived1(
-                DesignatorStatementDerived1(
-                  DesignatorDerived1(
-                   x
-                  ) [DesignatorDerived1]
-                  ExprDerived3(
-                    ExprDerived3(
-                      ExprDerived2(
-                        FactorNoTerm(
-                          FactorDerived5(
-                            DesignatorDerived1(
-                             y
-                            ) [DesignatorDerived1]
-                          ) [FactorDerived5]
-                        ) [FactorNoTerm]
-                      ) [ExprDerived2]
-                      AddOpDerived2(
-                      ) [AddOpDerived2]
+      StatementListExists(
+        StatementListExists(
+          StatementListExists(
+            StatementListExists(
+              StatementListExists(
+                StatementListExists(
+                  NoStmtList(
+                  ) [NoStmtList]
+                  StatementPrint(
+                    ExprTerm(
                       FactorNoTerm(
-                        FactorDerived1(
-                         5
-                        ) [FactorDerived1]
+                        FactorNum(
+                         1
+                        ) [FactorNum]
                       ) [FactorNoTerm]
-                    ) [ExprDerived3]
-                    AddOpDerived2(
-                    ) [AddOpDerived2]
-                    FactorNoTerm(
-                      FactorDerived1(
-                       3
-                      ) [FactorDerived1]
-                    ) [FactorNoTerm]
-                  ) [ExprDerived3]
-                ) [DesignatorStatementDerived1]
-              ) [StatementDerived1]
-            ) [StatementListDerived1]
-            StatementDerived1(
-              DesignatorStatementDerived2(
-                DesignatorDerived1(
-                 x
-                ) [DesignatorDerived1]
-              ) [DesignatorStatementDerived2]
-            ) [StatementDerived1]
-          ) [StatementListDerived1]
-          PrintStmt(
-            ExprDerived2(
+                    ) [ExprTerm]
+                    NoAndConstPrint(
+                    ) [NoAndConstPrint]
+                  ) [StatementPrint]
+                ) [StatementListExists]
+                StatementDesignatorStatement(
+                  DesignatorStatementAssign(
+                    DesignatorIdent(
+                     x
+                    ) [DesignatorIdent]
+                    ExprAddopTerm(
+                      ExprAddopTerm(
+                        ExprTerm(
+                          FactorNoTerm(
+                            FactorDesignator(
+                              DesignatorIdent(
+                               y
+                              ) [DesignatorIdent]
+                            ) [FactorDesignator]
+                          ) [FactorNoTerm]
+                        ) [ExprTerm]
+                        AddOpPlus(
+                        ) [AddOpPlus]
+                        FactorNoTerm(
+                          FactorNum(
+                           5
+                          ) [FactorNum]
+                        ) [FactorNoTerm]
+                      ) [ExprAddopTerm]
+                      AddOpPlus(
+                      ) [AddOpPlus]
+                      FactorNoTerm(
+                        FactorNum(
+                         3
+                        ) [FactorNum]
+                      ) [FactorNoTerm]
+                    ) [ExprAddopTerm]
+                  ) [DesignatorStatementAssign]
+                ) [StatementDesignatorStatement]
+              ) [StatementListExists]
+              StatementDesignatorStatement(
+                DesignatorStatementInc(
+                  DesignatorIdent(
+                   x
+                  ) [DesignatorIdent]
+                ) [DesignatorStatementInc]
+              ) [StatementDesignatorStatement]
+            ) [StatementListExists]
+            StatementPrint(
+              ExprTerm(
+                FactorNoTerm(
+                  FactorNum(
+                   2
+                  ) [FactorNum]
+                ) [FactorNoTerm]
+              ) [ExprTerm]
+              NoAndConstPrint(
+              ) [NoAndConstPrint]
+            ) [StatementPrint]
+          ) [StatementListExists]
+          StatementDesignatorStatement(
+            DesignatorStatementAssign(
+              DesignatorIdent(
+               z
+              ) [DesignatorIdent]
+              ExprTerm(
+                FactorNoTerm(
+                  FactorNew(
+                    Type(
+                     int
+                    ) [Type]
+                    ExprAddopTerm(
+                      ExprTerm(
+                        FactorNoTerm(
+                          FactorNum(
+                           3
+                          ) [FactorNum]
+                        ) [FactorNoTerm]
+                      ) [ExprTerm]
+                      AddOpPlus(
+                      ) [AddOpPlus]
+                      FactorNoTerm(
+                        FactorNum(
+                         1
+                        ) [FactorNum]
+                      ) [FactorNoTerm]
+                    ) [ExprAddopTerm]
+                    MatrixSizeYes(
+                      ExprAddopTerm(
+                        ExprTerm(
+                          FactorNoTerm(
+                            FactorNum(
+                             2
+                            ) [FactorNum]
+                          ) [FactorNoTerm]
+                        ) [ExprTerm]
+                        AddOpPlus(
+                        ) [AddOpPlus]
+                        FactorNoTerm(
+                          FactorNum(
+                           2
+                          ) [FactorNum]
+                        ) [FactorNoTerm]
+                      ) [ExprAddopTerm]
+                    ) [MatrixSizeYes]
+                  ) [FactorNew]
+                ) [FactorNoTerm]
+              ) [ExprTerm]
+            ) [DesignatorStatementAssign]
+          ) [StatementDesignatorStatement]
+        ) [StatementListExists]
+        StatementReturn(
+          ExprMaybeYes(
+            ExprTerm(
               FactorNoTerm(
-                FactorDerived1(
-                 2
-                ) [FactorDerived1]
-              ) [FactorNoTerm]
-            ) [ExprDerived2]
-            NoAndConstPrint(
-            ) [NoAndConstPrint]
-          ) [PrintStmt]
-        ) [StatementListDerived1]
-        StatementDerived3(
-          ExprMaybeDerived1(
-            ExprDerived2(
-              FactorNoTerm(
-                FactorDerived1(
+                FactorNum(
                  1
-                ) [FactorDerived1]
+                ) [FactorNum]
               ) [FactorNoTerm]
-            ) [ExprDerived2]
-          ) [ExprMaybeDerived1]
-        ) [StatementDerived3]
-      ) [StatementListDerived1]
-    ) [MethodDeclDerived1]
-  ) [MethodDeclListDerived1]
-) [ProgramDerived1]
-INFO  16:28:29,153 - ===================================
-INFO  16:28:29,160 - Deklarisana promenljiva x na liniji 2
-INFO  16:28:29,160 - Deklarisana promenljiva y na liniji 2
-INFO  16:28:29,160 - Deklarisan niz z na liniji 2
-INFO  16:28:29,160 - Deklarisan niz p na liniji 3
-INFO  16:28:29,160 -  Print count calls = 2
-INFO  16:28:29,160 -  Deklarisanih promenljivih ima = 4
-INFO  16:28:29,160 - ===================================
-INFO  16:28:29,161 - Parsiranje uspesno zavrseno!
+            ) [ExprTerm]
+          ) [ExprMaybeYes]
+        ) [StatementReturn]
+      ) [StatementListExists]
+    ) [MethodDecl]
+  ) [MethodDeclListExist]
+) [Program]
+INFO  16:30:53,505 - ===================================
+INFO  16:30:53,516 - Deklarisana promenljiva x na liniji 2
+INFO  16:30:53,516 - Deklarisana promenljiva y na liniji 2
+INFO  16:30:53,516 - Deklarisan niz z na liniji 2
+INFO  16:30:53,516 - Deklarisan niz p na liniji 3
+INFO  16:30:53,517 -  Print count calls = 2
+INFO  16:30:53,517 -  Deklarisanih promenljivih ima = 4
+INFO  16:30:53,517 - ===================================
+INFO  16:30:53,517 - Parsiranje uspesno zavrseno!

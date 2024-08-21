@@ -11,7 +11,7 @@ public class RuleVisitor extends VisitorAdaptor{
 	Logger log = Logger.getLogger(getClass());
 
 	
-    public void visit(PrintStmt print) {
+    public void visit(StatementPrint print) {
 		printCallCount++;
 	}
 
