@@ -1,13 +1,13 @@
 // generated with ast extension for cup
 // version 0.8
-// 21/7/2024 19:7:15
+// 22/7/2024 18:13:43
 
 
 package rs.ac.bg.etf.pp1.ast;
 
-public class MatrixSizeNo extends MatrixSize {
+public class NoBracketExpr extends OptionBracketExpr {
 
-    public MatrixSizeNo () {
+    public NoBracketExpr () {
     }
 
     public void accept(Visitor visitor) {
@@ -28,10 +28,10 @@ public class MatrixSizeNo extends MatrixSize {
     public String toString(String tab) {
         StringBuffer buffer=new StringBuffer();
         buffer.append(tab);
-        buffer.append("MatrixSizeNo(\n");
+        buffer.append("NoBracketExpr(\n");
 
         buffer.append(tab);
-        buffer.append(") [MatrixSizeNo]");
+        buffer.append(") [NoBracketExpr]");
         return buffer.toString();
     }
 }

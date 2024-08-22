@@ -1,36 +1,36 @@
 // generated with ast extension for cup
 // version 0.8
-// 21/7/2024 19:7:15
+// 22/7/2024 18:13:43
 
 
 package rs.ac.bg.etf.pp1.ast;
 
 public interface Visitor { 
 
-    public void visit(Designator Designator);
-    public void visit(Factor Factor);
+    public void visit(VarDeclInFunction VarDeclInFunction);
     public void visit(OtherFormParamsList OtherFormParamsList);
+    public void visit(StatementList StatementList);
+    public void visit(MoreConstVals MoreConstVals);
+    public void visit(PrintConst PrintConst);
+    public void visit(Factor Factor);
+    public void visit(OptionBracketExpr OptionBracketExpr);
     public void visit(MoreVarDecls MoreVarDecls);
-    public void visit(DesignatorStatement DesignatorStatement);
+    public void visit(Term Term);
     public void visit(MulOp MulOp);
+    public void visit(RelOp RelOp);
+    public void visit(DesignatorName DesignatorName);
+    public void visit(Brackets Brackets);
+    public void visit(ExprMaybe ExprMaybe);
     public void visit(Declarations Declarations);
     public void visit(Expr Expr);
-    public void visit(MatrixSize MatrixSize);
-    public void visit(ExprMaybe ExprMaybe);
-    public void visit(FormPars FormPars);
-    public void visit(ConstVals ConstVals);
-    public void visit(PrintConst PrintConst);
-    public void visit(MethodDeclList MethodDeclList);
-    public void visit(Statement Statement);
-    public void visit(VarDeclr VarDeclr);
     public void visit(AddOp AddOp);
-    public void visit(Brackets Brackets);
-    public void visit(Term Term);
-    public void visit(RelOp RelOp);
-    public void visit(MoreConstVals MoreConstVals);
+    public void visit(ConstVals ConstVals);
+    public void visit(DesignatorStatement DesignatorStatement);
+    public void visit(VarDeclr VarDeclr);
     public void visit(MethodDeclName MethodDeclName);
-    public void visit(StatementList StatementList);
-    public void visit(VarDeclInFunction VarDeclInFunction);
+    public void visit(Statement Statement);
+    public void visit(MethodDeclList MethodDeclList);
+    public void visit(FormPars FormPars);
     public void visit(RelOpNE RelOpNE);
     public void visit(RelOpE RelOpE);
     public void visit(RelOpLE RelOpLE);
@@ -42,14 +42,15 @@ public interface Visitor {
     public void visit(MulOpMul MulOpMul);
     public void visit(AddOpPlus AddOpPlus);
     public void visit(AddOpMinus AddOpMinus);
-    public void visit(MatrixSizeNo MatrixSizeNo);
-    public void visit(MatrixSizeYes MatrixSizeYes);
     public void visit(NoBrackets NoBrackets);
     public void visit(BracketsMatrix BracketsMatrix);
     public void visit(Type Type);
-    public void visit(DesignatorNmsp DesignatorNmsp);
-    public void visit(DesignatorArray DesignatorArray);
+    public void visit(BracketExpression BracketExpression);
+    public void visit(NoBracketExpr NoBracketExpr);
+    public void visit(MatrixBracketExpr MatrixBracketExpr);
+    public void visit(ArrayBracketExpr ArrayBracketExpr);
     public void visit(DesignatorIdent DesignatorIdent);
+    public void visit(Designator Designator);
     public void visit(DesignatorStatementDec DesignatorStatementDec);
     public void visit(DesignatorStatementInc DesignatorStatementInc);
     public void visit(DesignatorStatementAssign DesignatorStatementAssign);
@@ -96,6 +97,7 @@ public interface Visitor {
     public void visit(NoMoreVarDecls NoMoreVarDecls);
     public void visit(MoreVarDeclsVars MoreVarDeclsVars);
     public void visit(MoreVarDeclsArray MoreVarDeclsArray);
+    public void visit(VarType VarType);
     public void visit(ErrorStmtVar ErrorStmtVar);
     public void visit(VarDeclVar VarDeclVar);
     public void visit(VarDeclArray VarDeclArray);
@@ -104,6 +106,8 @@ public interface Visitor {
     public void visit(ConstBool ConstBool);
     public void visit(ConstChar ConstChar);
     public void visit(ConstNum ConstNum);
+    public void visit(FormalConstDeclr FormalConstDeclr);
+    public void visit(ConstType ConstType);
     public void visit(ConstDeclr ConstDeclr);
     public void visit(NoDeclarations NoDeclarations);
     public void visit(VarDeclarations VarDeclarations);

@@ -9,6 +9,8 @@
 				<exclude name="Yylex.java"/>
 				<exclude name="RuleVisitor.java"/>
 				<exclude name="SemanticPass.java"/>
+				<exclude name="TabDumpExtended.java"/>
+				<exclude name="TabExtended.java"/>
 			</fileset>
 		</delete>
 		<delete>

@@ -1,6 +1,6 @@
 // generated with ast extension for cup
 // version 0.8
-// 21/7/2024 19:7:15
+// 22/7/2024 18:13:43
 
 
 package rs.ac.bg.etf.pp1.ast;
@@ -8,16 +8,13 @@ package rs.ac.bg.etf.pp1.ast;
 public class FactorNew extends Factor {
 
     private Type Type;
-    private Expr Expr;
-    private MatrixSize MatrixSize;
+    private OptionBracketExpr OptionBracketExpr;
 
-    public FactorNew (Type Type, Expr Expr, MatrixSize MatrixSize) {
+    public FactorNew (Type Type, OptionBracketExpr OptionBracketExpr) {
         this.Type=Type;
         if(Type!=null) Type.setParent(this);
-        this.Expr=Expr;
-        if(Expr!=null) Expr.setParent(this);
-        this.MatrixSize=MatrixSize;
-        if(MatrixSize!=null) MatrixSize.setParent(this);
+        this.OptionBracketExpr=OptionBracketExpr;
+        if(OptionBracketExpr!=null) OptionBracketExpr.setParent(this);
     }
 
     public Type getType() {
@@ -28,20 +25,12 @@ public class FactorNew extends Factor {
         this.Type=Type;
     }
 
-    public Expr getExpr() {
-        return Expr;
+    public OptionBracketExpr getOptionBracketExpr() {
+        return OptionBracketExpr;
     }
 
-    public void setExpr(Expr Expr) {
-        this.Expr=Expr;
-    }
-
-    public MatrixSize getMatrixSize() {
-        return MatrixSize;
-    }
-
-    public void setMatrixSize(MatrixSize MatrixSize) {
-        this.MatrixSize=MatrixSize;
+    public void setOptionBracketExpr(OptionBracketExpr OptionBracketExpr) {
+        this.OptionBracketExpr=OptionBracketExpr;
     }
 
     public void accept(Visitor visitor) {
@@ -50,21 +39,18 @@ public class FactorNew extends Factor {
 
     public void childrenAccept(Visitor visitor) {
         if(Type!=null) Type.accept(visitor);
-        if(Expr!=null) Expr.accept(visitor);
-        if(MatrixSize!=null) MatrixSize.accept(visitor);
+        if(OptionBracketExpr!=null) OptionBracketExpr.accept(visitor);
     }
 
     public void traverseTopDown(Visitor visitor) {
         accept(visitor);
         if(Type!=null) Type.traverseTopDown(visitor);
-        if(Expr!=null) Expr.traverseTopDown(visitor);
-        if(MatrixSize!=null) MatrixSize.traverseTopDown(visitor);
+        if(OptionBracketExpr!=null) OptionBracketExpr.traverseTopDown(visitor);
     }
 
     public void traverseBottomUp(Visitor visitor) {
         if(Type!=null) Type.traverseBottomUp(visitor);
-        if(Expr!=null) Expr.traverseBottomUp(visitor);
-        if(MatrixSize!=null) MatrixSize.traverseBottomUp(visitor);
+        if(OptionBracketExpr!=null) OptionBracketExpr.traverseBottomUp(visitor);
         accept(visitor);
     }
 
@@ -79,14 +65,8 @@ public class FactorNew extends Factor {
             buffer.append(tab+"  null");
         buffer.append("\n");
 
-        if(Expr!=null)
-            buffer.append(Expr.toString("  "+tab));
-        else
-            buffer.append(tab+"  null");
-        buffer.append("\n");
-
-        if(MatrixSize!=null)
-            buffer.append(MatrixSize.toString("  "+tab));
+        if(OptionBracketExpr!=null)
+            buffer.append(OptionBracketExpr.toString("  "+tab));
         else
             buffer.append(tab+"  null");
         buffer.append("\n");

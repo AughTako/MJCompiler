@@ -1,15 +1,19 @@
 // generated with ast extension for cup
 // version 0.8
-// 21/7/2024 19:7:15
+// 22/7/2024 18:13:43
 
 
 package rs.ac.bg.etf.pp1.ast;
 
-public class MatrixSizeYes extends MatrixSize {
+public class BracketExpression implements SyntaxNode {
+
+    private SyntaxNode parent;
+    private int line;
+    public rs.etf.pp1.symboltable.concepts.Struct struct = null;
 
     private Expr Expr;
 
-    public MatrixSizeYes (Expr Expr) {
+    public BracketExpression (Expr Expr) {
         this.Expr=Expr;
         if(Expr!=null) Expr.setParent(this);
     }
@@ -20,6 +24,22 @@ public class MatrixSizeYes extends MatrixSize {
 
     public void setExpr(Expr Expr) {
         this.Expr=Expr;
+    }
+
+    public SyntaxNode getParent() {
+        return parent;
+    }
+
+    public void setParent(SyntaxNode parent) {
+        this.parent=parent;
+    }
+
+    public int getLine() {
+        return line;
+    }
+
+    public void setLine(int line) {
+        this.line=line;
     }
 
     public void accept(Visitor visitor) {
@@ -43,7 +63,7 @@ public class MatrixSizeYes extends MatrixSize {
     public String toString(String tab) {
         StringBuffer buffer=new StringBuffer();
         buffer.append(tab);
-        buffer.append("MatrixSizeYes(\n");
+        buffer.append("BracketExpression(\n");
 
         if(Expr!=null)
             buffer.append(Expr.toString("  "+tab));
@@ -52,7 +72,7 @@ public class MatrixSizeYes extends MatrixSize {
         buffer.append("\n");
 
         buffer.append(tab);
-        buffer.append(") [MatrixSizeYes]");
+        buffer.append(") [BracketExpression]");
         return buffer.toString();
     }
 }

@@ -39,7 +39,7 @@ public class MJParserTest {
 	        Symbol s = p.parse();  //pocetak parsiranja
 	        
 	        Program prog = (Program)(s.value); 
-	        Tab.init();
+	        TabExtended.init();
 			// ispis sintaksnog stabla
 			log.info(prog.toString(""));
 			log.info("===================================");
@@ -53,7 +53,7 @@ public class MJParserTest {
 			log.info(" Deklarisanih promenljivih ima = " + v.varDeclCount);
 			
 			log.info("===================================");
-			Tab.dump();
+			TabExtended.dump();
 			
 			if(v.passed()){
 				log.info("Parsiranje uspesno zavrseno!");

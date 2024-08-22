@@ -54,15 +54,16 @@ terminal Integer NUM;
 /* PROGRAM & DECLARATIONS*/
 
 nonterminal Program, Declarations, MethodDeclList;
-nonterminal ConstVals;
-nonterminal FormPars, FormParam, FormalParamsExist, OtherFormParamsList, VarDeclInFunction, StatementList;
-nonterminal Statement, PrintConst, DesignatorStatement, MatrixSize;
 
-nonterminal rs.etf.pp1.symboltable.concepts.Obj ProgName, MethodDeclName, MethodDecl, Designator, ConstDeclr, MoreConstVals, VarDeclr, MoreVarDecls;
-nonterminal rs.etf.pp1.symboltable.concepts.Struct Type, Expr, Term, Factor;
+nonterminal FormPars, FormParam, FormalParamsExist, OtherFormParamsList, StatementList;
+nonterminal Statement, PrintConst, DesignatorStatement;
+
+nonterminal rs.etf.pp1.symboltable.concepts.Obj ProgName, MethodDeclName, MethodDecl, Designator, DesignatorName, ConstDeclr, MoreConstVals, VarDeclr, MoreVarDecls;
+nonterminal rs.etf.pp1.symboltable.concepts.Obj ConstType, FormalConstDeclr, VarDeclInFunction;
+nonterminal rs.etf.pp1.symboltable.concepts.Struct Type, Term, Factor, ConstVals, ExprMaybe, VarType, Expr, OptionBracketExpr, BracketExpression;
 
 nonterminal AddOp, MulOp, RelOp;
-nonterminal Brackets, ExprMaybe;
+nonterminal Brackets;
 
 Program ::= (Program) PROG ProgName:p Declarations LBRACE MethodDeclList RBRACE;
 ProgName ::= (ProgName) IDENT:progName;
@@ -73,8 +74,9 @@ Declarations ::= (ConstDeclarations) Declarations ConstDeclr
 				 | 
 				 (NoDeclarations) /* null */
 				 ;
-ConstDeclr ::= (ConstDeclr) CONST Type:constType IDENT:constName EQUAL ConstVals MoreConstVals SEMI;
-
+ConstDeclr ::= (ConstDeclr) FormalConstDeclr MoreConstVals SEMI;
+ConstType ::= (ConstType) Type:type;
+FormalConstDeclr ::= (FormalConstDeclr) CONST ConstType:type IDENT:constName EQUAL ConstVals;
 ConstVals ::= (ConstNum) NUM:numVal 
 			| 
 			(ConstChar) CHAR:charVal 
@@ -86,14 +88,14 @@ MoreConstVals ::= (MoreConstValsExist) MoreConstVals COMMA IDENT:constName EQUAL
 				(NoMoreConstVals) /* null */
 				;
 				
-
-VarDeclr ::= (VarDeclArray) Type:arrayType IDENT:arrayName LBRACKET RBRACKET Brackets:matrixBrackets MoreVarDecls SEMI
+VarDeclr ::= (VarDeclArray) VarType IDENT:arrayName LBRACKET RBRACKET Brackets:matrixBrackets MoreVarDecls SEMI
 			|
-			(VarDeclVar) Type:varType IDENT:varName MoreVarDecls SEMI
+			(VarDeclVar) VarType IDENT:varName MoreVarDecls SEMI
 			|
 			(ErrorStmtVar) error SEMI:l
 		   	{: parser.report_error("Izvrsen oporavak do ; u liniji " + lleft, null);  :}
 			;
+VarType ::= (VarType) Type:type;
 MoreVarDecls ::= (MoreVarDeclsArray) MoreVarDecls COMMA IDENT:arrayName LBRACKET RBRACKET Brackets
 			|
 			(MoreVarDeclsVars) MoreVarDecls COMMA IDENT:varName
@@ -126,7 +128,7 @@ OtherFormParamsList ::= (OtherFormParamsListExist) OtherFormParamsList FormalPar
 					(NoOtherFormParamsList) /* null */
 					;
 FormalParamsExist ::= (FormalParamsExist) COMMA Type IDENT Brackets;
-VarDeclInFunction ::= (VarDeclInFunctionArray) VarDeclInFunction Type:arrayType IDENT:arrName LBRACKET RBRACKET SEMI
+VarDeclInFunction ::= (VarDeclInFunctionArray) VarDeclInFunction Type:arrayType IDENT:arrName LBRACKET RBRACKET Brackets SEMI
 					|
 					(VarDeclInFunctionVars) VarDeclInFunction Type:varType IDENT:varName SEMI
 					|
@@ -180,7 +182,7 @@ Factor ::= (FactorNum) NUM:num
 			|
 			(FactorDesignator) Designator
 			|
-			(FactorNew) NEW Type:arrType LBRACKET Expr RBRACKET MatrixSize
+			(FactorNew) NEW Type:arrType OptionBracketExpr
 			;
 DesignatorStatement ::= (DesignatorStatementAssign) Designator EQUAL Expr
 						|
@@ -189,17 +191,18 @@ DesignatorStatement ::= (DesignatorStatementAssign) Designator EQUAL Expr
 						(DesignatorStatementDec) Designator DECREMENT
 						;
 
-Designator ::=  (DesignatorIdent) IDENT:name
-				|
-				(DesignatorArray) Designator LBRACKET Expr RBRACKET
-				|
-				(DesignatorNmsp) IDENT:nmspName COLON COLON IDENT:name
-				;
+Designator ::=  (Designator) DesignatorName:name OptionBracketExpr:brackets;
+				
+DesignatorName ::= (DesignatorIdent) IDENT:desName;
+OptionBracketExpr ::= (ArrayBracketExpr) BracketExpression:brackExpr1 
+					| (MatrixBracketExpr) BracketExpression:brackExpr2 BracketExpression:brackExpr3 
+					| (NoBracketExpr) /* null */;
+BracketExpression ::= (BracketExpression) LBRACKET Expr:brExpr RBRACKET;
 /* MISC */
 
 Type ::= (Type) IDENT:typeName;
 Brackets ::= (BracketsMatrix) LBRACKET RBRACKET | (NoBrackets) /*null*/;
-MatrixSize ::= (MatrixSizeYes) LBRACKET Expr RBRACKET | (MatrixSizeNo) /* null */;
+
 AddOp ::= (AddOpMinus) MINUS:minus | (AddOpPlus) PLUS:plus;
 MulOp ::= (MulOpMul) MUL:mul | (MulOpDiv) DIV:div | (MulOpMod) MOD:mod;
 RelOp ::= (RelOpG) GREATER | (RelOpL) LESS | (RelOpGE)GREATEROREQUAL | (RelOpLE) LESSOREQUAL | (RelOpE) EQUAL | (RelOpNE) NOTEQUAL;

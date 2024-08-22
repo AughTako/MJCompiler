@@ -1,6 +1,6 @@
 // generated with ast extension for cup
 // version 0.8
-// 21/7/2024 19:7:15
+// 22/7/2024 18:13:43
 
 
 package rs.ac.bg.etf.pp1.ast;
@@ -11,43 +11,22 @@ public class ConstDeclr implements SyntaxNode {
     private int line;
     public rs.etf.pp1.symboltable.concepts.Obj obj = null;
 
-    private Type Type;
-    private String constName;
-    private ConstVals ConstVals;
+    private FormalConstDeclr FormalConstDeclr;
     private MoreConstVals MoreConstVals;
 
-    public ConstDeclr (Type Type, String constName, ConstVals ConstVals, MoreConstVals MoreConstVals) {
-        this.Type=Type;
-        if(Type!=null) Type.setParent(this);
-        this.constName=constName;
-        this.ConstVals=ConstVals;
-        if(ConstVals!=null) ConstVals.setParent(this);
+    public ConstDeclr (FormalConstDeclr FormalConstDeclr, MoreConstVals MoreConstVals) {
+        this.FormalConstDeclr=FormalConstDeclr;
+        if(FormalConstDeclr!=null) FormalConstDeclr.setParent(this);
         this.MoreConstVals=MoreConstVals;
         if(MoreConstVals!=null) MoreConstVals.setParent(this);
     }
 
-    public Type getType() {
-        return Type;
+    public FormalConstDeclr getFormalConstDeclr() {
+        return FormalConstDeclr;
     }
 
-    public void setType(Type Type) {
-        this.Type=Type;
-    }
-
-    public String getConstName() {
-        return constName;
-    }
-
-    public void setConstName(String constName) {
-        this.constName=constName;
-    }
-
-    public ConstVals getConstVals() {
-        return ConstVals;
-    }
-
-    public void setConstVals(ConstVals ConstVals) {
-        this.ConstVals=ConstVals;
+    public void setFormalConstDeclr(FormalConstDeclr FormalConstDeclr) {
+        this.FormalConstDeclr=FormalConstDeclr;
     }
 
     public MoreConstVals getMoreConstVals() {
@@ -79,21 +58,18 @@ public class ConstDeclr implements SyntaxNode {
     }
 
     public void childrenAccept(Visitor visitor) {
-        if(Type!=null) Type.accept(visitor);
-        if(ConstVals!=null) ConstVals.accept(visitor);
+        if(FormalConstDeclr!=null) FormalConstDeclr.accept(visitor);
         if(MoreConstVals!=null) MoreConstVals.accept(visitor);
     }
 
     public void traverseTopDown(Visitor visitor) {
         accept(visitor);
-        if(Type!=null) Type.traverseTopDown(visitor);
-        if(ConstVals!=null) ConstVals.traverseTopDown(visitor);
+        if(FormalConstDeclr!=null) FormalConstDeclr.traverseTopDown(visitor);
         if(MoreConstVals!=null) MoreConstVals.traverseTopDown(visitor);
     }
 
     public void traverseBottomUp(Visitor visitor) {
-        if(Type!=null) Type.traverseBottomUp(visitor);
-        if(ConstVals!=null) ConstVals.traverseBottomUp(visitor);
+        if(FormalConstDeclr!=null) FormalConstDeclr.traverseBottomUp(visitor);
         if(MoreConstVals!=null) MoreConstVals.traverseBottomUp(visitor);
         accept(visitor);
     }
@@ -103,17 +79,8 @@ public class ConstDeclr implements SyntaxNode {
         buffer.append(tab);
         buffer.append("ConstDeclr(\n");
 
-        if(Type!=null)
-            buffer.append(Type.toString("  "+tab));
-        else
-            buffer.append(tab+"  null");
-        buffer.append("\n");
-
-        buffer.append(" "+tab+constName);
-        buffer.append("\n");
-
-        if(ConstVals!=null)
-            buffer.append(ConstVals.toString("  "+tab));
+        if(FormalConstDeclr!=null)
+            buffer.append(FormalConstDeclr.toString("  "+tab));
         else
             buffer.append(tab+"  null");
         buffer.append("\n");

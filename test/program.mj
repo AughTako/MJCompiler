@@ -1,13 +1,14 @@
 program MJProgram
 	int x; int y; int z[][];
-	int p[];
+	const int konstanta = 3;
+	const bool b1 = true;
+	int p[];	
 {
 	int foo(int a, int b) int l; {
 	}
 
 	int k() int c;{
 		c = 2;
-		return c + 2;
 	}
 
 	int main() {

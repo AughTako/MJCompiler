@@ -56,26 +56,24 @@ terminal Integer NUM;
 nonterminal Program Program;
 nonterminal Declarations Declarations;
 nonterminal MethodDeclList MethodDeclList;
-nonterminal ConstVals ConstVals;
+
 nonterminal FormPars FormPars;
 nonterminal FormParam FormParam;
 nonterminal FormalParamsExist FormalParamsExist;
 nonterminal OtherFormParamsList OtherFormParamsList;
-nonterminal VarDeclInFunction VarDeclInFunction;
 nonterminal StatementList StatementList;
 nonterminal Statement Statement;
 nonterminal PrintConst PrintConst;
 nonterminal DesignatorStatement DesignatorStatement;
-nonterminal MatrixSize MatrixSize;
 
-nonterminal rs.etf.pp1.symboltable.concepts.Obj ProgName, MethodDeclName, MethodDecl, Designator, ConstDeclr, MoreConstVals, VarDeclr, MoreVarDecls;
-nonterminal rs.etf.pp1.symboltable.concepts.Struct Type, Expr, Term, Factor;
+nonterminal rs.etf.pp1.symboltable.concepts.Obj ProgName, MethodDeclName, MethodDecl, Designator, DesignatorName, ConstDeclr, MoreConstVals, VarDeclr, MoreVarDecls;
+nonterminal rs.etf.pp1.symboltable.concepts.Obj ConstType, FormalConstDeclr, VarDeclInFunction;
+nonterminal rs.etf.pp1.symboltable.concepts.Struct Type, Term, Factor, ConstVals, ExprMaybe, VarType, Expr, OptionBracketExpr, BracketExpression;
 
 nonterminal AddOp AddOp;
 nonterminal MulOp MulOp;
 nonterminal RelOp RelOp;
 nonterminal Brackets Brackets;
-nonterminal ExprMaybe ExprMaybe;
 
 Program ::= (Program) PROG ProgName:p Declarations:D1 LBRACE MethodDeclList:M2 RBRACE {: RESULT=new Program(p, D1, M2); RESULT.setLine(pleft); :};
 ProgName ::= (ProgName) IDENT:progName {: RESULT=new ProgName(progName); RESULT.setLine(progNameleft); :};
@@ -86,8 +84,9 @@ Declarations ::= (ConstDeclarations) Declarations:D1 ConstDeclr:C2 {: RESULT=new
 				 | 
 				 (NoDeclarations) {: RESULT=new NoDeclarations(); :} /* null */
 				 ;
-ConstDeclr ::= (ConstDeclr) CONST Type:constType IDENT:constName EQUAL ConstVals:C1 MoreConstVals:M2 SEMI {: RESULT=new ConstDeclr(constType, constName, C1, M2); RESULT.setLine(constTypeleft); :};
-
+ConstDeclr ::= (ConstDeclr) FormalConstDeclr:F1 MoreConstVals:M2 SEMI {: RESULT=new ConstDeclr(F1, M2); RESULT.setLine(F1left); :};
+ConstType ::= (ConstType) Type:type {: RESULT=new ConstType(type); RESULT.setLine(typeleft); :};
+FormalConstDeclr ::= (FormalConstDeclr) CONST ConstType:type IDENT:constName EQUAL ConstVals:C1 {: RESULT=new FormalConstDeclr(type, constName, C1); RESULT.setLine(typeleft); :};
 ConstVals ::= (ConstNum) NUM:numVal {: RESULT=new ConstNum(numVal); RESULT.setLine(numValleft); :} 
 			| 
 			(ConstChar) CHAR:charVal {: RESULT=new ConstChar(charVal); RESULT.setLine(charValleft); :} 
@@ -99,14 +98,14 @@ MoreConstVals ::= (MoreConstValsExist) MoreConstVals:M1 COMMA IDENT:constName EQ
 				(NoMoreConstVals) {: RESULT=new NoMoreConstVals(); :} /* null */
 				;
 				
-
-VarDeclr ::= (VarDeclArray) Type:arrayType IDENT:arrayName LBRACKET RBRACKET Brackets:matrixBrackets MoreVarDecls:M1 SEMI {: RESULT=new VarDeclArray(arrayType, arrayName, matrixBrackets, M1); RESULT.setLine(arrayTypeleft); :}
+VarDeclr ::= (VarDeclArray) VarType:V1 IDENT:arrayName LBRACKET RBRACKET Brackets:matrixBrackets MoreVarDecls:M2 SEMI {: RESULT=new VarDeclArray(V1, arrayName, matrixBrackets, M2); RESULT.setLine(V1left); :}
 			|
-			(VarDeclVar) Type:varType IDENT:varName MoreVarDecls:M1 SEMI {: RESULT=new VarDeclVar(varType, varName, M1); RESULT.setLine(varTypeleft); :}
+			(VarDeclVar) VarType:V1 IDENT:varName MoreVarDecls:M2 SEMI {: RESULT=new VarDeclVar(V1, varName, M2); RESULT.setLine(V1left); :}
 			|
 			(ErrorStmtVar) error SEMI:l
 		   	{: parser.report_error("Izvrsen oporavak do ; u liniji " + lleft, null);  :} {: RESULT=new ErrorStmtVar(); :}
 			;
+VarType ::= (VarType) Type:type {: RESULT=new VarType(type); RESULT.setLine(typeleft); :};
 MoreVarDecls ::= (MoreVarDeclsArray) MoreVarDecls:M1 COMMA IDENT:arrayName LBRACKET RBRACKET Brackets:B2 {: RESULT=new MoreVarDeclsArray(M1, arrayName, B2); RESULT.setLine(M1left); :}
 			|
 			(MoreVarDeclsVars) MoreVarDecls:M1 COMMA IDENT:varName {: RESULT=new MoreVarDeclsVars(M1, varName); RESULT.setLine(M1left); :}
@@ -139,7 +138,7 @@ OtherFormParamsList ::= (OtherFormParamsListExist) OtherFormParamsList:O1 Formal
 					(NoOtherFormParamsList) {: RESULT=new NoOtherFormParamsList(); :} /* null */
 					;
 FormalParamsExist ::= (FormalParamsExist) COMMA Type:T1 IDENT:I2 Brackets:B3 {: RESULT=new FormalParamsExist(T1, I2, B3); RESULT.setLine(T1left); :};
-VarDeclInFunction ::= (VarDeclInFunctionArray) VarDeclInFunction:V1 Type:arrayType IDENT:arrName LBRACKET RBRACKET SEMI {: RESULT=new VarDeclInFunctionArray(V1, arrayType, arrName); RESULT.setLine(V1left); :}
+VarDeclInFunction ::= (VarDeclInFunctionArray) VarDeclInFunction:V1 Type:arrayType IDENT:arrName LBRACKET RBRACKET Brackets:B2 SEMI {: RESULT=new VarDeclInFunctionArray(V1, arrayType, arrName, B2); RESULT.setLine(V1left); :}
 					|
 					(VarDeclInFunctionVars) VarDeclInFunction:V1 Type:varType IDENT:varName SEMI {: RESULT=new VarDeclInFunctionVars(V1, varType, varName); RESULT.setLine(V1left); :}
 					|
@@ -193,7 +192,7 @@ Factor ::= (FactorNum) NUM:num {: RESULT=new FactorNum(num); RESULT.setLine(numl
 			|
 			(FactorDesignator) Designator:D1 {: RESULT=new FactorDesignator(D1); RESULT.setLine(D1left); :}
 			|
-			(FactorNew) NEW Type:arrType LBRACKET Expr:E1 RBRACKET MatrixSize:M2 {: RESULT=new FactorNew(arrType, E1, M2); RESULT.setLine(arrTypeleft); :}
+			(FactorNew) NEW Type:arrType OptionBracketExpr:O1 {: RESULT=new FactorNew(arrType, O1); RESULT.setLine(arrTypeleft); :}
 			;
 DesignatorStatement ::= (DesignatorStatementAssign) Designator:D1 EQUAL Expr:E2 {: RESULT=new DesignatorStatementAssign(D1, E2); RESULT.setLine(D1left); :}
 						|
@@ -202,17 +201,18 @@ DesignatorStatement ::= (DesignatorStatementAssign) Designator:D1 EQUAL Expr:E2 
 						(DesignatorStatementDec) Designator:D1 DECREMENT {: RESULT=new DesignatorStatementDec(D1); RESULT.setLine(D1left); :}
 						;
 
-Designator ::=  (DesignatorIdent) IDENT:name {: RESULT=new DesignatorIdent(name); RESULT.setLine(nameleft); :}
-				|
-				(DesignatorArray) Designator:D1 LBRACKET Expr:E2 RBRACKET {: RESULT=new DesignatorArray(D1, E2); RESULT.setLine(D1left); :}
-				|
-				(DesignatorNmsp) IDENT:nmspName COLON COLON IDENT:name {: RESULT=new DesignatorNmsp(nmspName, name); RESULT.setLine(nmspNameleft); :}
-				;
+Designator ::=  (Designator) DesignatorName:name OptionBracketExpr:brackets {: RESULT=new Designator(name, brackets); RESULT.setLine(nameleft); :};
+				
+DesignatorName ::= (DesignatorIdent) IDENT:desName {: RESULT=new DesignatorIdent(desName); RESULT.setLine(desNameleft); :};
+OptionBracketExpr ::= (ArrayBracketExpr) BracketExpression:brackExpr1 {: RESULT=new ArrayBracketExpr(brackExpr1); RESULT.setLine(brackExpr1left); :} 
+					| (MatrixBracketExpr) BracketExpression:brackExpr2 BracketExpression:brackExpr3 {: RESULT=new MatrixBracketExpr(brackExpr2, brackExpr3); RESULT.setLine(brackExpr2left); :} 
+					| (NoBracketExpr) {: RESULT=new NoBracketExpr(); :} /* null */;
+BracketExpression ::= (BracketExpression) LBRACKET Expr:brExpr RBRACKET {: RESULT=new BracketExpression(brExpr); RESULT.setLine(brExprleft); :};
 /* MISC */
 
 Type ::= (Type) IDENT:typeName {: RESULT=new Type(typeName); RESULT.setLine(typeNameleft); :};
 Brackets ::= (BracketsMatrix) LBRACKET RBRACKET {: RESULT=new BracketsMatrix(); :} | (NoBrackets) {: RESULT=new NoBrackets(); :} /*null*/;
-MatrixSize ::= (MatrixSizeYes) LBRACKET Expr:E1 RBRACKET {: RESULT=new MatrixSizeYes(E1); RESULT.setLine(E1left); :} | (MatrixSizeNo) {: RESULT=new MatrixSizeNo(); :} /* null */;
+
 AddOp ::= (AddOpMinus) MINUS:minus {: RESULT=new AddOpMinus(); :} | (AddOpPlus) PLUS:plus {: RESULT=new AddOpPlus(); :};
 MulOp ::= (MulOpMul) MUL:mul {: RESULT=new MulOpMul(); :} | (MulOpDiv) DIV:div {: RESULT=new MulOpDiv(); :} | (MulOpMod) MOD:mod {: RESULT=new MulOpMod(); :};
 RelOp ::= (RelOpG) GREATER {: RESULT=new RelOpG(); :} | (RelOpL) LESS {: RESULT=new RelOpL(); :} | (RelOpGE)GREATEROREQUAL {: RESULT=new RelOpGE(); :} | (RelOpLE) LESSOREQUAL {: RESULT=new RelOpLE(); :} | (RelOpE) EQUAL {: RESULT=new RelOpE(); :} | (RelOpNE) NOTEQUAL {: RESULT=new RelOpNE(); :};

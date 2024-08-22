@@ -1,20 +1,20 @@
 // generated with ast extension for cup
 // version 0.8
-// 21/7/2024 19:7:15
+// 22/7/2024 18:13:43
 
 
 package rs.ac.bg.etf.pp1.ast;
 
 public class VarDeclArray extends VarDeclr {
 
-    private Type Type;
+    private VarType VarType;
     private String arrayName;
     private Brackets Brackets;
     private MoreVarDecls MoreVarDecls;
 
-    public VarDeclArray (Type Type, String arrayName, Brackets Brackets, MoreVarDecls MoreVarDecls) {
-        this.Type=Type;
-        if(Type!=null) Type.setParent(this);
+    public VarDeclArray (VarType VarType, String arrayName, Brackets Brackets, MoreVarDecls MoreVarDecls) {
+        this.VarType=VarType;
+        if(VarType!=null) VarType.setParent(this);
         this.arrayName=arrayName;
         this.Brackets=Brackets;
         if(Brackets!=null) Brackets.setParent(this);
@@ -22,12 +22,12 @@ public class VarDeclArray extends VarDeclr {
         if(MoreVarDecls!=null) MoreVarDecls.setParent(this);
     }
 
-    public Type getType() {
-        return Type;
+    public VarType getVarType() {
+        return VarType;
     }
 
-    public void setType(Type Type) {
-        this.Type=Type;
+    public void setVarType(VarType VarType) {
+        this.VarType=VarType;
     }
 
     public String getArrayName() {
@@ -59,20 +59,20 @@ public class VarDeclArray extends VarDeclr {
     }
 
     public void childrenAccept(Visitor visitor) {
-        if(Type!=null) Type.accept(visitor);
+        if(VarType!=null) VarType.accept(visitor);
         if(Brackets!=null) Brackets.accept(visitor);
         if(MoreVarDecls!=null) MoreVarDecls.accept(visitor);
     }
 
     public void traverseTopDown(Visitor visitor) {
         accept(visitor);
-        if(Type!=null) Type.traverseTopDown(visitor);
+        if(VarType!=null) VarType.traverseTopDown(visitor);
         if(Brackets!=null) Brackets.traverseTopDown(visitor);
         if(MoreVarDecls!=null) MoreVarDecls.traverseTopDown(visitor);
     }
 
     public void traverseBottomUp(Visitor visitor) {
-        if(Type!=null) Type.traverseBottomUp(visitor);
+        if(VarType!=null) VarType.traverseBottomUp(visitor);
         if(Brackets!=null) Brackets.traverseBottomUp(visitor);
         if(MoreVarDecls!=null) MoreVarDecls.traverseBottomUp(visitor);
         accept(visitor);
@@ -83,8 +83,8 @@ public class VarDeclArray extends VarDeclr {
         buffer.append(tab);
         buffer.append("VarDeclArray(\n");
 
-        if(Type!=null)
-            buffer.append(Type.toString("  "+tab));
+        if(VarType!=null)
+            buffer.append(VarType.toString("  "+tab));
         else
             buffer.append(tab+"  null");
         buffer.append("\n");
