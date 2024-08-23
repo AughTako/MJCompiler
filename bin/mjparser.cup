@@ -56,10 +56,10 @@ terminal Integer NUM;
 nonterminal Program, Declarations, MethodDeclList;
 
 nonterminal FormPars, FormParam, FormalParamsExist, OtherFormParamsList, StatementList;
-nonterminal Statement, PrintConst, DesignatorStatement;
+nonterminal Statement, PrintConst;
 
-nonterminal rs.etf.pp1.symboltable.concepts.Obj ProgName, MethodDeclName, MethodDecl, Designator, DesignatorName, ConstDeclr, MoreConstVals, VarDeclr, MoreVarDecls;
-nonterminal rs.etf.pp1.symboltable.concepts.Obj ConstType, FormalConstDeclr, VarDeclInFunction;
+nonterminal rs.etf.pp1.symboltable.concepts.Obj ProgName, MethodDeclName, MethodDecl, Designator, ConstDeclr, MoreConstVals, VarDeclr, MoreVarDecls;
+nonterminal rs.etf.pp1.symboltable.concepts.Obj ConstType, FormalConstDeclr, VarDeclInFunction, DesignatorStatement;
 nonterminal rs.etf.pp1.symboltable.concepts.Struct Type, Term, Factor, ConstVals, ExprMaybe, VarType, Expr, OptionBracketExpr, BracketExpression;
 
 nonterminal AddOp, MulOp, RelOp;
@@ -191,9 +191,8 @@ DesignatorStatement ::= (DesignatorStatementAssign) Designator EQUAL Expr
 						(DesignatorStatementDec) Designator DECREMENT
 						;
 
-Designator ::=  (Designator) DesignatorName:name OptionBracketExpr:brackets;
+Designator ::=  (DesignatorIdent) IDENT:desName OptionBracketExpr:brackets;
 				
-DesignatorName ::= (DesignatorIdent) IDENT:desName;
 OptionBracketExpr ::= (ArrayBracketExpr) BracketExpression:brackExpr1 
 					| (MatrixBracketExpr) BracketExpression:brackExpr2 BracketExpression:brackExpr3 
 					| (NoBracketExpr) /* null */;

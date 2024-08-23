@@ -64,10 +64,9 @@ nonterminal OtherFormParamsList OtherFormParamsList;
 nonterminal StatementList StatementList;
 nonterminal Statement Statement;
 nonterminal PrintConst PrintConst;
-nonterminal DesignatorStatement DesignatorStatement;
 
-nonterminal rs.etf.pp1.symboltable.concepts.Obj ProgName, MethodDeclName, MethodDecl, Designator, DesignatorName, ConstDeclr, MoreConstVals, VarDeclr, MoreVarDecls;
-nonterminal rs.etf.pp1.symboltable.concepts.Obj ConstType, FormalConstDeclr, VarDeclInFunction;
+nonterminal rs.etf.pp1.symboltable.concepts.Obj ProgName, MethodDeclName, MethodDecl, Designator, ConstDeclr, MoreConstVals, VarDeclr, MoreVarDecls;
+nonterminal rs.etf.pp1.symboltable.concepts.Obj ConstType, FormalConstDeclr, VarDeclInFunction, DesignatorStatement;
 nonterminal rs.etf.pp1.symboltable.concepts.Struct Type, Term, Factor, ConstVals, ExprMaybe, VarType, Expr, OptionBracketExpr, BracketExpression;
 
 nonterminal AddOp AddOp;
@@ -201,9 +200,8 @@ DesignatorStatement ::= (DesignatorStatementAssign) Designator:D1 EQUAL Expr:E2 
 						(DesignatorStatementDec) Designator:D1 DECREMENT {: RESULT=new DesignatorStatementDec(D1); RESULT.setLine(D1left); :}
 						;
 
-Designator ::=  (Designator) DesignatorName:name OptionBracketExpr:brackets {: RESULT=new Designator(name, brackets); RESULT.setLine(nameleft); :};
+Designator ::=  (DesignatorIdent) IDENT:desName OptionBracketExpr:brackets {: RESULT=new DesignatorIdent(desName, brackets); RESULT.setLine(desNameleft); :};
 				
-DesignatorName ::= (DesignatorIdent) IDENT:desName {: RESULT=new DesignatorIdent(desName); RESULT.setLine(desNameleft); :};
 OptionBracketExpr ::= (ArrayBracketExpr) BracketExpression:brackExpr1 {: RESULT=new ArrayBracketExpr(brackExpr1); RESULT.setLine(brackExpr1left); :} 
 					| (MatrixBracketExpr) BracketExpression:brackExpr2 BracketExpression:brackExpr3 {: RESULT=new MatrixBracketExpr(brackExpr2, brackExpr3); RESULT.setLine(brackExpr2left); :} 
 					| (NoBracketExpr) {: RESULT=new NoBracketExpr(); :} /* null */;
