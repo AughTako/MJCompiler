@@ -246,7 +246,9 @@ public class SemanticPass extends VisitorAdaptor {
 	}
 	
 	
-//	public void visit
+	/*
+	 * Rules for operations
+	 * */
 	
 	
 	/*
