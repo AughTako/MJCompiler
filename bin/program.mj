@@ -16,7 +16,7 @@ program MJProgram
 	}
 
 	int main() {
-		z = new int[0][0];
+		z = new int[][];
 		z[0][0] = 1 * 2;
 		p[0]++;
 		z[0][0]++;
