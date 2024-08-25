@@ -288,13 +288,31 @@ public class SemanticPass extends VisitorAdaptor {
 	 * Rules for Designators
 	 * */
 	
+	private int isMatrixOrArray(Obj o) {
+		if(o.getType().getKind() == Struct.Array) {
+			if(o.getType().getElemType().getKind() == Struct.Array) {
+				return 1;
+			}
+			else {
+				return 0;
+			}
+		}
+		return -1;
+	}
 	public void visit(DesignatorIdent designator) {
 		if(Tab.find(designator.getDesName()) == null) {
 			report_error("Nije pronadjen dezignator " + designator.getDesName() + " u tabeli simbola! ", null);
 		}
 		else {
 			Obj foundDesignator = TabExtended.find(designator.getDesName());
-			designator.obj = foundDesignator;
+			if(designator.getOptionBracketExpr() instanceof ArrayBracketExpr) {
+				designator.obj = new Obj(Obj.Elem, "", foundDesignator.getType().getElemType());
+			}
+			else if(designator.getOptionBracketExpr() instanceof MatrixBracketExpr) {
+				designator.obj = new Obj(Obj.Elem, "", foundDesignator.getType().getElemType().getElemType());
+			}
+			else
+				designator.obj = foundDesignator;
 //			report_info("===> Designator: " + foundDesignator.getName() + " Type: " + foundDesignator.getType().getKind(), null);
 		}
 	}

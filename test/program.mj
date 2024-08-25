@@ -1,37 +1,8 @@
 program MJProgram
-	int x; int y; int z[][];
-	const int konstanta = 3;
-	const bool b1 = true;
-	int p[];
-	const char ch = 'a';
-	char ch1;
-	char matrixChar[][];
-	bool boolMatrix[][];
 {
-	int foo(int a, int b) int l; {
-	}
 
-	int k() int c;{
-		c = 2;
-	}
-
-	int main() {
-		z = new int[][];
-		z[0][0] = 1 * 2;
-		p[0]++;
-		z[0][0]++;
-		z[0][1]--;
-		x++;
-		print(1);
-		
-		x = y + 5 + 3 ;
-		
+	void main() {
 		print(2);
-		p[1 * 3] = 2;
-		z[0 + 1 * 1][1] = 4 * z[0][0];
-		ch1 = 'a';
-		boolMatrix[1][1] = true;
-		boolMatrix[0][0] = false;
-		matrixChar[0][0] = 'a';
+		print(true);
 	}
 }
