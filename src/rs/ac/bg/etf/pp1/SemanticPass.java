@@ -300,25 +300,26 @@ public class SemanticPass extends VisitorAdaptor {
 		return -1;
 	}
 	public void visit(DesignatorIdent designator) {
-		if(Tab.find(designator.getDesName()) == null) {
+		if(TabExtended.find(designator.getDesName()) == null) {
 			report_error("Nije pronadjen dezignator " + designator.getDesName() + " u tabeli simbola! ", null);
 		}
 		else {
 			Obj foundDesignator = TabExtended.find(designator.getDesName());
+			report_info("" + designator.getParent().getClass(), null);
 			if(designator.getOptionBracketExpr() instanceof ArrayBracketExpr) {
-				designator.obj = new Obj(Obj.Elem, "", foundDesignator.getType().getElemType());
+				designator.obj = new Obj(Obj.Var, "arrayElem", foundDesignator.getType().getElemType());
 			}
 			else if(designator.getOptionBracketExpr() instanceof MatrixBracketExpr) {
-				designator.obj = new Obj(Obj.Elem, "", foundDesignator.getType().getElemType().getElemType());
+				designator.obj = new Obj(Obj.Var, "matrixElem", foundDesignator.getType().getElemType().getElemType());
 			}
 			else
 				designator.obj = foundDesignator;
-//			report_info("===> Designator: " + foundDesignator.getName() + " Type: " + foundDesignator.getType().getKind(), null);
 		}
 	}
 	
 	public void visit(DesignatorStatementAssign desAssign) {
-//		report_info("EXPR: " + desAssign.getExpr().struct.getKind() + " DESIGNATOR TYPE: " + desAssign.getDesignator().obj.getType().getKind() + " NAME: " + desAssign.getDesignator().obj.getName() + " LINE: " + desAssign.getLine(), null);
+//		report_info("EXPR: " + desAssign.getExpr().getClass() + " DESIGNATOR TYPE: " + desAssign.getDesignator().getClass() + " LINE: " + desAssign.getLine(), null);
+		
 		if(desAssign.getDesignator().obj.getType().getKind() == Struct.Array &&
 				(desAssign.getDesignator().obj.getType().getKind() != desAssign.getExpr().struct.getKind())) {
 			if(desAssign.getDesignator().obj.getType().getElemType().getKind() == Struct.Array) {
@@ -477,7 +478,7 @@ public class SemanticPass extends VisitorAdaptor {
 	
 	public void visit(FactorNoTerm factorNoTerm) {
 		factorNoTerm.struct = factorNoTerm.getFactor().struct;
-//		report_info("FactorNoTerm je tipa " + factorNoTerm.getFactor().struct, null);
+//		report_info("FactorNoTerm je tipa " + factorNoTerm.getFactor().struct.getKind() + " LINE: " + factorNoTerm.getLine(), null);
 	}
 	
 	public void visit(FactorNum factor) {
@@ -514,12 +515,13 @@ public class SemanticPass extends VisitorAdaptor {
 	}
 	
 	public void visit(FactorNew factor) {
+//		report_info("FACTOR NEW", null);
 		if(matrixDetected) {
-			report_info("\t->NEW MATRIX ON LINE: " + factor.getLine(), null);
+			report_info("\t->NEW MATRIX ON LINE: " + factor.getLine() + " FACTOR TYPE: " + factor.getType().getTypeName(), null);
 			factor.struct = new Struct(Struct.Array, new Struct(Struct.Array, factor.getType().struct));
 		}
 		else {
-			report_info("\t->NEW ARRAY ON LINE " + factor.getLine(), null);
+			report_info("\t->NEW ARRAY ON LINE " + factor.getLine() + " FACTOR TYPE: " + factor.getType().getTypeName(), null);
 			factor.struct = new Struct(Struct.Array, factor.getType().struct);
 		}
 	}
