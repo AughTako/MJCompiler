@@ -307,10 +307,11 @@ public class SemanticPass extends VisitorAdaptor {
 			Obj foundDesignator = TabExtended.find(designator.getDesName());
 			report_info("" + designator.getParent().getClass(), null);
 			if(designator.getOptionBracketExpr() instanceof ArrayBracketExpr) {
-				designator.obj = new Obj(Obj.Var, "arrayElem", foundDesignator.getType().getElemType());
+				designator.obj = new Obj(Obj.Elem, "arrayElem", foundDesignator.getType().getElemType(), foundDesignator.getAdr(), foundDesignator.getLevel());
+				
 			}
 			else if(designator.getOptionBracketExpr() instanceof MatrixBracketExpr) {
-				designator.obj = new Obj(Obj.Var, "matrixElem", foundDesignator.getType().getElemType().getElemType());
+				designator.obj = new Obj(Obj.Elem, "matrixElem", foundDesignator.getType().getElemType().getElemType(), foundDesignator.getAdr(), foundDesignator.getLevel());
 			}
 			else
 				designator.obj = foundDesignator;
