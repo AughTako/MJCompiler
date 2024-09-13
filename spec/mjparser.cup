@@ -58,9 +58,9 @@ nonterminal Program, Declarations, MethodDeclList;
 nonterminal FormPars, FormParam, FormalParamsExist, OtherFormParamsList, StatementList;
 nonterminal Statement, PrintConst;
 
-nonterminal rs.etf.pp1.symboltable.concepts.Obj ProgName, MethodDeclName, MethodDecl, Designator, ConstDeclr, MoreConstVals, VarDeclr, MoreVarDecls;
-nonterminal rs.etf.pp1.symboltable.concepts.Obj ConstType, FormalConstDeclr, VarDeclInFunction, DesignatorStatement;
-nonterminal rs.etf.pp1.symboltable.concepts.Struct Type, Term, Factor, ConstVals, ExprMaybe, VarType, Expr, OptionBracketExpr, BracketExpression;
+nonterminal rs.etf.pp1.symboltable.concepts.Obj ProgName, MethodDeclName, MethodDecl, ConstDeclr, MoreConstVals, VarDeclr, MoreVarDecls;
+nonterminal rs.etf.pp1.symboltable.concepts.Obj ConstType, FormalConstDeclr, VarDeclInFunction, DesignatorStatement, MyObj;
+nonterminal rs.etf.pp1.symboltable.concepts.Struct Type, Designator, Term, Factor, ConstVals, ExprMaybe, VarType, Expr, OptionBracketExpr, BracketExpression;
 
 nonterminal AddOp, MulOp, RelOp;
 nonterminal Brackets;
@@ -182,7 +182,9 @@ Factor ::= (FactorNum) NUM:num
 			|
 			(FactorDesignator) Designator
 			|
-			(FactorNew) NEW Type:arrType OptionBracketExpr
+			(FactorNewArray) NEW Type:arrType LBRACKET Expr RBRACKET
+			|
+			(FactorNewMatrix) NEW Type:arrType LBRACKET Expr RBRACKET LBRACKET Expr RBRACKET
 			;
 DesignatorStatement ::= (DesignatorStatementAssign) Designator EQUAL Expr
 						|
@@ -191,7 +193,16 @@ DesignatorStatement ::= (DesignatorStatementAssign) Designator EQUAL Expr
 						(DesignatorStatementDec) Designator DECREMENT
 						;
 
-Designator ::=  (DesignatorIdent) IDENT:desName OptionBracketExpr:brackets;
+Designator ::=  (DesignatorIdent) MyObj
+				|
+				(DesignatorArrayElem) MyObj LBRACKET Expr RBRACKET
+				|
+				(DesignatorMatrixElem) MyObj LBRACKET Expr RBRACKET LBRACKET Expr RBRACKET
+				;
+				
+MyObj ::= (MyObj) IDENT:name;
+
+
 				
 OptionBracketExpr ::= (ArrayBracketExpr) BracketExpression:brackExpr1 
 					| (MatrixBracketExpr) BracketExpression:brackExpr2 BracketExpression:brackExpr3 

@@ -65,9 +65,9 @@ nonterminal StatementList StatementList;
 nonterminal Statement Statement;
 nonterminal PrintConst PrintConst;
 
-nonterminal rs.etf.pp1.symboltable.concepts.Obj ProgName, MethodDeclName, MethodDecl, Designator, ConstDeclr, MoreConstVals, VarDeclr, MoreVarDecls;
-nonterminal rs.etf.pp1.symboltable.concepts.Obj ConstType, FormalConstDeclr, VarDeclInFunction, DesignatorStatement;
-nonterminal rs.etf.pp1.symboltable.concepts.Struct Type, Term, Factor, ConstVals, ExprMaybe, VarType, Expr, OptionBracketExpr, BracketExpression;
+nonterminal rs.etf.pp1.symboltable.concepts.Obj ProgName, MethodDeclName, MethodDecl, ConstDeclr, MoreConstVals, VarDeclr, MoreVarDecls;
+nonterminal rs.etf.pp1.symboltable.concepts.Obj ConstType, FormalConstDeclr, VarDeclInFunction, DesignatorStatement, MyObj;
+nonterminal rs.etf.pp1.symboltable.concepts.Struct Type, Designator, Term, Factor, ConstVals, ExprMaybe, VarType, Expr, OptionBracketExpr, BracketExpression;
 
 nonterminal AddOp AddOp;
 nonterminal MulOp MulOp;
@@ -191,7 +191,9 @@ Factor ::= (FactorNum) NUM:num {: RESULT=new FactorNum(num); RESULT.setLine(numl
 			|
 			(FactorDesignator) Designator:D1 {: RESULT=new FactorDesignator(D1); RESULT.setLine(D1left); :}
 			|
-			(FactorNew) NEW Type:arrType OptionBracketExpr:O1 {: RESULT=new FactorNew(arrType, O1); RESULT.setLine(arrTypeleft); :}
+			(FactorNewArray) NEW Type:arrType LBRACKET Expr:E1 RBRACKET {: RESULT=new FactorNewArray(arrType, E1); RESULT.setLine(arrTypeleft); :}
+			|
+			(FactorNewMatrix) NEW Type:arrType LBRACKET Expr:E1 RBRACKET LBRACKET Expr:E2 RBRACKET {: RESULT=new FactorNewMatrix(arrType, E1, E2); RESULT.setLine(arrTypeleft); :}
 			;
 DesignatorStatement ::= (DesignatorStatementAssign) Designator:D1 EQUAL Expr:E2 {: RESULT=new DesignatorStatementAssign(D1, E2); RESULT.setLine(D1left); :}
 						|
@@ -200,7 +202,16 @@ DesignatorStatement ::= (DesignatorStatementAssign) Designator:D1 EQUAL Expr:E2 
 						(DesignatorStatementDec) Designator:D1 DECREMENT {: RESULT=new DesignatorStatementDec(D1); RESULT.setLine(D1left); :}
 						;
 
-Designator ::=  (DesignatorIdent) IDENT:desName OptionBracketExpr:brackets {: RESULT=new DesignatorIdent(desName, brackets); RESULT.setLine(desNameleft); :};
+Designator ::=  (DesignatorIdent) MyObj:M1 {: RESULT=new DesignatorIdent(M1); RESULT.setLine(M1left); :}
+				|
+				(DesignatorArrayElem) MyObj:M1 LBRACKET Expr:E2 RBRACKET {: RESULT=new DesignatorArrayElem(M1, E2); RESULT.setLine(M1left); :}
+				|
+				(DesignatorMatrixElem) MyObj:M1 LBRACKET Expr:E2 RBRACKET LBRACKET Expr:E3 RBRACKET {: RESULT=new DesignatorMatrixElem(M1, E2, E3); RESULT.setLine(M1left); :}
+				;
+				
+MyObj ::= (MyObj) IDENT:name {: RESULT=new MyObj(name); RESULT.setLine(nameleft); :};
+
+
 				
 OptionBracketExpr ::= (ArrayBracketExpr) BracketExpression:brackExpr1 {: RESULT=new ArrayBracketExpr(brackExpr1); RESULT.setLine(brackExpr1left); :} 
 					| (MatrixBracketExpr) BracketExpression:brackExpr2 BracketExpression:brackExpr3 {: RESULT=new MatrixBracketExpr(brackExpr2, brackExpr3); RESULT.setLine(brackExpr2left); :} 

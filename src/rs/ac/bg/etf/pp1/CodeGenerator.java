@@ -101,14 +101,13 @@ public class CodeGenerator extends VisitorAdaptor{
 	 * */
 	
 	public void visit(StatementPrint statementPrint) {
-		if(statementPrint.getPrintConst() instanceof PrintConstExists) {
+		if(statementPrint.getPrintConst() instanceof PrintConstExists) { 
 			if(statementPrint.getExpr().struct == Tab.charType)
 				Code.put(Code.bprint);
 			else
 				Code.put(Code.print);
 		}
 		else {
-//			if(statementPrint.getExpr().struct.get)
 			if(statementPrint.getExpr().struct == Tab.charType) {
 //				System.out.println("CHAR" + statementPrint.getExpr().getLine());
 				Code.loadConst(1);
@@ -123,14 +122,35 @@ public class CodeGenerator extends VisitorAdaptor{
 	}
 	
 	public void visit(StatementRead stRead) { 
-//		System.out.println(stRead.getDesignator().obj.getType().getKind());
-		if(checkIfElemIntOrChar(stRead.getDesignator().obj) == 1) {
+		Designator designator = stRead.getDesignator();
+		Obj dObj;
+		if(designator instanceof DesignatorIdent)
+			dObj = ((DesignatorIdent) designator).getMyObj().obj;
+		else if(designator instanceof DesignatorArrayElem)
+			dObj = ((DesignatorArrayElem) designator).getMyObj().obj;
+		else
+			dObj = ((DesignatorMatrixElem) designator).getMyObj().obj;
+		
+//		System.out.println("READ" + stRead.getLine());
+		
+		if (stRead.getDesignator().struct.assignableTo(Tab.charType)) {
+			Code.put(Code.bread);
+		} else {
 			Code.put(Code.read);
 		}
-		else if(checkIfElemIntOrChar(stRead.getDesignator().obj) == 2) {
-			Code.put(Code.bread);
+		
+		
+		if (designator instanceof DesignatorIdent) {
+			Code.store(dObj);
 		}
-		Code.store(stRead.getDesignator().obj);
+		else{
+			if(dObj.getType().getElemType().assignableTo(Tab.charType)){
+				Code.put(Code.bastore);
+			}
+			else{
+				Code.put(Code.astore);
+			}
+		}
 	}
 
 	public void visit(PrintConstExists pConst) {
@@ -182,84 +202,161 @@ public class CodeGenerator extends VisitorAdaptor{
 		}
 	}
 	
-	public void visit(FactorNew factor) {
-		if(factor.getOptionBracketExpr() instanceof MatrixBracketExpr) {
-			Designator designator =  ((DesignatorStatementAssign)factor.getParent().getParent().getParent()).getDesignator();
-			Code.put(Code.dup_x1);
-			Code.put(Code.pop);
-			Code.put(Code.dup);
-			
-			
-			Code.put(Code.newarray);
-			Code.loadConst(1);
-			
-			Code.store(((DesignatorIdent)designator).obj);
-			Code.loadConst(-1);
-			int loop1 = Code.pc;
-			Code.loadConst(1);
-			Code.put(Code.add);
-			Code.put(Code.dup2);	
-			Code.putFalseJump(Code.ne, 0);
-			int adrToPatch = Code.pc - 2;
-			Code.put(Code.dup_x2);
-			Code.put(Code.dup_x2);
-			Code.put(Code.pop);
-			Code.put(Code.dup_x2);
-			Code.put(Code.pop);
-			Code.put(Code.dup_x2);
-			Code.load(((DesignatorIdent)designator).obj);
-			Code.put(Code.dup_x2);
-			Code.put(Code.pop);
-			
-			Code.put(Code.newarray);
-			if(factor.getType().struct.assignableTo(Tab.charType)){
-				Code.loadConst(0);
-			}
-			else{
-				Code.loadConst(1);
-			}
-			
-			
-			Code.put(Code.astore);
-			Code.put(Code.dup_x2);
-			Code.put(Code.pop);
-			Code.put(Code.dup_x2);
-			Code.put(Code.pop);
-			Code.putJump(loop1);
-			Code.fixup(adrToPatch);
-			Code.put(Code.pop);
-			Code.put(Code.pop);
-			Code.put(Code.pop);
-			Code.put(Code.pop);
-//			Code.load(((DesignatorIdent)designator).obj);
+	public void visit(FactorNewArray factorNewArray){
+		Code.put(Code.newarray);
+		if(factorNewArray.getType().struct.assignableTo(Tab.charType)){
+			Code.loadConst(0);
 		}
-		else {
-			Code.put(Code.newarray);
-			if(factor.getType().struct == Tab.charType)
-				Code.put(0);
-			else
-				Code.put(1);
-			
+		else{
+			Code.loadConst(1);
 		}
-		
 	}
 	
+public void visit(FactorNewMatrix factorNewMatrix) {
+		// System.out.println("NEW USED ON MATRIX" + factorNewMatrix.getLine());
+		Designator designator =  ((DesignatorStatementAssign)factorNewMatrix.getParent().getParent().getParent()).getDesignator();
+		// matrix = new int[2][3];
+		// 2 3
+		Code.put(Code.dup_x1);	// 3 2 3
+		Code.put(Code.pop);		// 3 2
+		Code.put(Code.dup);		// 3 2 2 
+		
+		
+		Code.put(Code.newarray);
+		Code.loadConst(1);
+		// Napravljen niz za redove 3 2 2 newarray 1 -> 3 2 ADRESA
+		Code.store(((DesignatorIdent)designator).getMyObj().obj);
+		// Upisi mi gde se nalaze redovi u promenljivu
+		// 3 2
+		Code.loadConst(-1); 			// Za brojac 3 2 -1
+		int loop1 = Code.pc;
+		Code.loadConst(1);				// Sa ovim cemo da inkrementiramo
+		Code.put(Code.add); 			// Inicijalizujemo brojac i = 0
+		Code.put(Code.dup2); 			// 3 2 0 2 0
+		Code.putFalseJump(Code.ne, 0);	// Izlaz iz pravljenja ali skida sa vrha steka dve vr
+		int adrToPatch = Code.pc - 2;	// Pokazuje na stavljanje add na stack
+		Code.put(Code.dup_x2);			// 0 3 2 0
+		Code.put(Code.dup_x2);			// 0 0 3 2 0
+		Code.put(Code.pop);				// 0 0 3 2
+		Code.put(Code.dup_x2);			// 0 2 0 3 2
+		Code.put(Code.pop);				// 0 2 0 3
+		Code.put(Code.dup_x2);			// 0 3 2 0 3
+		Code.load(((DesignatorIdent)designator).getMyObj().obj);
+		Code.put(Code.dup_x2);			// 0 3 2 ADRESA 0 3 ADRESA
+		Code.put(Code.pop);				// 0 3 2 ADRESA 0 3 <- velicina niza na vrhu steka
+										// priprema za newarray 1
+		
+		Code.put(Code.newarray);	
+		if(factorNewMatrix.getType().struct.assignableTo(Tab.charType)){
+			Code.loadConst(0);
+		}
+		else{
+			Code.loadConst(1);
+		}
+		
+		Code.put(Code.astore);
+		// Napravi mi novi niz od 3 elem i upisi u prvi red
+		// 0 3 2 ADRESA_OKR 0 ADRESA_UNUTR astore -> 0 3 2 -> u adresu okr na index=0 stavi adresu prvog niza od 3 elem
+		Code.put(Code.dup_x2);			// 2 0 3 2 VRACAMO NA OBLIK 3 2 i
+		Code.put(Code.pop);				// 2 0 3
+		Code.put(Code.dup_x2);			// 3 2 0 3
+		Code.put(Code.pop);				// 3 2 0
+		Code.putJump(loop1);			// Skoci na adresu za loop
+		Code.fixup(adrToPatch);
+		Code.put(Code.pop);				//
+		Code.put(Code.pop);
+		Code.put(Code.pop);
+		Code.load(((DesignatorIdent)designator).getMyObj().obj);
+	}
+
+	
+	/*
+	 * DESIGNATORS
+	 * */
+	
+	public void visit(DesignatorIdent designatorIdent) {
+		SyntaxNode parent = designatorIdent.getParent();
+		Obj dObj = designatorIdent.getMyObj().obj;
+		if(parent instanceof FactorDesignator ||
+			parent instanceof DesignatorStatementInc ||
+			parent instanceof DesignatorStatementDec) {
+			Code.load(dObj);
+		}
+	}
+	public void visit(DesignatorArrayElem arrayElem) {
+		Obj dObj = arrayElem.getMyObj().obj;
+		
+		if(arrayElem.getParent() instanceof FactorDesignator) {
+			Code.load(dObj);
+			Code.put(Code.dup_x1);
+			Code.put(Code.pop);
+			if(dObj.getType().getElemType().assignableTo(Tab.charType) ) {
+				Code.put(Code.baload);
+			}
+			else {
+				Code.put(Code.aload);
+			}
+		}
+		else if(arrayElem.getParent() instanceof DesignatorStatementAssign ||
+				arrayElem.getParent() instanceof StatementRead ||
+				arrayElem.getParent() instanceof DesignatorStatementInc ||
+				arrayElem.getParent() instanceof DesignatorStatementDec) {
+			Code.load(dObj);
+			Code.put(Code.dup_x1);
+			Code.put(Code.pop);
+		}
+	}
+	
+	public void visit(DesignatorMatrixElem matrixElem) {
+		Obj dObj = matrixElem.getMyObj().obj;
+		if (matrixElem.getParent() instanceof FactorDesignator) {
+			Code.load(dObj);
+			Code.put(Code.dup_x2);
+			Code.put(Code.pop);
+			Code.put(Code.dup_x2);
+			Code.put(Code.pop);
+			Code.put(Code.aload);
+			Code.put(Code.dup_x1);
+			Code.put(Code.pop);
+			
+			if(dObj.getType().getElemType().assignableTo(Tab.charType)){
+				Code.put(Code.baload);
+			}
+			else{
+				Code.put(Code.aload);
+			}
+		} else if(matrixElem.getParent() instanceof DesignatorStatementAssign ||
+				matrixElem.getParent() instanceof StatementRead ||
+				matrixElem.getParent() instanceof DesignatorStatementInc ||
+				matrixElem.getParent() instanceof DesignatorStatementDec) {
+			Code.load(dObj);
+			Code.put(Code.dup_x2);
+			Code.put(Code.pop);
+			Code.put(Code.dup_x2);
+			Code.put(Code.pop);
+			Code.put(Code.aload);
+			Code.put(Code.dup_x1);
+			Code.put(Code.pop);
+		}
+	}
 	/*
 	 * DESIGNATOR STMTS
 	 * */
 	public void visit(DesignatorStatementAssign desigAssign) {
 		Designator designator = desigAssign.getDesignator();
-		Obj designatorObject = desigAssign.getDesignator().obj;
-		if(designator.getParent() instanceof DesignatorStatementAssign && !designator.obj.getName().equalsIgnoreCase("matrixElem")) {
-			Code.load(designatorObject);
-//			Code.load();
-//			Code.load();
-		}
-		else if (designator instanceof DesignatorIdent && !designator.obj.getName().equalsIgnoreCase("matrixElem")) {
-			Code.store(designatorObject);
+		Obj dObj;
+		if(designator instanceof DesignatorIdent)
+			dObj = ((DesignatorIdent) designator).getMyObj().obj;
+		else if(designator instanceof DesignatorArrayElem)
+			dObj = ((DesignatorArrayElem) designator).getMyObj().obj;
+		else
+			dObj = ((DesignatorMatrixElem) designator).getMyObj().obj;
+
+		if (designator instanceof DesignatorIdent) {
+			Code.store(dObj);
 		}
 		else{
-			if(designatorObject.getType().getElemType().assignableTo(Tab.charType)){
+			if(dObj.getType().getElemType().assignableTo(Tab.charType)){
 				Code.put(Code.bastore);
 			}
 			else{
@@ -269,76 +366,51 @@ public class CodeGenerator extends VisitorAdaptor{
 	}
 	
 	public void visit(DesignatorStatementInc dsStmt) {
-		Code.loadConst(1);
-		Code.put(Code.add);
-		Code.store(dsStmt.getDesignator().obj);
-
+		Designator designator = dsStmt.getDesignator();
+		Obj dObj;
+		if(designator instanceof DesignatorIdent)
+			dObj = ((DesignatorIdent) designator).getMyObj().obj;
+		else if(designator instanceof DesignatorArrayElem)
+			dObj = ((DesignatorArrayElem) designator).getMyObj().obj;
+		else
+			dObj = ((DesignatorMatrixElem) designator).getMyObj().obj;
+		if(designator instanceof DesignatorIdent) {
+			Code.loadConst(1);
+			Code.put(Code.add);
+			Code.store(dObj);
+		}
+		else {
+			Code.put(Code.dup2);
+			Code.put(Code.aload);
+			Code.loadConst(1);
+			Code.put(Code.add);
+			Code.put(Code.astore);
+		}
 	}
 	
 	public void visit(DesignatorStatementDec dsStmt) {
-		Code.loadConst(1);
-		Code.put(Code.sub);
-		Code.store(dsStmt.getDesignator().obj);
+		Designator designator = dsStmt.getDesignator();
+		Obj dObj;
+		if(designator instanceof DesignatorIdent)
+			dObj = ((DesignatorIdent) designator).getMyObj().obj;
+		else if(designator instanceof DesignatorArrayElem)
+			dObj = ((DesignatorArrayElem) designator).getMyObj().obj;
+		else
+			dObj = ((DesignatorMatrixElem) designator).getMyObj().obj;
+		if(designator instanceof DesignatorIdent) {
+			Code.loadConst(1);
+			Code.put(Code.sub);
+			Code.store(dObj);
+		}
+		else {
+			Code.put(Code.dup2);
+			Code.put(Code.aload);
+			Code.loadConst(1);
+			Code.put(Code.sub);
+			Code.put(Code.astore);
+		}
 	}
-	// NOT WORKING
-	/*TODO: 
-	 * FIX MATRIXES
-	 * */
-	public void visit(DesignatorIdent designator) {
-		SyntaxNode parent = designator.getParent();
-		
-		Obj designatorObj = designator.obj;
-		if(parent instanceof FactorNew && designator.getOptionBracketExpr() instanceof MatrixBracketExpr
-				&& !(parent instanceof StatementPrint)) {
-			Code.load(designatorObj);
-			Code.put(Code.dup_x2);
-			Code.put(Code.pop);
-			Code.put(Code.dup_x2);
-			Code.put(Code.pop);
-			Code.put(Code.aload);
-			Code.put(Code.dup_x1);
-			Code.put(Code.pop);
-			
-			if(designatorObj.getType().assignableTo(Tab.charType)){
-				Code.put(Code.baload);
-			}
-			else{
-				Code.put(Code.aload);
-			}
-		}
-		else if(
-				(
-					parent instanceof DesignatorStatementAssign ||
-					parent instanceof StatementRead ||
-					parent instanceof DesignatorStatementInc ||
-					parent instanceof DesignatorStatementDec
-				) 
-				&& designator.getOptionBracketExpr() instanceof MatrixBracketExpr
-				&& designator.getOptionBracketExpr().getParent().getParent() instanceof FactorNew
-				) {
-			Code.load(designatorObj);
-			Code.put(Code.dup_x2);
-			Code.put(Code.pop);
-			Code.put(Code.dup_x2);
-			Code.put(Code.pop);
-			Code.put(Code.aload);
-			Code.put(Code.dup_x1);
-			Code.put(Code.pop);
-		}
-		else if(!(designator.obj.getName().equalsIgnoreCase("matrixElem"))){
-			Code.load(designator.obj);
-			
-		}
 
-//		SyntaxNode parent = designator.getParent();
-//		if(parent instanceof DesignatorStatementAssign && designator.obj.getKind() == Obj.Elem) {
-//			Code.load(designator.obj);
-//		}
-//		else if(!(parent instanceof DesignatorStatementAssign) && !(parent instanceof StatementRead)) {
-//			Code.load(designator.obj);
-//		}
-	}
-	
 	/* EXPR */
 	
 	public void visit(ExprMinus exprMinus) {
@@ -363,15 +435,6 @@ public class CodeGenerator extends VisitorAdaptor{
 		}
 		if(termMulopFactor.getMulOp() instanceof MulOpMod) {
 			Code.put(Code.rem);
-		}
-	}
-	
-	public void visit(BracketExpression bExpr) {
-		SyntaxNode parent = bExpr.getParent();
-		if(parent instanceof OptionBracketExpr && parent instanceof MatrixBracketExpr && !(parent.getParent() instanceof FactorNew ) ) {
-			if(((MatrixBracketExpr) parent).getBracketExpression() == bExpr) {
-				Code.put(Code.aload);
-			}
 		}
 	}
 	

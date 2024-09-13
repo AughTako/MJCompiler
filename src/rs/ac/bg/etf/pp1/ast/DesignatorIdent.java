@@ -1,35 +1,25 @@
 // generated with ast extension for cup
 // version 0.8
-// 25/7/2024 21:43:29
+// 12/8/2024 13:15:41
 
 
 package rs.ac.bg.etf.pp1.ast;
 
 public class DesignatorIdent extends Designator {
 
-    private String desName;
-    private OptionBracketExpr OptionBracketExpr;
+    private MyObj MyObj;
 
-    public DesignatorIdent (String desName, OptionBracketExpr OptionBracketExpr) {
-        this.desName=desName;
-        this.OptionBracketExpr=OptionBracketExpr;
-        if(OptionBracketExpr!=null) OptionBracketExpr.setParent(this);
+    public DesignatorIdent (MyObj MyObj) {
+        this.MyObj=MyObj;
+        if(MyObj!=null) MyObj.setParent(this);
     }
 
-    public String getDesName() {
-        return desName;
+    public MyObj getMyObj() {
+        return MyObj;
     }
 
-    public void setDesName(String desName) {
-        this.desName=desName;
-    }
-
-    public OptionBracketExpr getOptionBracketExpr() {
-        return OptionBracketExpr;
-    }
-
-    public void setOptionBracketExpr(OptionBracketExpr OptionBracketExpr) {
-        this.OptionBracketExpr=OptionBracketExpr;
+    public void setMyObj(MyObj MyObj) {
+        this.MyObj=MyObj;
     }
 
     public void accept(Visitor visitor) {
@@ -37,16 +27,16 @@ public class DesignatorIdent extends Designator {
     }
 
     public void childrenAccept(Visitor visitor) {
-        if(OptionBracketExpr!=null) OptionBracketExpr.accept(visitor);
+        if(MyObj!=null) MyObj.accept(visitor);
     }
 
     public void traverseTopDown(Visitor visitor) {
         accept(visitor);
-        if(OptionBracketExpr!=null) OptionBracketExpr.traverseTopDown(visitor);
+        if(MyObj!=null) MyObj.traverseTopDown(visitor);
     }
 
     public void traverseBottomUp(Visitor visitor) {
-        if(OptionBracketExpr!=null) OptionBracketExpr.traverseBottomUp(visitor);
+        if(MyObj!=null) MyObj.traverseBottomUp(visitor);
         accept(visitor);
     }
 
@@ -55,11 +45,8 @@ public class DesignatorIdent extends Designator {
         buffer.append(tab);
         buffer.append("DesignatorIdent(\n");
 
-        buffer.append(" "+tab+desName);
-        buffer.append("\n");
-
-        if(OptionBracketExpr!=null)
-            buffer.append(OptionBracketExpr.toString("  "+tab));
+        if(MyObj!=null)
+            buffer.append(MyObj.toString("  "+tab));
         else
             buffer.append(tab+"  null");
         buffer.append("\n");

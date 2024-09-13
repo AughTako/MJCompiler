@@ -1,20 +1,20 @@
 // generated with ast extension for cup
 // version 0.8
-// 25/7/2024 21:43:29
+// 12/8/2024 13:15:41
 
 
 package rs.ac.bg.etf.pp1.ast;
 
-public class FactorNew extends Factor {
+public class FactorNewArray extends Factor {
 
     private Type Type;
-    private OptionBracketExpr OptionBracketExpr;
+    private Expr Expr;
 
-    public FactorNew (Type Type, OptionBracketExpr OptionBracketExpr) {
+    public FactorNewArray (Type Type, Expr Expr) {
         this.Type=Type;
         if(Type!=null) Type.setParent(this);
-        this.OptionBracketExpr=OptionBracketExpr;
-        if(OptionBracketExpr!=null) OptionBracketExpr.setParent(this);
+        this.Expr=Expr;
+        if(Expr!=null) Expr.setParent(this);
     }
 
     public Type getType() {
@@ -25,12 +25,12 @@ public class FactorNew extends Factor {
         this.Type=Type;
     }
 
-    public OptionBracketExpr getOptionBracketExpr() {
-        return OptionBracketExpr;
+    public Expr getExpr() {
+        return Expr;
     }
 
-    public void setOptionBracketExpr(OptionBracketExpr OptionBracketExpr) {
-        this.OptionBracketExpr=OptionBracketExpr;
+    public void setExpr(Expr Expr) {
+        this.Expr=Expr;
     }
 
     public void accept(Visitor visitor) {
@@ -39,25 +39,25 @@ public class FactorNew extends Factor {
 
     public void childrenAccept(Visitor visitor) {
         if(Type!=null) Type.accept(visitor);
-        if(OptionBracketExpr!=null) OptionBracketExpr.accept(visitor);
+        if(Expr!=null) Expr.accept(visitor);
     }
 
     public void traverseTopDown(Visitor visitor) {
         accept(visitor);
         if(Type!=null) Type.traverseTopDown(visitor);
-        if(OptionBracketExpr!=null) OptionBracketExpr.traverseTopDown(visitor);
+        if(Expr!=null) Expr.traverseTopDown(visitor);
     }
 
     public void traverseBottomUp(Visitor visitor) {
         if(Type!=null) Type.traverseBottomUp(visitor);
-        if(OptionBracketExpr!=null) OptionBracketExpr.traverseBottomUp(visitor);
+        if(Expr!=null) Expr.traverseBottomUp(visitor);
         accept(visitor);
     }
 
     public String toString(String tab) {
         StringBuffer buffer=new StringBuffer();
         buffer.append(tab);
-        buffer.append("FactorNew(\n");
+        buffer.append("FactorNewArray(\n");
 
         if(Type!=null)
             buffer.append(Type.toString("  "+tab));
@@ -65,14 +65,14 @@ public class FactorNew extends Factor {
             buffer.append(tab+"  null");
         buffer.append("\n");
 
-        if(OptionBracketExpr!=null)
-            buffer.append(OptionBracketExpr.toString("  "+tab));
+        if(Expr!=null)
+            buffer.append(Expr.toString("  "+tab));
         else
             buffer.append(tab+"  null");
         buffer.append("\n");
 
         buffer.append(tab);
-        buffer.append(") [FactorNew]");
+        buffer.append(") [FactorNewArray]");
         return buffer.toString();
     }
 }

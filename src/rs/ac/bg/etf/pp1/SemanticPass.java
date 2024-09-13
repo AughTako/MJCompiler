@@ -243,45 +243,60 @@ public class SemanticPass extends VisitorAdaptor {
 	 */
 	
 	public void visit(StatementPrint stmntPrint) {
-		if(stmntPrint.getExpr().struct.getKind() == Struct.Array) {
-			if(stmntPrint.getExpr().struct.getElemType().getKind() == Struct.Array) {
-				if(stmntPrint.getExpr().struct.getElemType().getElemType().getKind() != Struct.Int &&
-					stmntPrint.getExpr().struct.getElemType().getElemType().getKind() != Struct.Char &&
-					stmntPrint.getExpr().struct.getElemType().getElemType() != TabExtended.boolType) {
-					// Matrica sa nepoznatim tipom
-					report_error("Semanticka greska na liniji " + stmntPrint.getLine() + " print ocekuje int, char, bool matrix", null);
-				}
-			}
-			else {
-				if(stmntPrint.getExpr().struct.getElemType().getKind() != Struct.Int &&
-					stmntPrint.getExpr().struct.getElemType().getKind() != Struct.Char &&
-					stmntPrint.getExpr().struct.getElemType() != TabExtended.boolType) {
-					// Niz sa nepoznatim tipom
-					report_error("Semanticka greska na liniji " + stmntPrint.getLine() + " print ocekuje int, char, bool arr", null);
-				}
-			}
+		if(!(stmntPrint.getExpr().struct.assignableTo(Tab.intType) ||
+			stmntPrint.getExpr().struct.assignableTo(Tab.charType) ||
+			stmntPrint.getExpr().struct.assignableTo(TabExtended.boolType))) {
+			report_error("Nedozvoljen tip u printu", null);
 		}
-		else if(stmntPrint.getExpr().struct.getKind() != Struct.Int &&
-			stmntPrint.getExpr().struct.getKind() != Struct.Char &&
-			stmntPrint.getExpr().struct != TabExtended.boolType) {
-			report_error("Semanticka greska na liniji " + stmntPrint.getLine() + " print ocekuje int, char, bool", null);
-		}
-		else {
-			printCallCount++;
-		}
+		printCallCount++;
 	}
 	
 	public void visit(StatementRead stmntRead) {
-		if(stmntRead.getDesignator().obj.getKind() != Obj.Var && 
-			stmntRead.getDesignator().obj.getKind() != Obj.Elem) {
-			report_error("Greska na liniji " + stmntRead.getLine() + " designator nije ni promenljiva ni element niza/matrice.",null);
+		Designator designator = stmntRead.getDesignator();
+
+		if (designator instanceof DesignatorIdent) {
+
+			Obj object = Tab.find(((DesignatorIdent) designator).getMyObj().getName());
+			if (object == Tab.noObj) {
+				report_error("READ: Ne postoji promenljiva, na liniji " + stmntRead.getLine(), null);
+			}
+
+			if (object.getKind() == Obj.Var) {
+
+			} else {
+				report_error("READ: Identifikator ne postoji u tabeli simbola, na liniji " + stmntRead.getLine(), null);
+			}
+
+		} else if (designator instanceof DesignatorArrayElem) {
+
+			Obj object = Tab.find(((DesignatorArrayElem) designator).getMyObj().getName());
+			if (object == Tab.noObj) {
+				report_error("READ: Ne postoji promenljiva", null);
+			}
+			if (object.getKind() == Obj.Var && object.getType().getKind() == Struct.Array) {
+				if (object.getType().getElemType().assignableTo(Tab.intType) || object.getType().getElemType().assignableTo(Tab.charType) || object.getType().getElemType().assignableTo(TabExtended.boolType)) {
+
+				} else {
+					report_error("READ: Nekompatibilan tip na liniji " + stmntRead.getLine(), null);
+				}
+			}
+
+		} else if (designator instanceof DesignatorMatrixElem) {
+			
+			Obj object = Tab.find(((DesignatorMatrixElem) designator).getMyObj().getName());
+			if (object == Tab.noObj) {
+				report_error("READ: Ne postoji promenljiva", null);
+			}
+			if (object.getType().getKind() == Struct.Array && object.getType().getElemType().getKind() == Struct.Array) {
+				if (object.getType().getElemType().getElemType().assignableTo(Tab.intType) || object.getType().getElemType().getElemType().assignableTo(Tab.charType) || object.getType().getElemType().getElemType().assignableTo(TabExtended.boolType)) {
+
+				} else {
+					report_error("READ: Identifikator ne postoji u tabeli simbola, na liniji " + stmntRead.getLine(), null);
+				}
+			} else {
+				report_error("READ: Ne postoji u tabeli simbola, na liniji " + stmntRead.getLine(), null);
+			}
 		}
-		if(stmntRead.getDesignator().obj.getType() != Tab.intType &&
-			stmntRead.getDesignator().obj.getType() != Tab.charType &&
-			stmntRead.getDesignator().obj.getType() != TabExtended.boolType) {
-			report_error("Greska na liniji " + stmntRead.getLine() + " designator nije tipa int, char ili bool.",null);
-		}
-		
 	}
 	
 	/*
@@ -299,103 +314,210 @@ public class SemanticPass extends VisitorAdaptor {
 		}
 		return -1;
 	}
-	public void visit(DesignatorIdent designator) {
-		if(TabExtended.find(designator.getDesName()) == null) {
-			report_error("Nije pronadjen dezignator " + designator.getDesName() + " u tabeli simbola! ", null);
-		}
-		else {
-			Obj foundDesignator = TabExtended.find(designator.getDesName());
-			report_info("" + designator.getParent().getClass(), null);
-			if(designator.getOptionBracketExpr() instanceof ArrayBracketExpr) {
-				designator.obj = new Obj(Obj.Elem, "arrayElem", foundDesignator.getType().getElemType(), foundDesignator.getAdr(), foundDesignator.getLevel());
-				
-			}
-			else if(designator.getOptionBracketExpr() instanceof MatrixBracketExpr) {
-				designator.obj = new Obj(Obj.Elem, "matrixElem", foundDesignator.getType().getElemType().getElemType(), foundDesignator.getAdr(), foundDesignator.getLevel());
-			}
-			else
-				designator.obj = foundDesignator;
-		}
-	}
-	
+
 	public void visit(DesignatorStatementAssign desAssign) {
-//		report_info("EXPR: " + desAssign.getExpr().getClass() + " DESIGNATOR TYPE: " + desAssign.getDesignator().getClass() + " LINE: " + desAssign.getLine(), null);
-		
-		if(desAssign.getDesignator().obj.getType().getKind() == Struct.Array &&
-				(desAssign.getDesignator().obj.getType().getKind() != desAssign.getExpr().struct.getKind())) {
-			if(desAssign.getDesignator().obj.getType().getElemType().getKind() == Struct.Array) {
-				// MATRIX
-				if(desAssign.getExpr().struct.getKind() != Struct.Int &&
-						desAssign.getExpr().struct.getKind() != Struct.Bool &&
-						desAssign.getExpr().struct.getKind() != Struct.Char) {
-						report_error("Nekompatibilni tipovi za dodelu na liniji " + desAssign.getLine(), null);
-						return;
+		Designator designator = desAssign.getDesignator();
+		String name;
+		Obj object;
+		if(designator instanceof DesignatorIdent) {
+			name = ((DesignatorIdent) designator).getMyObj().getName();
+			object = Tab.find(name);
+			if(object == Tab.noObj) {
+				report_error("Objekat sa imenom " + name + " ne postoji", null);
+			}
+			if(object.getKind() == Obj.Var) {
+				if(!(object.getType().assignableTo(desAssign.getExpr().struct))) {
+					report_error("Nekompatibilni tipovi na liniji " + desAssign.getLine(), null);
 				}
 			}
-			// ARRAY
-			if(desAssign.getExpr().struct.getKind() != Struct.Int &&
-				desAssign.getExpr().struct.getKind() != Struct.Bool &&
-				desAssign.getExpr().struct.getKind() != Struct.Char) {
-				report_error("Nekompatibilni tipovi za dodelu na liniji " + desAssign.getLine(), null);
-				return;
+			else {
+				report_error("Objekat nije promenljiva za dodelu na liniji " + desAssign.getLine(), null);
 			}
-			
 		}
-		else if(!desAssign.getExpr().struct.assignableTo(desAssign.getDesignator().obj.getType())){
-			report_error("Nekompatibilni tipovi za dodelu na liniji " + desAssign.getLine(), null);
-			return;
+		else if(designator instanceof DesignatorArrayElem) {
+			name = ((DesignatorArrayElem) designator).getMyObj().getName();
+			object = Tab.find(name);
+			if(object == Tab.noObj) {
+				report_error("Objekat sa imenom " + name + " ne postoji", null);
+			}
+			if(object.getKind() == Obj.Var && object.getType().getKind() == Struct.Array && object.getType().getElemType().assignableTo(desAssign.getExpr().struct)) {
+	
+			}
+			else {
+				report_error("Objekat nije promenljiva za dodelu na liniji " + desAssign.getLine(), null);
+			}
+		}
+		else if(designator instanceof DesignatorMatrixElem) {
+			name = ((DesignatorMatrixElem) designator).getMyObj().getName();
+			object = Tab.find(name);
+			if(object == Tab.noObj) {
+				report_error("Objekat sa imenom " + name + " se koristi ali nije definisan", null);
+			}
+			if(object.getKind() == Obj.Var && object.getType().getKind() == Struct.Array && object.getType().getElemType().getKind() == Struct.Array) {
+				if(!(desAssign.getExpr().struct.assignableTo(object.getType().getElemType().getElemType()))){
+					report_error("Nekompatibilni tipovi za dodelu na liniji " + desAssign.getLine(), null);
+				}
+			}
+			else {
+				report_error("Objekat nije promenljiva za dodelu na liniji " + desAssign.getLine(), null);
+			}
 		}
 	}
 	public void visit(DesignatorStatementInc desInc) {
-		if(desInc.getDesignator().obj.getKind() != Obj.Var &&
-			desInc.getDesignator().obj.getKind() != Obj.Elem) {
-			report_error("Semanticka greska na liniji " + desInc.getLine() + " dezignator u ++ nije promenljiva ni element niza/matrice ", null);
-		}
-		else if(desInc.getDesignator().obj.getType().getKind() == Struct.Array) {
-			if(desInc.getDesignator().obj.getType().getElemType().getKind() == Struct.Array) {
-				if(desInc.getDesignator().obj.getType().getElemType().getElemType().getKind() != Struct.Int)
-					report_error("Semanticka greska na liniji " + desInc.getLine() + " matrica u ++ nije int tipa", null);	
-				else
-					report_info("\tINC MATRIX ELEM -> " + desInc.getDesignator().obj.getName(), null);
+		Designator designator = desInc.getDesignator();
+		String name;
+		Obj object;
+
+		if (designator instanceof DesignatorIdent) {
+			name = ((DesignatorIdent) designator).getMyObj().getName();
+			object = Tab.find(name);
+			if (object == Tab.noObj) {
+				report_error("Objekat " + name + " ne postoji u tabeli simbola", null);
 			}
-			else if(desInc.getDesignator().obj.getType().getElemType().getKind() != Struct.Int ) {
-				report_error("Semanticka greska na liniji " + desInc.getLine() + " niz u ++ nije int tipa", null);
+
+			if (object.getKind() == Obj.Var) {
+
+				if (!(object.getType().assignableTo(Tab.intType))) {
+					report_error("Nekompatibilni tipovi " + desInc.getLine(), null);
+				}
+			} else {
+				report_error("Koristi se kao promenljiva, a nije " + desInc.getLine(), null);
 			}
-			else
-				report_info("\tINC ARR ELEM -> " + desInc.getDesignator().obj.getName(), null);
+
+		} else if (designator instanceof DesignatorArrayElem) {
+			name = ((DesignatorArrayElem) designator).getMyObj().getName();
+			object = Tab.find(name);
+			if (object == Tab.noObj) {
+				report_error("Objekat " + name + " ne postoji u tabeli simbola", null);
+			}
+
+			if (object.getKind() == Obj.Var && object.getType().getKind() == Struct.Array && object.getType().getElemType().getKind() != Struct.Array && object.getType().getElemType().assignableTo(Tab.intType)) {
+				if ((((DesignatorArrayElem) designator).getExpr().struct.assignableTo(Tab.intType))) {
+					
+				} else {
+					report_error("Nekompatibilni tipovi " + desInc.getLine(), null);
+				}
+
+			} else {
+				report_error("Objekat se koristi kao niz a nije niz " + desInc.getLine(), null);
+			}
 		}
-		else if(desInc.getDesignator().obj.getType() != Tab.intType) {
-			report_error("Semanticka greska na liniji " + desInc.getLine() + " dezignator u ++ nije tipa int ", null);
-		}
-		else {
-			report_info("\tINC VAR -> " + desInc.getDesignator().obj.getName(), null);
+
+		else if (designator instanceof DesignatorMatrixElem) {
+			name = ((DesignatorMatrixElem) designator).getMyObj().getName();
+			object = Tab.find(name);
+			if (object == Tab.noObj) {
+				report_error("Objekat " + name + " ne postoji u tabeli simbola", null);
+			}
+			if (object.getKind() == Obj.Var && object.getType().getKind() == Struct.Array && object.getType().getElemType().getKind() == Struct.Array) {
+				if (((DesignatorMatrixElem) designator).getExpr().struct.assignableTo(Tab.intType) && ((DesignatorMatrixElem) designator).getExpr1().struct.assignableTo(Tab.intType)) {
+
+				} else {
+					report_error("Semanticka greska objekat sa imenom " + name + "nije kompaktibilan sa int tipom", null);
+				}
+			} else {
+				report_error("Objekat se koristi kao matrica, a nije matrica " + desInc.getLine(), null);
+			}
 		}
 	}
 	
 	public void visit(DesignatorStatementDec desDec) {
-		if(desDec.getDesignator().obj.getKind() != Obj.Var &&
-				desDec.getDesignator().obj.getKind() != Obj.Elem) {
-				report_error("Semanticka greska na liniji " + desDec.getLine() + " dezignator u ++ nije promenljiva ni element niza/matrice ", null);
+		Designator designator = desDec.getDesignator();
+		String name;
+		Obj object;
+
+		if (designator instanceof DesignatorIdent) {
+			name = ((DesignatorIdent) designator).getMyObj().getName();
+			object = Tab.find(name);
+			if (object == Tab.noObj) {
+				report_error("Semanticka greska objekat sa imenom " + name + "koji nije definisan se koristi kao promenljiva", null);
 			}
-			else if(desDec.getDesignator().obj.getType().getKind() == Struct.Array) {
-				if(desDec.getDesignator().obj.getType().getElemType().getKind() == Struct.Array) {
-					if(desDec.getDesignator().obj.getType().getElemType().getElemType().getKind() != Struct.Int)
-						report_error("Semanticka greska na liniji " + desDec.getLine() + " matrica u +--= nije int tipa", null);	
-					else
-						report_info("\tDEC MATRIX ELEM -> " + desDec.getDesignator().obj.getName(), null);
+
+			if (object.getKind() == Obj.Var) {
+
+				if (!(object.getType().assignableTo(Tab.intType))) {
+					report_error("Semanticka greska, objekat sa imenom " + name + " jeste promenljiva, ali nije odgovarajuceg tipa koriscenog u izrazu, promenljiva koja se inkrementira mora biti tipa int", null);
 				}
-				else if(desDec.getDesignator().obj.getType().getElemType().getKind() != Struct.Int ) {
-					report_error("Semanticka greska na liniji " + desDec.getLine() + " niz u -- nije int tipa", null);
+			} else {
+				report_error("Semanticka greska, objekat sa imenom " + name + " se koristi kao promenljiva, a nije tipa promenljive", null);
+			}
+
+		} else if (designator instanceof DesignatorArrayElem) {
+			name = ((DesignatorArrayElem) designator).getMyObj().getName();
+			object = Tab.find(name);
+			if (object == Tab.noObj) {
+				report_error("Greska: Semanticka greska, objekat sa imenom " + name + "koji nije definisan se koristi kao promenljiva", null);
+			}
+
+			if (object.getKind() == Obj.Var && object.getType().getKind() == Struct.Array && object.getType().getElemType().getKind() != Struct.Array && object.getType().getElemType().assignableTo(Tab.intType)) {
+				if ((((DesignatorArrayElem) designator).getExpr().struct.assignableTo(Tab.intType))) {
+					report_info("Pristup elementu niza " + name, null);
+				} else {
+					report_error("Semanticka greska objekat sa imenom " + name + " se koristi kao element niza sa tipom integer u izrazu u kombinaciji sa operatorom inkrementiranja, a ne predstavlja niz", null);
 				}
-				else
-					report_info("\tDEC ARR ELEM -> " + desDec.getDesignator().obj.getName(), null);
+
+			} else {
+				report_error("Semanticka greska objekat sa imenom " + name + " se koristi kao element niza sa tipom integer u izrazu u kombinaciji sa operatorom inkrementiranja, a ne predstavlja niz", null);
 			}
-			else if(desDec.getDesignator().obj.getType() != Tab.intType) {
-				report_error("Semanticka greska na liniji " + desDec.getLine() + " dezignator u -- nije tipa int ", null);
+		}
+
+		else if (designator instanceof DesignatorMatrixElem) {
+			name = ((DesignatorMatrixElem) designator).getMyObj().getName();
+			object = Tab.find(name);
+			if (object == Tab.noObj) {
+				report_error("Semanticka greska objekat sa imenom " + name + "koji nije definisan se koristi kao promenljiva", null);
 			}
-			else {
-				report_info("\tDEC VAR -> " + desDec.getDesignator().obj.getName(), null);
+			if (object.getKind() == Obj.Var && object.getType().getKind() == Struct.Array && object.getType().getElemType().getKind() == Struct.Array) {
+				if (((DesignatorMatrixElem) designator).getExpr().struct.assignableTo(Tab.intType) && ((DesignatorMatrixElem) designator).getExpr1().struct.assignableTo(Tab.intType)) {
+					
+				} else {
+					report_error("Semanticka greska objekat sa imenom " + name + "nije kompaktibilan sa celobrojnim tipom", null);
+				}
+			} else {
+				report_error("Semanticka greska objekat sa imenom " + name + " se koristi kao matrica a ne predstavlja matricu", null);
 			}
+		}
+	}
+	
+	
+	public void visit(DesignatorIdent designatorIdent) {
+		String name = designatorIdent.getMyObj().getName();
+		Obj object = Tab.find(name);
+		designatorIdent.getMyObj().obj = object;
+		if (object == Tab.noObj) {
+			report_error("Identifikator koji koristite ne postoji u tabeli simbola", null);
+		}
+		designatorIdent.struct = object.getType();
+	}
+	
+	public void visit(DesignatorArrayElem arrayElem) {
+		String name = arrayElem.getMyObj().getName();
+		Obj objWithName = Tab.find(name);
+		arrayElem.getMyObj().obj = objWithName;
+		if (objWithName == Tab.noObj) {
+			report_error("Identifikator niza koji koristite ne postoji u tabeli simbola", null);
+		}
+		if (objWithName.getType().getKind() == Struct.Array && arrayElem.getExpr().struct.assignableTo(Tab.intType)) {
+			arrayElem.struct = objWithName.getType().getElemType();
+		} else {
+			report_error("Pogresno prosledjen identifikator ocekuje se niz", arrayElem);
+			arrayElem.struct = Tab.noType;
+		}
+	}
+
+	public void visit(DesignatorMatrixElem matrixElem) {
+		String name = matrixElem.getMyObj().getName();
+		Obj objWithName = Tab.find(name);
+		matrixElem.getMyObj().obj = objWithName;
+		if (objWithName == Tab.noObj) {
+			report_error("Identifikator matrice koji koristite ne postoji u tabeli simbola", null);
+		}
+		if (objWithName.getType().getKind() == Struct.Array && objWithName.getType().getElemType().getKind() == Struct.Array) {
+			matrixElem.struct = objWithName.getType().getElemType().getElemType();
+		} else {
+			report_error("Pogresno prosledjen identifikator, ocekivana je matrica", null);
+			matrixElem.struct = Tab.noType;
+		}
 	}
 	/*
 	 * Bracket shenanigans
@@ -502,30 +624,79 @@ public class SemanticPass extends VisitorAdaptor {
 		factorExpr.struct = factorExpr.getExpr().struct;
 	}
 	public void visit(FactorDesignator factor) {
-		if(factor.getDesignator().obj.getType().getKind() == Struct.Array) {
-			if(factor.getDesignator().obj.getType().getElemType().getKind() == Struct.Array)
-				factor.struct = factor.getDesignator().obj.getType().getElemType().getElemType();
-			else
-				factor.struct = factor.getDesignator().obj.getType().getElemType();
+		Designator designator = factor.getDesignator();
+		String name;
+		Obj object;
+		if(designator instanceof DesignatorIdent) {
+			name = ((DesignatorIdent) designator).getMyObj().getName();
+			object = Tab.find(name);
+			if(object == Tab.noObj) {
+				report_error("Semanticka greska, ime " + name + " se koristi a nije definisan", null);
+				factor.struct = Tab.noType;
+			}
+			else if(object.getKind() == Obj.Var || object.getKind() == Obj.Con) {
+				factor.struct = object.getType();
+			}
+			else {
+				report_error("Semanticka greska, ime " + name + " se koristi kao promenljiva ali nije", null);
+				factor.struct = Tab.noType;
+			}
 		}
-		else
-		{
-			factor.struct = factor.getDesignator().obj.getType();
-//			report_info("Designator: " + factor.getDesignator().obj.getName() + " TYPE: " + factor.getDesignator().obj.getType().getKind(), null);
+		else if(designator instanceof DesignatorArrayElem) {
+			name = ((DesignatorArrayElem) designator).getMyObj().getName();
+			object = Tab.find(name);
+			if(Tab.find(name) == Tab.noObj) {
+				report_error("Semanticka greska, ime " + name + " se koristi a nije definisan", null);
+				factor.struct = Tab.noType;
+			}
+			else if(object.getKind() == Obj.Var && object.getType().getKind() == Struct.Array) {
+				factor.struct = object.getType().getElemType();
+			}
+			else {
+				report_error("Semanticka greska ime " + name + " se koristi kao element niza a ne predstavlja niz", null);
+				factor.struct = Tab.noType;
+			}
+		}
+		else if(designator instanceof DesignatorMatrixElem) {
+			name = ((DesignatorMatrixElem) designator).getMyObj().getName();
+			object = Tab.find(name);
+			if (object == Tab.noObj) {
+				report_error("Greska: Semanticka greska, objekat sa imenom " + name + "koji nije definisan se koristi kao promenljiva", null);
+				factor.struct = Tab.noType;
+			}
+
+			if (object.getKind() == Obj.Var && object.getType().getKind() == Struct.Array && object.getType().getElemType().getKind() == Struct.Array) {
+				factor.struct = object.getType().getElemType().getElemType();
+			} else {
+				report_error("Greska: Semanticka greska, objekat sa imenom " + name + " se koristi kao matrica a ne predstavlja matricu", null);
+				factor.struct = Tab.noType;
+			}
 		}
 	}
 	
-	public void visit(FactorNew factor) {
-//		report_info("FACTOR NEW", null);
-		if(matrixDetected) {
-			report_info("\t->NEW MATRIX ON LINE: " + factor.getLine() + " FACTOR TYPE: " + factor.getType().getTypeName(), null);
-			factor.struct = new Struct(Struct.Array, new Struct(Struct.Array, factor.getType().struct));
-		}
-		else {
-			report_info("\t->NEW ARRAY ON LINE " + factor.getLine() + " FACTOR TYPE: " + factor.getType().getTypeName(), null);
-			factor.struct = new Struct(Struct.Array, factor.getType().struct);
+	public void visit(FactorNewArray factorNewArray) {
+		if (!(factorNewArray.getExpr().struct.assignableTo(Tab.intType))) {
+			report_error("Semanticka greska izraz nije odgovarajuc sa tipom int", factorNewArray);
+			factorNewArray.struct = Tab.noType;
+		} else {
+			Struct newArrayType = new Struct(Struct.Array, factorNewArray.getType().struct);
+			factorNewArray.struct = newArrayType;
 		}
 	}
+	
+	public void visit(FactorNewMatrix factorNewMatrix) {
+		if (!(factorNewMatrix.getExpr().struct.assignableTo(Tab.intType) && factorNewMatrix.getExpr1().struct.assignableTo(Tab.intType))) {
+			factorNewMatrix.struct = Tab.noType;
+			report_error("Semanticka greska izraz nije odgovarajuc sa tipom int", factorNewMatrix);
+		} else {
+
+			Struct newArrayRow = new Struct(Struct.Array, factorNewMatrix.getType().struct);
+			Struct newMatrixType = new Struct(Struct.Array, newArrayRow);
+
+			factorNewMatrix.struct = newMatrixType;
+		}
+	}
+
 	
 	
 	
